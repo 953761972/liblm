@@ -78,6 +78,7 @@ export default class InformedConsent extends Component {
       pregnancy: head_info,
       createDate: formatTimeToUTC(dayjs()),
       documentTemplate: get(informedConsent, 'documentTemplate'),
+      ititle: get(informedConsent, 'documentTemplate.title'),
     };
     if (informedConsent.id) {
       informedConsent = await updateInformedConsent(data);
@@ -288,6 +289,7 @@ export default class InformedConsent extends Component {
                 onChange={this.handleSave}
                 toolbars={false}
                 mode="STRICT"
+                title={get(informedConsent, 'documentTemplate.title')}
               />
             </>
           )}

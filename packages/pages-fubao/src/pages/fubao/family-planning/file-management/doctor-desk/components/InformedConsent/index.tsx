@@ -244,7 +244,7 @@ export class InformedConsent extends Component {
                           className="patient-informed-consent-list__item-title"
                           onClick={this.handleClickListItem(item)}
                         >
-                          {get(item, 'documentTemplate.title')}
+                          {get(item, 'ititle')}
                         </span>
                         <Popconfirm
                           title="确定要删除这个文书吗?"

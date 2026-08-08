@@ -92,7 +92,7 @@ export class Mchc_Doctor_Service extends ModelService {
     }
     del_diagnosis(item: IMchc_Doctor_Diagnoses) {
         if (!item) return
-        return request.delete(`/api/doctor/deleteDiagnosisOfOutpatient/${item.id}`, { params: { prenatalVisitId: item.prenatalVisitId } }).then(res => res.data)
+        return request.delete(`/api/doctor/deleteDiagnosisOfOutpatient/${item.id}`, { params: { prenatalVisitId: item.prenatalVisitId, visitNO: item.visitNo  } }).then(res => res.data)
     }
     /**一次获得全部首检信息 */
     async getFirstVisitInfoOfOutpatient(id: TIdTypeCompatible) {

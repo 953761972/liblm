@@ -46,7 +46,18 @@ export default defineFormConfig(
             width: APP_CONFIG.CELL_WIDTH_SMALL,
             layout: '1/2',
         },
-
+        {
+            title: '电子签名',
+            dataIndex: 'signBase64',
+            inputType: 'SignImageUpload',
+            layout: '1/1',
+            width: APP_CONFIG.CELL_WIDTH_SMALL * 2,
+            render: (value: string) => {
+                if (!value) return ''
+                const src = value.startsWith('data:') ? value : `data:image/png;base64,${value}`
+                return <img src={src} alt="电子签名" style={{ height: 32, maxWidth: 120, objectFit: 'contain' }} />
+            },
+        },
         {
             title: '创建时间',
             dataIndex: 'createdDate',

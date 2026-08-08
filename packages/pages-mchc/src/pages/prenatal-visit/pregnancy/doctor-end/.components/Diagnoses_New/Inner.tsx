@@ -14,6 +14,7 @@ import { IDiagnosesprops } from './types';
 
 function Diagnoses(props: IDiagnosesprops) {
   const [visible, setVisible] = useState(false)
+  const [syncDiagnosisLoading, setSyncDiagnosisLoading] = useState(false)
 
 
 
@@ -47,7 +48,7 @@ function Diagnoses(props: IDiagnosesprops) {
   const del_diagnose_item = async (item: IMchc_Doctor_Diagnoses,) => {
     const newList = diagnosesList.filter(_ => _.id !== item.id)
 
-    await SMchc_Doctor.del_diagnosis(item);
+    await SMchc_Doctor.del_diagnosis({ ...item, visitNo: serialNo });
     mchcEnv.success('删除成功！');
     setDiagnosesList(newList);
     mchcEvent.emit('outpatient', { type: '刷新头部' })
@@ -94,6 +95,54 @@ function Diagnoses(props: IDiagnosesprops) {
 
 
 
+  const handleSyncDiagnosis = async () => {
+    if (!headerInfo?.id) {
+      message.warning('请先选择就诊人');
+      return;
+    }
+    if (!pv_id_for_diagnose) {
+        message.warning('请先保存病历')
+        return
+    }
+    setSyncDiagnosisLoading(true);
+    try {
+      const res = await request.get<any[]>('/api/doctor/Diagnosis', {
+          params: { ...getSearchParamsAll(), id: headerInfo?.id, serialNO: serialNo },
+      })
+      const fetchedDiagnoses = res.data ?? [];
+      if (fetchedDiagnoses.length === 0) {
+        message.info('未获取到诊断数据');
+        return;
+      }
+      const existingDiagnosisSet = new Set(diagnosesList.filter(_ => _.prenatalVisitId === pv_id_for_diagnose).map((d) => d.diagnosis));
+      const duplicateDiagnoses = fetchedDiagnoses.filter((d) => existingDiagnosisSet.has(d.diagnosis));
+      const newDiagnoses = fetchedDiagnoses.filter((d) => !existingDiagnosisSet.has(d.diagnosis));
+      if (duplicateDiagnoses.length > 0) {
+        const filteredNames = duplicateDiagnoses.map((d) => d.diagnosis).join('、');
+        message.warning('已过滤' + duplicateDiagnoses.length + '个重复诊断：' + filteredNames);
+      }
+      if (newDiagnoses.length > 0) {
+        const diagnosesToSave = newDiagnoses.map((d) => ({
+          ...d,
+          ...(pv_id_for_diagnose ? { prenatalVisitId: pv_id_for_diagnose } : {}),
+          ...(serialNo ? { serialNo } : {}),
+          outEmrId:headerInfo.id
+        }));
+        const savedDiagnoses = await SMchc_Doctor.new_diagnosis_list(diagnosesToSave);
+        setDiagnosesList([...diagnosesList, ...(savedDiagnoses ?? diagnosesToSave)]);
+        mchcEnv.success('同步诊断成功，共添加' + newDiagnoses.length + '条诊断');
+        mchcEvent.emit('outpatient', { type: '刷新头部' });
+      } else if (duplicateDiagnoses.length > 0) {
+        message.info('所有诊断均已存在，无需同步');
+      }
+    } catch (error) {
+      console.error('同步诊断失败', error);
+    } finally {
+      setSyncDiagnosisLoading(false);
+    }
+  };
+
+
   const closeTemplate = () => {
     setVisible(false);
   };
@@ -104,7 +153,7 @@ function Diagnoses(props: IDiagnosesprops) {
           <OkButton
             type='dashed'
             // className="diag-btn"
-            // icon={<BookOutlined />} 
+            // icon={<BookOutlined />}
             onClick={() => mchcModal__.open('诊断历史', {
               modal_data: {
                 pregnancyId: headerInfo?.id
@@ -113,20 +162,13 @@ function Diagnoses(props: IDiagnosesprops) {
             历史
           </OkButton>
           {
-            (mchcEnv.in(['建瓯'])) ?
-              <OkButton
-                type='dashed'
-                onClick={() =>
-                  request
-                    .get<IMchc_Doctor_Diagnoses[]>('/api/syncDiagnosis', { params: { ...getSearchParamsAll(), id: headerInfo?.id }, successText: '同步成功' })
-                    .then((res => {
-                      const arr = res.data ?? []
-                      setDiagnosesList([...diagnosesList, ...arr])
-
-                    }))
-                }>
-                同步
-              </OkButton>
+            (mchcEnv.in(['建瓯','中大惠亚'])) ?
+                <OkButton
+                    type='dashed'
+                    loading={syncDiagnosisLoading}
+                    onClick={handleSyncDiagnosis}>
+                  同步诊断
+                </OkButton>
               : null
           }
           <OkButton
@@ -134,7 +176,7 @@ function Diagnoses(props: IDiagnosesprops) {
             type='dashed'
             title='请先保存产检信息'
             // className="diag-btn"
-            // icon={<SettingOutlined />} 
+            // icon={<SettingOutlined />}
             onClick={handleBtnClick}>
             管理
           </OkButton>

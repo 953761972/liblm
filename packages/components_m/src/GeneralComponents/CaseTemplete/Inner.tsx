@@ -1,7 +1,7 @@
 import { MyIcon } from '@lm_fe/components';
 import { APP_CONFIG, ds, mchcMacro } from '@lm_fe/env';
-import { sleep } from '@lm_fe/utils';
-import { Button } from 'antd';
+import { request, sleep } from '@lm_fe/utils';
+import { Button, Modal, Spin, message } from 'antd';
 import { get } from 'lodash';
 import React, { Component } from 'react';
 import store from 'store';
@@ -25,6 +25,122 @@ interface IProps {
 let loaded = false
 export default class CaseTempleteEdit extends Component<IProps> {
   editRef: any;
+  signPollTimer: any = null;
+  signRequesting = false;
+
+  state = {
+    signModalVisible: false,
+    signQrCode: '',
+    signLoading: false,
+  };
+
+  clearSignPollTimer = () => {
+    if (this.signPollTimer) {
+      clearInterval(this.signPollTimer);
+      this.signPollTimer = null;
+    }
+  };
+
+  componentWillUnmount() {
+    this.clearSignPollTimer();
+  }
+
+  // ===================== CA电子签名 =====================
+
+  requestCaUserImage = async () => {
+    const result = (await request.get('/api/ca/queryUserImage')).data;
+    return result;
+  }
+
+  // 将签名base64图片渲染到文书模板的 [{{signBase64}}] 占位符中
+  renderSignImage = (signBase64: string) => {
+    const content = window.sde.html() || '';
+    const placeholder = '[{{signBase64}}]';
+    if (content.indexOf(placeholder) === -1) {
+      message.warning('当前文书模板未设置签名占位符[{{signBase64}}]');
+      return;
+    }
+    const signImage = signBase64.startsWith('data:image')
+      ? signBase64
+      : `data:image/png;base64,${signBase64}`;
+    let newContent: string;
+    // 占位符写在 <img src> 里时,直接替换dataURL;否则替换成<img>标签
+    if (
+      content.indexOf(`src="${placeholder}"`) !== -1 ||
+      content.indexOf(`src='${placeholder}'`) !== -1
+    ) {
+      newContent = content.split(placeholder).join(signImage);
+    } else {
+      newContent = content.split(placeholder).join(`<img src="${signImage}" style="width:120px;height:60px"/>`);
+    }
+    window.sde.html(newContent);
+    message.success('电子签名成功');
+    // 触发保存,将签名内容持久化
+    this.handleSave();
+  };
+
+  // 处理签名接口返回: 签名图片(user.signBase64) 或 待扫码授权(二维码)
+  handleSignImageResult = (res: any) => {
+    // 已授权: 返回用户信息,签名图片在signBase64字段
+    if (get(res, 'signBase64')) {
+      this.clearSignPollTimer();
+      this.setState({ signModalVisible: false, signLoading: false });
+      this.renderSignImage(get(res, 'signBase64'));
+      return;
+    }
+    // 未授权: 返回CaResponseDTO,data为二维码base64,弹出让用户扫码授权
+    const qrCodeBase64 = get(res, 'data');
+    if (qrCodeBase64) {
+      this.setState({
+        signLoading: false,
+        signModalVisible: true,
+        signQrCode: `data:image/png;base64,${qrCodeBase64}`,
+      });
+      // 轮询,等待用户扫码授权
+      this.clearSignPollTimer();
+      this.signPollTimer = setInterval(async () => {
+        if (this.signRequesting) return;
+        this.signRequesting = true;
+        try {
+          const r = await this.requestCaUserImage();
+          this.handleSignImageResult(r);
+        } catch (e) {
+          // 轮询失败继续等待
+        } finally {
+          this.signRequesting = false;
+        }
+      }, 2000);
+      return;
+    }
+    // 其他失败情况
+    message.error(get(res, 'msg') || '获取签名图片失败');
+    this.setState({ signLoading: false, signModalVisible: false });
+  }
+
+  handleSignClick = async () => {
+    const content = window.sde.html() || '';
+    if (content.indexOf('[{{signBase64}}]') === -1) {
+      message.warning('当前文书模板未设置签名占位符[{{signBase64}}]');
+      return;
+    }
+    this.setState({ signLoading: true });
+    try {
+      const res = await this.requestCaUserImage();
+      this.handleSignImageResult(res);
+    } catch (e) {
+      message.error('获取签名失败');
+      this.setState({ signLoading: false, signModalVisible: false });
+      this.clearSignPollTimer();
+    }
+  }
+
+  handleSignModalCancel = () => {
+    this.clearSignPollTimer();
+    this.setState({ signModalVisible: false, signQrCode: '' });
+  }
+
+  // ===================== CA电子签名 end =====================
+
   async load_and_init() {
     if (!loaded) {
       const pp = mchcMacro.PUBLIC_PATH
@@ -112,6 +228,7 @@ export default class CaseTempleteEdit extends Component<IProps> {
 
   render() {
     const { hiddenButton } = this.props;
+    const { signModalVisible, signQrCode, signLoading } = this.state;
     return (
       <div id="case-templete-container" className="case-templete-container">
         <div
@@ -124,6 +241,14 @@ export default class CaseTempleteEdit extends Component<IProps> {
         {/* <div className="case-templete-container_actions"> */}
         {!hiddenButton && (
           <div className="right-bottom-btns">
+            <Button
+              className="case-templete-container_actions-btns"
+              onClick={this.handleSignClick}
+              loading={signLoading}
+              icon={<MyIcon value='HighlightOutlined' />}
+            >
+              电子签名
+            </Button>
             <Button
               className="case-templete-container_actions-btns"
               onClick={this.handlePrint}
@@ -141,6 +266,30 @@ export default class CaseTempleteEdit extends Component<IProps> {
             </Button>
           </div>
         )}
+        <Modal
+          title="CA电子签名授权"
+          open={signModalVisible}
+          footer={null}
+          onCancel={this.handleSignModalCancel}
+          centered
+        >
+          <div style={{ textAlign: 'center', padding: '12px 0' }}>
+            <Spin spinning={signLoading || !signQrCode}>
+              {signQrCode ? (
+                <img
+                  src={signQrCode}
+                  alt="授权二维码"
+                  style={{ width: 300, height: 300 }}
+                />
+              ) : (
+                <div style={{ width: 300, height: 300 }} />
+              )}
+            </Spin>
+            <p style={{ marginTop: 12, color: '#888' }}>
+              请使用CA客户端APP扫描二维码完成授权,授权后将自动获取签名
+            </p>
+          </div>
+        </Modal>
       </div>
     );
   }

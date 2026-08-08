@@ -12,8 +12,12 @@ export interface ICaseEditProps {
     emr_mode?: 'design' | 'form';
 
     hiddenButton?: boolean;
+    // 仅隐藏电子签名按钮(其余操作按钮如打印/保存正常显示)
+    hideSignButton?: boolean;
     sdeKey?: any;
     hidentoolbars?: boolean;
+    // 当前文书模板标题,保存时作为保存接口的ititle字段传入
+    title?: string;
 }
 
 export interface IFuck_Xsde {

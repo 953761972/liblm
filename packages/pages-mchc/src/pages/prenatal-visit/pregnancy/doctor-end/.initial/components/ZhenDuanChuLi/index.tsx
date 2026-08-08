@@ -165,7 +165,7 @@ function Index(props: IProps & IInitial_Tab_props) {
                 const values = form.getFieldsValue()
                 handleSubmit(values)
               }}
-              formDescriptions={__DEV__ ? () => import('./config') : config?.tableColumns}
+              formDescriptions={false ? () => import('./config') : config?.tableColumns}
 
               form={form}
             />
