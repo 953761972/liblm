@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d832c069-0d11-4cc1-912d-2d4a7c998267" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/packages/components/src/CaseTempleteEdit/Inner.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/components/src/CaseTempleteEdit/Inner.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/components/src/CaseTempleteEdit/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/components/src/CaseTempleteEdit/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/components/src/CaseTempleteEditEmr/Inner.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/components/src/CaseTempleteEditEmr/Inner.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/components/src/pack_components.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/components/src/pack_components.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/components_m/src/GeneralComponents/CaseTemplete/Inner.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/components_m/src/GeneralComponents/CaseTemplete/Inner.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/components_m/src/MyForm/components/business/PregnancyHistory/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/components_m/src/MyForm/components/business/PregnancyHistory/config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/env/src/env/type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/env/src/env/type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pages-fubao/src/pages/fubao/family-planning/file-management/doctor-desk/components/InformedConsent/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/pages-fubao/src/pages/fubao/family-planning/file-management/doctor-desk/components/InformedConsent/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pages-mchc/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/packages/pages-mchc/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pages-mchc/src/pages/prenatal-visit/pregnancy/doctor-end/.components/Diagnoses_New/Inner.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/pages-mchc/src/pages/prenatal-visit/pregnancy/doctor-end/.components/Diagnoses_New/Inner.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pages-mchc/src/pages/prenatal-visit/pregnancy/doctor-end/.further/DoctorEnd_FurtherPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/pages-mchc/src/pages/prenatal-visit/pregnancy/doctor-end/.further/DoctorEnd_FurtherPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pages-mchc/src/pages/prenatal-visit/pregnancy/doctor-end/.further/components/FurtherForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/pages-mchc/src/pages/prenatal-visit/pregnancy/doctor-end/.further/components/FurtherForm/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pages-mchc/src/pages/prenatal-visit/pregnancy/doctor-end/.initial/components/ZhenDuanChuLi/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/pages-mchc/src/pages/prenatal-visit/pregnancy/doctor-end/.initial/components/ZhenDuanChuLi/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pages-mchc/src/pages/prenatal-visit/pregnancy/nurse-end/InformedConsent/Inner.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/pages-mchc/src/pages/prenatal-visit/pregnancy/nurse-end/InformedConsent/Inner.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pages-mchc/src/pages/system/user/config/form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/pages-mchc/src/pages/system/user/config/form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pages-mchc/src/pages/system/user/form_config.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/pages-mchc/src/pages/system/user/form_config.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pages-mchc/src/routes/meta.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/pages-mchc/src/routes/meta.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pages/src/modals/meta.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/pages/src/modals/meta.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+      <option value="repository" />
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;953761972&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/953761972/liblm.git&quot;,
+    &quot;accountId&quot;: &quot;a6a12e34-8f8b-416c-90d8-2dd6b9e9c6b7&quot;
+  }
+}</component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.1468433374936413" />
+      <entry key="MS500" value="2.3914065661619066" />
+      <entry key="S2" value="4.36958091141498" />
+      <entry key="S5" value="6.802256938612186" />
+      <entry key="S10" value="8.740974533868789" />
+      <entry key="S30" value="10.716858761945039" />
+      <entry key="S60" value="11.329811262606018" />
+      <entry key="M2" value="11.658893030884826" />
+      <entry key="M5" value="12.3719625951574" />
+      <entry key="M10" value="16.208776215582695" />
+      <entry key="M15" value="21.16832970230972" />
+      <entry key="M30" value="34.031915662846586" />
+      <entry key="H1" value="49.70666503505233" />
+      <entry key="H2" value="64.02725467678115" />
+      <entry key="H4" value="74.35597411180277" />
+      <entry key="D1" value="85.44046364836052" />
+      <entry key="W1" value="87.62647940944862" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="2.316233068423197E-131" />
+      <entry key="S10" value="4.812725909942507E-66" />
+      <entry key="S30" value="1.6883547717799328E-22" />
+      <entry key="S60" value="1.2993670658362589E-11" />
+      <entry key="M2" value="3.604673446841282E-6" />
+      <entry key="M5" value="0.006648847484789826" />
+      <entry key="M10" value="0.0815404653211509" />
+      <entry key="M15" value="0.18803937123204184" />
+      <entry key="M30" value="0.43363506688463493" />
+      <entry key="H1" value="0.6585097318070822" />
+      <entry key="H2" value="0.8114861254556862" />
+      <entry key="H4" value="0.9008252469017988" />
+      <entry key="D1" value="0.9827432998448898" />
+      <entry key="W1" value="0.9975163276499541" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="1.1096396530621149" />
+      <entry key="MS500" value="2.377583986629142" />
+      <entry key="S2" value="4.362742572403527" />
+      <entry key="S5" value="6.796817446153159" />
+      <entry key="S10" value="8.737003089655232" />
+      <entry key="S30" value="10.715082989218477" />
+      <entry key="S60" value="11.328851270610514" />
+      <entry key="M2" value="11.658383203551377" />
+      <entry key="M5" value="12.37751317697849" />
+      <entry key="M10" value="16.28759617726337" />
+      <entry key="M15" value="21.353075942089863" />
+      <entry key="M30" value="34.462446346661" />
+      <entry key="H1" value="50.362978793029285" />
+      <entry key="H2" value="64.8374117322879" />
+      <entry key="H4" value="75.25606266687426" />
+      <entry key="D1" value="86.42307243260748" />
+      <entry key="W1" value="88.62397620619066" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="3HZVwZ9abYk03BMn2fAZ0qU4K2P" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/WorkSpace/liblm&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;pnpm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;D:\\WorkSpace\\liblm\\node_modules\\prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\WorkSpace\\liblm\\node_modules\\typescript\\lib&quot;
+  }
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-WS-262.9437.145" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="d832c069-0d11-4cc1-912d-2d4a7c998267" name="更改" comment="" />
+      <created>1786075817204</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1786075817204</updated>
+      <workItem from="1786075818233" duration="16472000" />
+      <workItem from="1786333915458" duration="6137000" />
+      <workItem from="1786948570242" duration="22078000" />
+      <workItem from="1787230291746" duration="13098000" />
+      <workItem from="1787554829071" duration="758000" />
+      <workItem from="1787725062911" duration="941000" />
+      <workItem from="1787729651029" duration="615000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="007ac11c-c454-4794-9e9b-90979d0ec976" value="TOOL_WINDOW" />
+        <entry key="72ed678e-2b25-4724-98a7-637ecf7c85b9" value="TOOL_WINDOW" />
+        <entry key="ae73612e-ec33-405f-a581-84955bb3b603" value="TOOL_WINDOW" />
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="007ac11c-c454-4794-9e9b-90979d0ec976">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+            </State>
+          </value>
+        </entry>
+        <entry key="72ed678e-2b25-4724-98a7-637ecf7c85b9">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+            </State>
+          </value>
+        </entry>
+        <entry key="ae73612e-ec33-405f-a581-84955bb3b603">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/packages/pages-mchc/src/pages/prenatal-visit/pregnancy/doctor-end/.components/Diagnoses_New/Inner.tsx</url>
+          <line>51</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
