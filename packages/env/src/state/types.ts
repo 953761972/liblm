@@ -38,6 +38,7 @@ export type ISystemConfig = Partial<{
     护士端_禁止编辑高危因素_传染病: boolean
     高危管理_允许手输传染病: boolean
     高危管理_允许手输高危: boolean
+    高危管理_隐藏高危筛查: boolean
     护士端_审核禁用保存: boolean
     护士端_保存并审核: boolean
     医生端_模块隐藏: string[] // the old version is string[]
@@ -57,10 +58,9 @@ export type ISystemConfig = Partial<{
     医生端_复诊左侧隐藏?: boolean
     医生端_复诊编辑控制?: boolean
     医生端_开启_危险_复诊同步记录?: boolean
-    标签管理?: boolean
     高危标记多选?: number
-    病人标签多选?: number
     旧版量表隐藏?: string[]
+
     禁用量表自动弹出?: boolean
     头部信息拓展?: ICommonOption[]
     产后信息拓展?: ICommonOption[]

@@ -8,27 +8,26 @@ import {
 } from '@lm_fe/service'
 import { Button, Col, Input, Row, Space } from 'antd'
 import { DataNode } from 'antd/lib/tree'
-import { findIndex, get, includes, isEmpty, keyBy, keys, map, sortBy, split } from 'lodash'
+import { findIndex, includes, isEmpty, keyBy, keys, map, sortBy, split } from 'lodash'
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import styles from './index.module.less'
 
 import { MySelect, Tree_L } from '@lm_fe/components'
 import { use_provoke } from '@lm_fe/provoke'
 import { ColorSpan, transfer_to_treeNode } from './utils'
-import { ROMAN_NUMERALS } from '@lm_fe/utils'
+import { ROMAN_NUMERALS, get } from '@lm_fe/utils'
 
 const boundSymbol = ':'
 interface IProps {
-    headerInfo?: IMchc_Doctor_OutpatientHeaderInfo
     gradeOptions?: IMchc_HighriskGradeConfig[]
     contagionOptions?: ICommonOption[]
-    initData?: IMchc_Doctor_OutpatientHeaderInfo
+    initData?: Partial<IMchc_Doctor_OutpatientHeaderInfo>
     assign_initData(v?: Partial<IMchc_Doctor_OutpatientHeaderInfo>): void
 }
 export function HighriskSign_高危因素管理(props: IProps) {
     const { config } = use_provoke('config')
 
-    const { headerInfo, gradeOptions, contagionOptions = [], initData, assign_initData } = props
+    const { gradeOptions, contagionOptions = [], initData, assign_initData } = props
     const highRiskTreeDataMapping = useRef<{ [x: string]: IMchc_TemplateTree_Item }>({})
 
     const [currentTreeData, set_currentTreeData] = useState<IMchc_TemplateTree_Item[]>([])
@@ -41,14 +40,13 @@ export function HighriskSign_高危因素管理(props: IProps) {
     const 高危管理_允许手输传染病 = config.高危管理_允许手输传染病
     const 高危管理_允许手输高危 = config.高危管理_允许手输高危
 
-    function getInitData(_h = headerInfo) {
+    function getInitData(_h = initData) {
         if (!_h) return _h
-        const grade = _h?.highriskLable || _h?.highriskGrade || ''
+        const grade = _h?.highriskLable || _h?.highriskLable || ''
         const _data: IMchc_Doctor_OutpatientHeaderInfo = {
             ..._h,
             infectionNote: _h?.infectionNote ?? '',
             highriskNote: _h?.highriskNote ?? '',
-            highriskGrade: grade,
             highriskLable: grade,
         }
         return _data
@@ -56,14 +54,14 @@ export function HighriskSign_高危因素管理(props: IProps) {
 
     useEffect(() => {
         ; (async () => {
-            // const gradeDic = initDictionaries.filter((item) => item.key === 'highriskGrade' && item.type === highriskVersion);
+            // const gradeDic = initDictionaries.filter((item) => item.key === 'highriskLable' && item.type === highriskVersion);
 
-            if (headerInfo) {
+            if (initData) {
                 const highriskTreeData = await SMchc_Common.getHighriskTree()
 
                 highRiskTreeDataMapping.current = keyBy(highriskTreeData, 'id')
 
-                const highriskNote_ = headerInfo.highriskNote?.split?.(',')?.filter((_) => _) ?? []
+                const highriskNote_ = initData.highriskNote?.split?.(',')?.filter((_) => _) ?? []
                 let _selectTree: IMchc_TemplateTree_Item[] = []
                 highriskNote_.map((item) => {
                     map(highRiskTreeDataMapping.current, (v, i) => {
@@ -76,13 +74,13 @@ export function HighriskSign_高危因素管理(props: IProps) {
 
                 set_selectTree(_selectTree)
                 set_expandedKeys(Object.keys(highRiskTreeDataMapping.current))
-                assign_initData(getInitData())
+                // assign_initData(getInitData())
                 set_currentTreeData(highriskTreeData)
             }
         })()
 
         return () => { }
-    }, [headerInfo])
+    }, [initData])
 
     function handleSearch(e: ChangeEvent<HTMLInputElement>) {
         const searchValue: string = get(e, 'target.value')
@@ -172,8 +170,8 @@ export function HighriskSign_高危因素管理(props: IProps) {
 
     function handle_tree_select(ids: string[], e: any) {
         const custom_tags = get(initData, 'highriskNote', '')
-            .split(',')
-            .filter((_) => !_.includes(':'))
+            ?.split(',')
+            ?.filter((_) => !_.includes(':')) ?? []
         let tree_items: IMchc_TemplateTree_Item[] = []
 
         ids.forEach((k) => {
@@ -207,7 +205,7 @@ export function HighriskSign_高危因素管理(props: IProps) {
         }
     }
     function calAndSetData(tree_items: IMchc_TemplateTree_Item[], tag_arr: string[]) {
-        // let __highriskGrade = isEmpty(tree_items) ? initData?.highriskGrade! : ''
+        // let __highriskGrade = isEmpty(tree_items) ? initData?.highriskLable! : ''
         let __highriskGrade = isEmpty(tree_items) ? ROMAN_NUMERALS[1] : ''
 
         tree_items.forEach((_) => {
@@ -217,9 +215,9 @@ export function HighriskSign_高危因素管理(props: IProps) {
                 __highriskGrade = code
             }
         })
-        mchcLogger.log('__highriskGrade', tree_items, __highriskGrade, initData?.highriskGrade, initData?.infectionNote)
+        mchcLogger.log('__highriskGrade', tree_items, __highriskGrade, initData?.highriskLable, initData?.infectionNote)
         assign_initData({
-            highriskGrade: __highriskGrade,
+            highriskLable: __highriskGrade,
             highriskNote: tag_arr.join(','),
         })
         set_selectTree([...tree_items])
@@ -231,7 +229,7 @@ export function HighriskSign_高危因素管理(props: IProps) {
 
     function handleReset() {
         assign_initData({
-            highriskGrade: '',
+            highriskLable: '',
             highriskNote: '',
             infectionNote: '',
         })
@@ -313,7 +311,7 @@ export function HighriskSign_高危因素管理(props: IProps) {
         }
     }
     function getTargetNote(v: IMchc_TemplateTree_Item) {
-        const p = get(highRiskTreeDataMapping.current, v.pid)
+        const p = get(highRiskTreeDataMapping.current, v.pid.toString())
         const addNote = `${p?.val}${boundSymbol}${v?.val}`
 
         return addNote
@@ -327,9 +325,9 @@ export function HighriskSign_高危因素管理(props: IProps) {
                     <Col span={6}>
                         <HighRiskGradeSelectPure
                             onChange={(v) => {
-                                assign_initData({ highriskGrade: v })
+                                assign_initData({ highriskLable: v })
                             }}
-                            value={get(initData, 'highriskGrade')}
+                            value={get(initData, 'highriskLable')}
                         />
                     </Col>
                     <Col span={15} style={{ textAlign: 'right' }}>
@@ -350,9 +348,9 @@ export function HighriskSign_高危因素管理(props: IProps) {
                                 全部展开
                             </Button>
                             <Button onClick={handleReset}>清空</Button>
-                            <Button type="primary" onClick={() => assign_initData(getInitData())}>
+                            {/* <Button type="primary" onClick={() => assign_initData(getInitData())}>
                                 恢复
-                            </Button>
+                            </Button> */}
                         </Space>
                     </Col>
                     <Col span={2}>

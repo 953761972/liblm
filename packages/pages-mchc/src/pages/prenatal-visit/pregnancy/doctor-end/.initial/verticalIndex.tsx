@@ -23,7 +23,7 @@ function DoctorEnd_Initial_Vertical(props: IDoctorEnd_InitialProps) {
   const [form] = Form.useForm()
 
   const [diagnosesList, setDiagnosesList] = useState<IMchc_Doctor_Diagnoses[]>([])
-  const { fuck_conceive, fuck_sureEdd, check_edd_by_nt, set_dont_fuck_nt } = use_现病史({ pregnancyId, form }, 'sureEdd', 'ntExams')
+  const { fuck_conceive, fuck_sureEdd, check_edd_by_nt, set_dont_fuck_nt } = use_现病史({ pregnancyId, form }, 'presentHistory.sureEdd', 'presentHistory.ntExams')
 
   const { Wrap, config } = BF_Wrap2(
     { default_conf: { title: '门诊-垂直首诊', tableColumns: () => import('./verticalIndex_config') } },
@@ -59,13 +59,12 @@ function DoctorEnd_Initial_Vertical(props: IDoctorEnd_InitialProps) {
 
     let res = await SMchc_Doctor.getFirstVisitInfoOfOutpatient(pregnancyId);
     mchcLogger.log('vertical init', res)
-    const presentmh = get(res, 'presentmh')
     const diagnosisAndAdvice = get(res, 'diagnosisAndAdvice')
     const d = get(diagnosisAndAdvice, 'diagnoses')
 
     const _diagnoses = filter_diagnoses(d)
 
-    check_edd_by_nt(presentmh)
+    check_edd_by_nt(res)
 
 
     setVisitData(diagnosisAndAdvice)
@@ -85,12 +84,11 @@ function DoctorEnd_Initial_Vertical(props: IDoctorEnd_InitialProps) {
   async function handleSave(resData: any) {
     // console.log(resData);
     SMchc_Doctor.updateFirstVisitInfoOfOutpatient(resData).then((res) => {
-      const presentmh = get(res, 'presentmh')
 
       mchcEnv.success('信息保存成功');
       mchcEvent.emit('outpatient', { type: '刷新头部' })
 
-      check_edd_by_nt(presentmh)
+      check_edd_by_nt(res)
 
     });
   };

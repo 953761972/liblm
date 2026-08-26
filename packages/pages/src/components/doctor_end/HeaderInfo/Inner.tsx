@@ -1,6 +1,6 @@
 import { mchcEnv, mchcEvent, mchcLogger, mchcUtils, TLevelType } from '@lm_fe/env'
 import { IMchc_Doctor_OutpatientHeaderInfo, SMchc_Doctor } from '@lm_fe/service'
-import { EMPTY_PLACEHOLDER, expect_array, ICommonOption, setSearchParamsValue } from '@lm_fe/utils'
+import { EMPTY_PLACEHOLDER, expect_array, ICommonOption, request, setSearchParamsValue } from '@lm_fe/utils'
 import { Button, ButtonProps, Space, Tag, Tooltip } from 'antd'
 import classnames from 'classnames'
 import { get, map, some } from 'lodash'
@@ -18,6 +18,7 @@ import styles from './index.module.less'
 import { IHeaderInfoProps } from './types'
 import { use_headinfo_color } from './use_headinfo_color'
 import { handleFuckinginfectionNoteLabel, use专案 } from './utils'
+import { QuestionnaireButton } from 'src/pages'
 
 export default function HeaderInfoInner(props: IHeaderInfoProps) {
     const {
@@ -34,7 +35,6 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
         量表拓展 = [],
         护士端_禁止编辑高危因素_传染病,
         highriskType,
-        标签管理,
     } = use_provoke((s) => s.config)
 
 
@@ -506,18 +506,18 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                             </Tooltip>
                             <FuckTags str_data={get(headerInfo, 'tags')} />
                             {/* 标签管理 */}
-                            {标签管理 && (
-                                <>
-                                    {map(headerInfo?.labels, (tag, i) => {
-                                        return (
-                                            <Tag key={tag.id} color={tag?.color}>
-                                                {tag.name}
-                                            </Tag>
-                                        )
-                                    })}
-                                </>
-                            )}
-                            {mchcEnv.isAdmin && (
+
+                            <>
+                                {map(headerInfo?.labels, (tag, i) => {
+                                    return (
+                                        <Tag key={tag.id} color={tag?.color}>
+                                            {tag.name}
+                                        </Tag>
+                                    )
+                                })}
+                            </>
+
+                            {headerInfo?.labelEnabled && (
                                 <Tag
                                     icon={<MyIcon value="PlusOutlined" />}
                                     style={{ cursor: 'pointer' }}
@@ -540,6 +540,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
         saveHeaderInfo?.(data)
         setHeaderInfo(data)
     }
+
     function render_extra() {
         if (!headerInfo) return null
         const common_props: Omit<ButtonProps, 'form'> = { shape: 'circle', style: { opacity: 0.6, marginLeft: 6 } }
@@ -552,7 +553,9 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
             <div style={{ flex: 1 }}>
                 <div style={{ ...wrap_style, marginBottom: 4 }}>
                     <OkButton {...common_props} icon={<MyIcon value="ThunderboltOutlined" />} onClick={onDobuleClick} />
-                    <OkButton {...common_props} icon={<MyIcon value="ReloadOutlined" />} onClick={fetchHeaderInfo} />
+                    <QuestionnaireButton {...common_props} btn_text='' icon={<MyIcon value='SendOutlined' />} onOk={(qs) =>
+                        request.post('/api/send/questionnaire', { type: 1, id: pregnancyId, questionnaire: qs })
+                    } />
                     {mchcEnv.is_single ? null : (
                         <OkButton {...common_props} icon={<MyIcon value="RetweetOutlined" />} onClick={switch_page} />
                     )}

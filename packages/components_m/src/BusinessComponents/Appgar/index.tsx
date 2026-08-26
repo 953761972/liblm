@@ -1,6 +1,7 @@
+import { MyCheckbox } from '@lm_fe/components';
 import { mchcEnv } from '@lm_fe/env';
-import { Checkbox, Col, InputNumber, Row } from 'antd';
-import { get, map } from 'lodash';
+import { Col, InputNumber, Row } from 'antd';
+import { get } from 'lodash';
 import React, { Fragment } from 'react';
 import { breathMapping, heartRateMapping, muscleMapping, reflexMapping, skinMapping } from './config';
 import styles from './index.module.less';
@@ -32,8 +33,8 @@ export default function Appgar(props: any) {
   function handleChange(callbackData: any, minute: number, key: string) {
     const valueKey = `apgar${minute}${key}`
     const ScoreKey = `${valueKey}Score`
-    const v = callbackData[callbackData.length - 1];
-    const newState = { ...value, [valueKey]: v, [ScoreKey]: v, }
+    // const v = callbackData[callbackData.length - 1];
+    const newState = { ...value, [valueKey]: callbackData, [ScoreKey]: callbackData, }
 
     safe_onChange(newState, minute);
   };
@@ -77,7 +78,8 @@ export default function Appgar(props: any) {
                 <span>{config.label}：</span>
               </Col>
               <Col span={11}>
-                <Checkbox.Group
+                <MyCheckbox onChange={v => handleChange(v, minute, `${config.key}`)} value={get(value, `apgar${minute}${config.key}`)} marshal={0} options={config.options} />
+                {/* <Checkbox.Group
                   value={[get(value, `apgar${minute}${config.key}`)]}
                   onChange={(e) => {
                     handleChange(e, minute, `${config.key}`);
@@ -92,7 +94,7 @@ export default function Appgar(props: any) {
                       );
                     })}
                   </Row>
-                </Checkbox.Group>
+                </Checkbox.Group> */}
               </Col>
               <Col className={styles["appgar-label"]} span={2}>
                 <span>{minute}分钟评分：</span>

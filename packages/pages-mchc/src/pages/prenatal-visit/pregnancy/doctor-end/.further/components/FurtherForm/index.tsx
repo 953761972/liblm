@@ -1,4 +1,4 @@
-import { MyIcon, MyLazyComponent, OkButton, getBMI, handle_form_error, useMyEffectSafe } from '@lm_fe/components_m'
+import { MyIcon, MyLazyComponent, OkButton, fuck_the_form, getBMI, handle_form_error, useMyEffectSafe } from '@lm_fe/components_m'
 import {
     IMchc_Doctor_Diagnoses,
     IMchc_Doctor_OutpatientHeaderInfo,
@@ -9,13 +9,13 @@ import {
     process_OutpatientDocument_physicalExam_local,
     process_OutpatientDocument_physicalExam_remote
 } from '@lm_fe/service'
-import { copyText, getFutureDate, request } from '@lm_fe/utils'
+import { copyText, get, getFutureDate, request, set } from '@lm_fe/utils'
 import { Button, Card, Form, FormInstance, Space, message } from 'antd'
 import { size } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import DiabetesAppointment from '../../../.components/DiabetesAppointment'
 
-import { mchcConfig, mchcEnv, mchcEvent, mchcUtils } from '@lm_fe/env'
+import { mchcConfig, mchcEnv, mchcEvent, mchcLogger, mchcUtils } from '@lm_fe/env'
 import { HighRiskTableEntry, mchcModal__ } from '@lm_fe/pages'
 import { use_provoke } from '@lm_fe/provoke'
 import { expect_array } from '@lm_fe/utils'
@@ -101,7 +101,7 @@ function FurtherForm(props: IProps) {
     }, [formData])
 
     useMyEffectSafe(props)(() => {
-        const rm = mchcEvent.on_rm('my_form', async (e) => {
+        const rm_form = mchcEvent.on_rm('my_form', async (e) => {
             // mchcEnv.logger.log('event receive', { e, })
             if (e.type === 'onChange') {
                 formChange(true)
@@ -153,7 +153,29 @@ function FurtherForm(props: IProps) {
             //     }
             // }
         })
-        return rm
+        const rm_runone = mchcEvent.on_rm('outpatient', e => {
+            if (e.type === '复诊表单走一个') {
+                mchcLogger.log('走一个~~~~', e)
+                fuck_the_form(e.action, form, e.data, e.keys)
+                // if (e.action === '覆') {
+                //     form.setFieldsValue(e.data)
+                // } else {
+                //     const values = form.getFieldsValue()
+                //     const obj = e.keys.reduce((res, k) => {
+                //         const v = get(e.data, k)
+                //         if (!v) return res
+                //         const old_v = get(values, k)
+                //         const new_v = old_v ? `${old_v} / ${v}` : v
+                //         return set(res, k, new_v)
+                //     }, {})
+                //     form.setFieldsValue(obj)
+                // }
+            }
+        })
+        return () => {
+            rm_form();
+            rm_runone();
+        }
     }, [])
 
     function setItemValue(val: string, key: string) { }

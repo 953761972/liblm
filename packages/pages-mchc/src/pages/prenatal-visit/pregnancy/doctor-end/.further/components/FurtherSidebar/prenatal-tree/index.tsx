@@ -1,16 +1,18 @@
 import { Timeline } from 'antd';
 import { get, map } from 'lodash';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './index.less';
 import { TIdType, TIdTypeCompatible } from '@lm_fe/service';
 import { mchcEvent } from '@lm_fe/env';
+import { request } from '@lm_fe/utils';
 interface Iprops {
   id: TIdTypeCompatible;
-  treeData: any
 }
-export default function PrenatalTree({ id, treeData, ...props }: Iprops) {
+export default function PrenatalTree({ id, ...props }: Iprops) {
   const history = useHistory();
+  const [prenatalTreeData, set_prenatalTreeData] = useState(null)
+
   const handleClick = useCallback((key: string, id?: string) => {
     if (id) {
       history.push('/deliver-management-v2/admission/deliver-edit?id=' + id);
@@ -18,10 +20,22 @@ export default function PrenatalTree({ id, treeData, ...props }: Iprops) {
       mchcEvent.emit('outpatient', { type: '切换医生Tab', key })
     }
   }, []);
+  useEffect(() => {
 
+    initTreeData()
+    return () => {
+
+    }
+  }, [])
+  async function initTreeData() {
+    if (prenatalTreeData) return;
+    let data: any = (await request.get('/api/doctor/getExamTree?id=' + id)).data;
+    data = data.sort((a: any, b: any) => a.date < b.date ? 1 : a.date > b.date ? -1 : 0)
+    set_prenatalTreeData(data)
+  }
   return (
     <Timeline style={{ padding: 12 }}>
-      {map(treeData, (item, index) => {
+      {map(prenatalTreeData, (item, index) => {
         return (
           <Timeline.Item dot={<Dot type={get(item, `type`)} dateGap={get(item, `dateGap`)}></Dot>}>
             <PrenatalInfo handleClick={handleClick} item={item} />

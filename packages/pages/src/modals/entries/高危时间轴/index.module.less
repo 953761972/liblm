@@ -1,0 +1,77 @@
+@lableWidth: 120px;
+
+.highrisk-timeline {
+    height: 520px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-top: 8px;
+    color: #fff;
+
+    :global(.ant-timeline-item-label) {
+        width: @lableWidth;
+    }
+
+    :global(.ant-timeline-item-tail) {
+        left: @lableWidth + 12px;
+    }
+
+    :global(.ant-timeline-item-head) {
+        left: @lableWidth + 8px;
+    }
+
+    :global(.ant-timeline-item-left .ant-timeline-item-content) {
+        left: @lableWidth + 4px;
+        width: calc(100% - @lableWidth - 20px);
+    }
+
+    :global(.ant-timeline-item) {
+        padding-bottom: 0;
+        margin-bottom: -30px;
+    }
+
+    .record-left {
+        position: relative;
+        left: -140px;
+        top: 0;
+
+        .record-grade {
+            position: relative;
+            width: 108px;
+            height: 30px;
+            line-height: 30px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .record-week {
+            width: 108px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            color: #150f55;
+        }
+    }
+
+    .record-right {
+        position: relative;
+        top: -60px;
+        color: #535881;
+
+        .record-item {
+            margin: 4px 0;
+            padding-right: 6px;
+            display: flex;
+        }
+
+        .item-label {
+            width: 72px;
+            text-align: right;
+            margin-right: 3px;
+            border-radius: 4px;
+        }
+
+        .item-note {
+            flex: 1;
+        }
+    }
+}

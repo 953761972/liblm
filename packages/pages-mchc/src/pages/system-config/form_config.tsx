@@ -266,12 +266,7 @@ export default defineFormConfig(
                             layout: '1/3',
                         },
 
-                        {
-                            label: '病人标签多选',
-                            name: '病人标签多选',
-                            inputType: 'Switch',
-                            layout: '1/3',
-                        },
+
                     ]
                 },
                 {
@@ -324,12 +319,7 @@ export default defineFormConfig(
                             inputProps: { options: switchOptions, marshal: 0 },
                             layout: '1/3',
                         },
-                        {
-                            label: '标签管理',
-                            name: '标签管理',
-                            inputType: 'MSW',
-                            layout: '1/3',
-                        },
+
 
                         {
                             label: '看诊审核限制',
@@ -570,7 +560,12 @@ export default defineFormConfig(
                     label: '允许手输高危',
                     name: '高危管理_允许手输高危',
                     inputType: 'MSW',
-                    inputProps: { options: switchOptions, marshal: 0 },
+                    layout: '1/3',
+                },
+                {
+                    label: '隐藏高危筛查',
+                    name: '高危管理_隐藏高危筛查',
+                    inputType: 'MSW',
                     layout: '1/3',
                 },
                 {

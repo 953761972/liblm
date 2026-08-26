@@ -1,6 +1,6 @@
 import { mchcConfig, mchcEnv, mchcEvent, mchcLogger, mchcStorage } from '@lm_fe/env';
 import { ModelService, TIdTypeCompatible } from '@lm_fe/service';
-import { AnyObject, assign, cloneDeep, downloadFile, formatDateTime, safe_async_call, shake, sleep } from '@lm_fe/utils';
+import { AnyObject, assign, Browser, cloneDeep, downloadFile, formatDateTime, safe_async_call, shake, sleep } from '@lm_fe/utils';
 import { Divider, Form, message, Space, TablePaginationConfig } from 'antd';
 import { get, isFunction, isNil, isString, omit } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
@@ -15,6 +15,7 @@ import { use_provoke } from '@lm_fe/provoke';
 import { TableRowSelection } from 'antd/es/table/interface';
 import { mchcModal__ } from '../../modals';
 import { BF_Wrap2 } from '../BF_Form';
+const browserClient = Browser.client || {};
 
 
 
@@ -133,7 +134,19 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
         actCellWidth += editText.length * 14
     }
     const searchForm = props.searchForm ?? _searchForm
+    useEffect(() => {
+        myBaseListService.current = customModelService || new ModelService<T>({
+            n: name,
+            useListSourceCount,
+            needTransferParams: false,
+            apiPrefix,
+            fuckPage,
+            get_fuck_page,
+            ignore_env,
+            ignore_usr
+        })
 
+    }, [name, customModelService])
     const [total, setTotal] = useState(0)
     const [dataSource, setDataSource] = useState<any[]>([])
     const [visible, setVisible] = useState(false)
@@ -197,8 +210,15 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
     const cache_key = `${location.pathname}@${name}`
     mchcLogger.log('tablelist cache_key', cache_key)
 
+    useEffect(() => {
+        // let obj = mchcStorage.get(cache_key)
+        // mchcLogger.log('tablelist cache_key', cache_key, obj)
+        // if (name && !isNil(obj)) {
+        //     searchForm.setFieldsValue(obj)
+        // }
+    }, [name])
+    useEffect(() => {
 
-    function relayout() {
         setTimeout(() => {
 
             const h = document.body.clientHeight
@@ -212,46 +232,42 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
                 setLongSearchForm(true)
             }
 
-        }, 120);
-    }
-    useEffect(() => {
-
-        if (!inited.current) {
-
             if (dbg_dataSource) {
+
                 setDataSource(dbg_dataSource)
-                inited.current = true
             } else {
-                myBaseListService.current = customModelService ||
-                    (
-                        name
-                            ? new ModelService<T>({
-                                n: name,
-                                useListSourceCount,
-                                needTransferParams: false,
-                                apiPrefix,
-                                fuckPage,
-                                get_fuck_page,
-                                ignore_env,
-                                ignore_usr
-                            })
-                            : undefined
-                    )
-                if (myBaseListService.current) {
-                    init_or_click_search().then(relayout)
-
-                    inited.current = true
-                }
+                init_or_click_search()
             }
+            inited.current = true
 
-        }
+
+        }, 600);
 
 
 
         return () => { }
 
-    }, [name])
+    }, [dbg_dataSource])
 
+
+    useEffect(() => {
+
+        setTimeout(() => {
+            const h = browserClient.clientHeight
+            const formHeight = formWrapper.current?.clientHeight ?? 0
+            const queryHeight = queryRef.current?.clientHeight ?? 0
+            const tableHeaderHeight = wrapRef.current?.querySelector('.ant-table-header')?.clientHeight ?? 0
+            mchcLogger.log('tablelist formHeight', { queryHeight, formHeight, h, tableHeaderHeight })
+
+            // setTableHeight(browserClient.clientHeight - queryHeight - 200)
+
+        }, 1000);
+
+
+        return () => {
+        }
+
+    }, [])
 
 
     if (effect_ctx) {
@@ -692,7 +708,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
 
         const q = getSearchParams()
         defaultQuery.current = q
-        return table_fetch(q)
+        table_fetch(q)
 
     }
 

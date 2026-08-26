@@ -1,7 +1,7 @@
-import { mchcUtils } from '@lm_fe/env';
+import { mchcLogger, mchcUtils } from '@lm_fe/env';
 import { conceive_fuck_edd, nt_fuck_edd } from '@lm_fe/pages';
 import { IMchc_Doctor_FirstVisitPresentmhOutpatient } from '@lm_fe/service';
-import { debounce, get } from '@lm_fe/utils';
+import { AnyObject, debounce, get, set } from '@lm_fe/utils';
 import { FormInstance } from 'antd';
 import { useState } from 'react';
 import { api } from '../../../.api';
@@ -12,7 +12,7 @@ export function use_现病史(props: { form: FormInstance, pregnancyId: any }, s
   const [dont_fuck_nt, set_dont_fuck_nt] = useState(false)
 
 
-  const set_sureEdd = (edd: string) => form.setFieldValue(sureEdd_path, edd)
+  const set_sureEdd = (edd: string) => form.setFieldsValue(set({}, sureEdd_path, edd))
   const fuck_sureEdd = debounce({ delay: 1000 }, async function fuck(sureEdd: string) {
 
     // 接口没有返回体，所以下面的不执行
@@ -22,10 +22,13 @@ export function use_现病史(props: { form: FormInstance, pregnancyId: any }, s
   function fuck_conceive(conceiveMode__: string) {
     conceive_fuck_edd(conceiveMode__).then(set_sureEdd)
   }
-  function check_edd_by_nt(data: IMchc_Doctor_FirstVisitPresentmhOutpatient,) {
+  function check_edd_by_nt(data: AnyObject,) {
     if (dont_fuck_nt) return
     nt_fuck_edd(get(data, ntExams_path), get(data, sureEdd_path))
-      .then(set_sureEdd)
+      .then(str => {
+        mchcLogger.log('vertical check_edd_by_nt', str, sureEdd_path, ntExams_path, form)
+        set_sureEdd(str)
+      })
       .catch(() => {
         set_dont_fuck_nt(true)
       })

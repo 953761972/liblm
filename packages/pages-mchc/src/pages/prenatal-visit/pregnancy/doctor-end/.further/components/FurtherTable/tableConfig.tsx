@@ -11,12 +11,16 @@ function get_table_columns_default(): ColumnsType<IMchc_Doctor_RvisitInfoOfOutpa
     {
       "title": "主诉",
       "dataIndex": "physicalExam.chiefComplaint",
-      isNewRow: 1
+      isNewRow: 1,
+      with_copy: true,
+
     },
     {
       "title": "现病史",
       "dataIndex": "physicalExam.phi",
-      isNewRow: 1
+      isNewRow: 1,
+      with_copy: true,
+
     },
     {
       title: "血压",
@@ -98,12 +102,15 @@ function get_table_columns_default(): ColumnsType<IMchc_Doctor_RvisitInfoOfOutpa
     {
       "title": "检验检查",
       "dataIndex": "physicalExam.inspection",
-      isNewRow: 1
+      isNewRow: 1,
+      with_copy: true,
     },
     {
       "title": "处理措施",
       "dataIndex": "physicalExam.prescription",
-      isNewRow: 1
+      isNewRow: 1,
+      with_copy: true,
+
     },
     {
       "title": "下次产检时间",

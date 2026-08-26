@@ -236,8 +236,11 @@ export const config_table_fd = (props: any): IMchc_FormDescriptions_Field_Nullab
                     },
                     {
                         title: '可勾选',
-                        ...msw_options,
-
+                        inputType: 'MS',
+                        inputProps: {
+                            marshal: 0,
+                            options: [{ value: null, label: '禁用' }, { value: 1, label: '多选' }, { value: 2, label: '单选' },]
+                        },
                         dataIndex: 'needChecked',
                         layout: '1/4',
                     },

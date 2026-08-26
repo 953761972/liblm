@@ -10,26 +10,26 @@ const React = ctx.React
 const 现病史_conf = defineFormConfig(
   [
     {
-      key: 'presentmh.id',
+      key: 'presentHistory.id',
       form_hidden: true,
     },
     {
-      key: "presentmh.pregnancyId",
+      key: "presentHistory.pregnancyId",
       form_hidden: true
     },
     {
-      key: "presentmh.prenatalVisitId",
+      key: "presentHistory.prenatalVisitId",
       form_hidden: true
     },
     {
-      key: 'presentmh.sureEddModify',
+      key: 'presentHistory.sureEddModify',
       inputType: 'MS',
       label: '修改过预产期-B超',
       form_hidden: true,
       inputProps: { options: '否,是', marshal: 0 },
     },
     {
-      "key": "presentmh.lmp",
+      "key": "presentHistory.lmp",
       "label": "末次月经",
       "inputType": "date",
       layout: '1/6',
@@ -37,15 +37,15 @@ const 现病史_conf = defineFormConfig(
       processLocal(lmp, f) {
         if (lmp && f) {
           var values = f.getFieldsValue()
-          var sureEddModify = ctx.utils.get(values, 'presentmh.sureEddModify')
-          var conceiveMode = ctx.utils.get(values, 'presentmh.conceiveMode.value')
+          var sureEddModify = ctx.utils.get(values, 'presentHistory.sureEddModify')
+          var conceiveMode = ctx.utils.get(values, 'presentHistory.conceiveMode.value')
           var ntExams = ctx.utils.expect_array<{ checkdate: string, menopause: string }>(values.ntExams)
           var nfExams = ctx.utils.expect_array<{ checkdate: string, menopause: string }>(values.nfExams)
           const calc_edd = ctx.utils.cal_edd_by_lmp(lmp)
 
-          values.presentmh.edd = calc_edd
+          values.presentHistory.edd = calc_edd
           if (conceiveMode !== 1 && !sureEddModify) {
-            values.presentmh.sureEdd = calc_edd
+            values.presentHistory.sureEdd = calc_edd
             ctx.utils.safeExec(ctx.props.fuck_sureEdd, calc_edd)
           }
           values.ntExams = ntExams.map(_ => {
@@ -58,20 +58,20 @@ const 现病史_conf = defineFormConfig(
         }
       }
     }, {
-      "key": "presentmh.edd",
+      "key": "presentHistory.edd",
       "label": "预产期-日期",
       form_hidden: () => ctx.props.less,
       "inputType": "date",
       layout: '1/6',
 
     }, {
-      "key": "presentmh.sureEdd",
+      "key": "presentHistory.sureEdd",
       "label": "预产期-B超",
       form_hidden: () => ctx.props.less,
       "inputType": "date",
       processLocal(v, f) {
         if (!f) return
-        f.setFieldValue('presentmh.sureEddModify', 1)
+        f.setFieldValue('presentHistory.sureEddModify', 1)
         ctx.utils.safeExec(ctx.props.fuck_sureEdd, v)
       },
       required: true,
@@ -79,7 +79,7 @@ const 现病史_conf = defineFormConfig(
 
     },
     {
-      "key": "presentmh.fetalcount",
+      "key": "presentHistory.fetalcount",
       "label": "胎数",
       form_hidden: () => ctx.props.less,
       "inputType": "select",
@@ -91,7 +91,7 @@ const 现病史_conf = defineFormConfig(
 
     {
 
-      "key": "presentmh.sac",
+      "key": "presentHistory.sac",
       "label": "孕囊",
 
       "inputType": "input",
@@ -105,7 +105,7 @@ const 现病史_conf = defineFormConfig(
     {
 
 
-      "key": "presentmh.yolksac",
+      "key": "presentHistory.yolksac",
       "label": "卵黄囊",
 
       "inputType": "input",
@@ -117,7 +117,7 @@ const 现病史_conf = defineFormConfig(
 
     },
     conceive_mode_conf({
-      "key": "presentmh.conceiveMode",
+      "key": "presentHistory.conceiveMode",
       form_hidden: () => ctx.props.less,
       processLocal(v, f) {
         ctx.utils.safeExec(ctx.props.fuck_conceive, v)
@@ -125,7 +125,7 @@ const 现病史_conf = defineFormConfig(
       }
     }),
     {
-      "key": "presentmh.chiefcomplaint",
+      "key": "presentHistory.chiefcomplaint",
       "label": "主诉",
       form_hidden: () => ctx.props.less,
 
@@ -148,7 +148,7 @@ const 现病史_conf = defineFormConfig(
       layout: '1/2',
 
     }, {
-      "key": "presentmh.presentmhNote",
+      "key": "presentHistory.presentHistoryNote",
       "label": "现病史",
       form_hidden: () => ctx.props.less,
 
@@ -172,7 +172,7 @@ const 现病史_conf = defineFormConfig(
     },
     { inputType: 'title', title: 'NT检查' },
     {
-      "key": "presentmh.ntExams",
+      "key": "presentHistory.ntExams",
       inputType: 'ArrayPanel',
       processRemote(v, f) { return ctx.utils.isEmpty(v) ? [{}] : v },
 
@@ -180,14 +180,14 @@ const 现病史_conf = defineFormConfig(
         on_row_value_change(arr, idx, changed, form) {
           if (!form) return
           const values = form.getFieldsValue()
-          const presentmh = ctx.utils.get(values, 'presentmh')
+          const presentHistory = ctx.utils.get(values, 'presentHistory')
 
-          var lmp = ctx.utils.get(values, 'presentmh.lmp')
+          var lmp = ctx.utils.get(values, 'presentHistory.lmp')
           var checkdate = ctx.utils.get<string>(changed, 'checkdate')
           if (lmp && checkdate) {
             arr[idx] = ctx.utils.set(arr[idx], 'menopause', ctx.utils.menopauseWeek(checkdate, lmp))
-            presentmh.ntExams = arr
-            form.setFieldValue('presentmh', presentmh)
+            presentHistory.ntExams = arr
+            form.setFieldValue('presentHistory', presentHistory)
           }
 
         },
@@ -215,7 +215,7 @@ const 现病史_conf = defineFormConfig(
     { inputType: 'title', title: 'NF检查' },
 
     {
-      "key": "presentmh.nfExams",
+      "key": "presentHistory.nfExams",
       inputType: 'ArrayPanel',
       processRemote(v, f) { return ctx.utils.isEmpty(v) ? [{}] : v },
       inputProps: {
@@ -224,14 +224,14 @@ const 现病史_conf = defineFormConfig(
         on_row_value_change(arr, idx, changed, form) {
           if (!form) return
           const values = form.getFieldsValue()
-          const presentmh = ctx.utils.get(values, 'presentmh')
+          const presentHistory = ctx.utils.get(values, 'presentHistory')
 
-          var lmp = ctx.utils.get(values, 'presentmh.lmp')
+          var lmp = ctx.utils.get(values, 'presentHistory.lmp')
           var checkdate = ctx.utils.get<string>(changed, 'checkdate')
           if (lmp && checkdate) {
             arr[idx] = ctx.utils.set(arr[idx], 'menopause', ctx.utils.menopauseWeek(checkdate, lmp))
-            presentmh.nfExams = arr
-            form.setFieldValue('presentmh', presentmh)
+            presentHistory.nfExams = arr
+            form.setFieldValue('presentHistory', presentHistory)
           }
         },
         formDescriptions: [
@@ -250,7 +250,7 @@ const 现病史_conf = defineFormConfig(
         ]
       },
     },
-    mlUltrasounds_fd({}, 'presentmh.mlUltrasounds')
+    mlUltrasounds_fd({}, 'presentHistory.mlUltrasounds')
   ]
 )
 

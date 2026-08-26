@@ -616,11 +616,21 @@ export default defineFormConfig([
         containerType: 'tabs',
 
         children: [
+
+          {
+            label: '带文字',
+            name: 'switch00',
+            inputType: 'MSW',
+            layout: '1/2',
+            inputProps: {
+              checkedChildren: '选了',
+            }
+          },
           {
             label: '形式1',
             name: 'switch0',
             inputType: 'MSW',
-            layout: '1/3',
+            layout: '1/2',
             inputProps: {
               checked_value: '选中值,默认true',
               unchecked_value: '反选中值,默认false',
@@ -628,7 +638,7 @@ export default defineFormConfig([
           },
           {
             label: '形式2',
-            layout: '1/3',
+            layout: '1/2',
 
             name: 'switch0',
             inputType: 'MSW',
@@ -641,7 +651,7 @@ export default defineFormConfig([
           {
             inputType: 'MA',
             name: 'switch0',
-            layout: '1/3',
+            layout: '1/2',
 
           }
         ]

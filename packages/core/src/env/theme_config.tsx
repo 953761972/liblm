@@ -76,9 +76,13 @@ export function theme_config(sys_theme: THEME) {
                 headerBg: darkTheme ? bg_color : '#eee',
             },
             Segmented: {
-                itemSelectedBg: colors?.light[1],
-                // itemSelectedColor: '#fff',
-                trackBg: colors?.light[0]
+                // itemSelectedBg: colors?.light[1],
+                itemSelectedBg: colors?.dark[0],
+                itemSelectedColor: '#fff',
+                trackBg: colors?.light[3],
+                itemHoverColor: '#fff',
+                itemColor: '#fff'
+                // trackBg: colors?.light[0]
                 // itemSelectedBg: colors?.light[0],
                 // trackBg: colorPrimary,
             },

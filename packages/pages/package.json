@@ -25,9 +25,9 @@
     "author": "",
     "license": "MIT",
     "devDependencies": {
-        "@vitest/ui": "^3.2.6",
+        "@vitest/ui": "^3.2.7",
         "rollup": "^2.80.0",
-        "vitest": "^3.2.6"
+        "vitest": "^3.2.7"
     },
     "peerDependencies": {
         "axios": ">=0.26.0",

@@ -1,15 +1,16 @@
 import { MyIcon, MyLazyComponent, Table_L } from '@lm_fe/components';
 import { OkButton } from '@lm_fe/components_m';
-import { mchcLogger, mchcUtils } from '@lm_fe/env';
+import { mchcEnv, mchcLogger, mchcUtils } from '@lm_fe/env';
 import { BF_Wrap2, mchcModal__ } from '@lm_fe/pages';
 import { use_provoke } from '@lm_fe/provoke';
 import { IMchc_Doctor_Diagnoses, IMchc_Doctor_OutpatientHeaderInfo, IMchc_Doctor_RvisitInfoOfOutpatient, IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit, IMchc_FormDescriptions_Field } from '@lm_fe/service';
-import { cloneDeep, expect_array, get, request } from '@lm_fe/utils';
-import { Button, Col, message, Popconfirm, Row, Space, Tabs, Modal } from 'antd';
+import { cloneDeep, copyText, expect_array, get, isObject, isString, request } from '@lm_fe/utils';
+import { Button, Col, message, Popconfirm, Row, Space, Tabs, Modal, Divider } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { filter_diagnoses } from '../../../.utils';
 import { filter_fds } from '../../utils';
 import styles from './index.module.less';
+import { FurtherHistory } from './FurtherHistory'
 interface IProps {
 	diagnosesList: IMchc_Doctor_Diagnoses[]
 	visitsData?: IMchc_Doctor_RvisitInfoOfOutpatient,
@@ -37,18 +38,11 @@ export default function FurtherTable(props: IProps) {
 		{ delete: () => { console.log('233') } } // 传递进来的方法
 	)
 
-	const { config: tableConfig, Wrap: TableWrap } = BF_Wrap2(
-		{ default_conf: { title: '复诊-产检记录表格文档', tableColumns: () => import('./tableConfig') } },
-	)
-
-	useEffect(() => {
 
 
-	}, [])
+
 
 	const filtered_rvisits = (visitsData?.rvisits ?? []).filter(_ => _.id)
-	const tableColumns = expect_array<IMchc_FormDescriptions_Field>(config?.tableColumns)
-	const tableContentColumns = expect_array<IMchc_FormDescriptions_Field>(tableConfig?.tableColumns)
 
 	const form_config = filter_fds(diagnosesList, config?.tableColumns)
 	const actionRender = (value: any, rowData: any, index: number) => {
@@ -62,7 +56,7 @@ export default function FurtherTable(props: IProps) {
 					cancelText="取消"
 					disabled={disabled_save}
 				>
-					<Button type="link" size="small" disabled={disabled_save} danger icon={<MyIcon value='DeleteOutlined' className="global-table-action-icon" />}>
+					<Button type="link" size="small" disabled={disabled_save} danger icon={<MyIcon value='DeleteOutlined' />}>
 						删除
 					</Button>
 				</Popconfirm>
@@ -94,13 +88,13 @@ export default function FurtherTable(props: IProps) {
 		})
 	};
 
-	const reverseRvisit = cloneDeep(filtered_rvisits)?.reverse() || []
 	const renderModal = () => {
 		return (
 			<Modal
 				open={isModalOpen}
 				onCancel={() => setIsModalOpen(false)}
-				width={'93%'}
+				width={'90%'}
+				styles={{ body: { height: '80vh', overflowY: 'auto' } }}
 				footer={null}
 				centered
 			>
@@ -110,68 +104,19 @@ export default function FurtherTable(props: IProps) {
 	}
 	const renderTableMore = () => {
 		return (
-			<Tabs className={styles['further-table-modal']}>
+			<Tabs >
 				<Tabs.TabPane key={2} tab={<><MyIcon value='TableOutlined' />表格</>}>
 					{renderTable(true)}
 				</Tabs.TabPane>
-				<Tabs.TabPane key={1} tab={<><MyIcon value='FileTextOutlined' />文档</>}>
-					<TableWrap>
-						{reverseRvisit.map((data) => {
-							return (
-								<Row className={styles['further-table-row']}>
-									<Col span={3}>
-										<span>{data.visitDate}</span>
-										<span style={{ marginLeft: 8 }}>{data.gestationalWeek}周</span>
-									</Col>
-									<Col span={17}>
-										{renderContent(data)}
-									</Col>
-								</Row>
-							)
-						})}
-					</TableWrap>
+				<Tabs.TabPane style={{}} key={1} tab={<><MyIcon value='FileTextOutlined' />文档</>}>
+					<FurtherHistory visitsData={visitsData} />
 				</Tabs.TabPane>
 
 			</Tabs>
 		)
 	}
 
-	const renderContent = (rowData: IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit) => {
-		const configformArrayList: any[] = [];
-		let Columnsarr = [];
-		for (let i = 0; i < tableContentColumns.length; i++) {
-			Columnsarr.push(tableContentColumns[i]);
-			if (tableContentColumns[i + 1] && tableContentColumns[i + 1].isNewRow) {
-				configformArrayList.push(Columnsarr);
-				Columnsarr = []
-			} else if (i == tableContentColumns.length - 1) {
-				// 去到最后一步
-				configformArrayList.push(Columnsarr);
-			}
-		}
 
-		const contentArr: any = []
-		configformArrayList.map((ArrayList, index) => {
-			contentArr.push(
-				<div key={index}>
-					{ArrayList.map((config: any) => {
-						const value = get(rowData, config.dataIndex)
-						let text = config.render ? config.render(value, rowData) : value;
-						if (!text) {
-							return <></>
-						}
-						return (
-							<>
-								<span className={styles['content-label']}>{config.title}:</span>
-								{text}
-							</>
-						)
-					})}
-				</div>
-			)
-		})
-		return contentArr
-	}
 	const renderTable = (isAll = false) => {
 		return <Wrap>
 			<Table_L
@@ -212,7 +157,7 @@ export default function FurtherTable(props: IProps) {
 
 				onRow={(record) => {
 					const is_target = record.id === formData?.id
-					const background = is_target ? sys_theme.colors?.light[3] : undefined
+					const background = is_target ? sys_theme.colors?.light[2] : undefined
 					const cursor = is_target ? undefined : 'pointer'
 					const color = is_target ? '#fff' : undefined
 					return {

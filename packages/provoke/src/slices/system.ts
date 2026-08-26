@@ -168,7 +168,7 @@ export const createTabsSlice: StateCreator<MixState, [], [], SystemState> = set 
                     const enums2 = hr_dics.find(_ => _.type === version && _.key === 'highriskContagion')?.enumerations?.[0]
 
                     const 传染病_options = getSameOptions(enums2?.label ?? '未知')
-                    传染病_options.push({ label: '无', value: '无', exclusive: true }, { label: '未查', value: '未查', exclusive: true })
+                    传染病_options.unshift({ label: '无', value: '无', exclusive: true }, { label: '未查', value: '未查', exclusive: true })
                     _state.可选传染病 = { color: enums2?.note ?? 'red', options: 传染病_options }
 
                     _state.当前高危版本 = 可选高危版本?.find(_ => _.value === version)

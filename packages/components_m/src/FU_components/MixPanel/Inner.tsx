@@ -52,7 +52,7 @@ const MixPanel: TCommonComponent<IProps, string[]> = (props) => {
             } else if (safe_value.length) {
                 const k = safe_value[0]?.toString()
                 set_activeKey(k)
-                onChange?.([k])
+                onChange?.(safe_value)
 
             }
         }
@@ -99,7 +99,7 @@ const MixPanel: TCommonComponent<IProps, string[]> = (props) => {
                 mchcLogger.log('MixPanel act', k, act)
 
                 if (act === 'remove') {
-                    remove(k as string)
+                    confirm(`确定删除${k}吗`) && remove(k as string)
                 }
             }}
             hideAdd
