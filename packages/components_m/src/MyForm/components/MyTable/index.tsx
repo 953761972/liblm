@@ -57,7 +57,7 @@ export default class MyTable1 extends Component<{ disabled?: boolean }> {
       }
       return {
         ...column,
-        align: align || 'center',
+        align: align,
         width: width || APP_CONFIG.CELL_WIDTH_SMALL,
         dataIndex,
         render: (value, rowData, rowIndex) => {

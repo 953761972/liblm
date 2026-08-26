@@ -52,7 +52,7 @@ export default class MyTable2 extends Component {
       }
       return {
         ...column,
-        align: align || 'center',
+        align: align,
         width: width ||  APP_CONFIG.CELL_WIDTH_SMALL,
         dataIndex,
         render: (value, rowData, rowIndex) => {
