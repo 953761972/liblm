@@ -56,7 +56,7 @@ function Pregnancies(props: { id?: TIdTypeCompatible, toAdd?: boolean, toCheck?:
             set(remoteData, 'baseInfo.nativeplace', nativeplace ?? checkData?.province)
             set(remoteData, 'baseInfo.age', age ?? checkData?.age)
 
-            set(remoteData, 'auditorName', (remoteData as any).auditorName ?? SLocal_State.userData?.login)
+            // set(remoteData, 'auditorName', (remoteData as any).auditorName ?? SLocal_State.userData?.login)
 
             setFormData(remoteData)
           })

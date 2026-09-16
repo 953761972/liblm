@@ -1,8 +1,8 @@
-import { Table_L } from '@lm_fe/components';
+import { format_dataIndex, Table_L } from '@lm_fe/components';
 import { mchcLogger } from '@lm_fe/env';
 import { IMchc_FormDescriptions_Field_Nullable, SMchc_FormDescriptions } from '@lm_fe/service';
 import { uuid } from '@lm_fe/utils';
-import { Button, Space, TableProps } from 'antd';
+import { Button, Space } from 'antd';
 import { cloneDeep, identity, indexOf, isArray, isEmpty, isEqual, join, set } from 'lodash';
 import React, { lazy, useEffect, useRef, useState } from 'react';
 import { MyLazyComponent } from '../../MyLazyComponent';
@@ -22,7 +22,6 @@ const MyEditTable: TCommonComponent<IMyEditTableProps, string | any[]> = (props)
   const { safe_value = [], set_safe_value, onChangeSafeValue } = use_arr_marshal<any>(marshal, value ?? defaultValue.current, onChange, 'MyEditTable')
   const columns = useRef<IMchc_FormDescriptions_Field_Nullable[]>([])
   columns.current = formDescriptions ?? []
-  const [dataSource, set_dataSource] = useState<any[]>([])
   const [selectedRowKeys, set_selectedRowKeys] = useState([])
   const [edit_col, set_editCol] = useState<any>()
   const [edit_row, set_editRow] = useState<number>()
@@ -70,8 +69,8 @@ const MyEditTable: TCommonComponent<IMyEditTableProps, string | any[]> = (props)
         .map((column: any) => {
           const { children = [], align, width, render } = column;
           const inputType = column.inputType;
-          const dataIndex = SMchc_FormDescriptions.get_form_item_name_str(column);
-          const title = SMchc_FormDescriptions.get_form_item_title(column);
+          const dataIndex = SMchc_FormDescriptions.format_itemName_str(column);
+          const title = SMchc_FormDescriptions.get_the_fucking_itemLabel(column);
           const inputProps = column.inputProps
           const editable = !inputProps?.disabled;
           if (!isEmpty(children)) {
@@ -85,7 +84,7 @@ const MyEditTable: TCommonComponent<IMyEditTableProps, string | any[]> = (props)
               ...column,
               ellipsis: showTitle ? { showTitle: true } : undefined,
               title,
-              dataIndex,
+              dataIndex: format_dataIndex(column),
             };
           }
           return {
@@ -93,7 +92,7 @@ const MyEditTable: TCommonComponent<IMyEditTableProps, string | any[]> = (props)
             align: align || 'center',
             title,
             width,
-            dataIndex,
+            dataIndex: format_dataIndex(column),
             render:
               // render || 
               (

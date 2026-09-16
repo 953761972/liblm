@@ -398,9 +398,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                         </div>
                         <div className={styles['msg-bottom']}>
                             <Space.Compact>
-                                {caseManages.map((ext) => {
-                                    // const show = __DEV__ ? true : is_show_专案(ext, headerInfo)
-                                    // if (!show) return null
+                                {/* {caseManages.map((ext) => {
                                     return (
                                         <Tag
                                             style={{ cursor: 'pointer' }}
@@ -418,7 +416,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                                             {ext.name}
                                         </Tag>
                                     )
-                                })}
+                                })} */}
                                 {is_show_乙肝 && (
                                     <Button type="text" size="small" onClick={open乙肝管理}>
                                         乙肝专案管理
@@ -509,9 +507,24 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
 
                             <>
                                 {map(headerInfo?.labels, (tag, i) => {
+                                    const code = tag.code
                                     return (
-                                        <Tag key={tag.id} color={tag?.color}>
+                                        <Tag
+                                            icon={code ? <MyIcon value='StarOutlined' /> : null}
+                                            style={{ cursor: code ? 'pointer' : 'unset' }}
+                                            onClick={() => {
+                                                if (!code) return
+                                                mchcModal__.open('拓展专案', {
+                                                    modal_data: {
+                                                        headerInfo,
+                                                        ...tag,
+                                                    },
+                                                })
+                                            }}
+                                            key={tag.id}
+                                            color={tag?.color}>
                                             {tag.name}
+
                                         </Tag>
                                     )
                                 })}
@@ -553,6 +566,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
             <div style={{ flex: 1 }}>
                 <div style={{ ...wrap_style, marginBottom: 4 }}>
                     <OkButton {...common_props} icon={<MyIcon value="ThunderboltOutlined" />} onClick={onDobuleClick} />
+                    <OkButton {...common_props} icon={<MyIcon value='ReloadOutlined' />} onClick={fetchHeaderInfo} />
                     <QuestionnaireButton {...common_props} btn_text='' icon={<MyIcon value='SendOutlined' />} onOk={(qs) =>
                         request.post('/api/send/questionnaire', { type: 1, id: pregnancyId, questionnaire: qs })
                     } />

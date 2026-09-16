@@ -26,7 +26,7 @@ export function RenderTab(props: { fds: IMchc_FormDescriptions_Field_Nullable[],
 
     const configArr = expect_array(fds)
     const firstTab = configArr[0]
-    const FirstTitle = SMchc_FormDescriptions.get_form_item_title_or_Name(firstTab)
+    const FirstTitle = SMchc_FormDescriptions.get_the_fucking_itemLabel(firstTab)
 
     const [activeKey, setActiveKey] = useState(FirstTitle)
 
@@ -54,7 +54,7 @@ export function RenderTab(props: { fds: IMchc_FormDescriptions_Field_Nullable[],
     >
         {
             configArr.map(_ => {
-                const title = SMchc_FormDescriptions.get_form_item_title_or_Name(_)
+                const title = SMchc_FormDescriptions.get_the_fucking_itemLabel(_)
                 const tabConfig = _?.children ?? []
 
 
@@ -74,7 +74,7 @@ export function RenderSegs(props: { fds: IMchc_FormDescriptions_Field_Nullable[]
 
     const configArr = expect_array(fds)
     const firstTab = configArr[0]
-    const FirstTitle = SMchc_FormDescriptions.get_form_item_title_or_Name(firstTab)
+    const FirstTitle = SMchc_FormDescriptions.get_the_fucking_itemLabel(firstTab)
 
     const [activeKey, setActiveKey] = useState(FirstTitle)
 
@@ -104,7 +104,7 @@ export function RenderSegs(props: { fds: IMchc_FormDescriptions_Field_Nullable[]
             options={
                 [
                     ...configArr.map(_ => {
-                        const title = SMchc_FormDescriptions.get_form_item_title_or_Name(_)
+                        const title = SMchc_FormDescriptions.get_the_fucking_itemLabel(_)
                         return title
                     }),
                     // '全部'
@@ -117,7 +117,7 @@ export function RenderSegs(props: { fds: IMchc_FormDescriptions_Field_Nullable[]
         <div style={{ padding: 8, paddingTop: 16 }}>
             {
                 configArr.map(_ => {
-                    const title = SMchc_FormDescriptions.get_form_item_title_or_Name(_)
+                    const title = SMchc_FormDescriptions.get_the_fucking_itemLabel(_)
 
                     // if (is全部)
                     //     return <RenderSection key={title} renderContent={renderContent} fd={{ ..._, containerType: 'section(default)' }} />
@@ -146,7 +146,7 @@ export function RenderSection(props: { fd: IMchc_FormDescriptions_Field_Nullable
     const bg = sys_theme.colors?.light[0]
     const { containerType = 'section(default)', children = [], collapsed } = fd
     if (isEmpty(children)) return null
-    const title = SMchc_FormDescriptions.get_form_item_title_or_Name(fd)
+    const title = SMchc_FormDescriptions.get_the_fucking_itemLabel(fd)
     const [hidden, setHidden] = useState(collapsed)
 
     const node = <div hidden={hidden}>{renderContent(children)}</div>

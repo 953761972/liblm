@@ -1,4 +1,3 @@
-import { mchcLogger } from "@lm_fe/env"
 import { IMchc_FormDescriptions_Field } from "@lm_fe/service"
 import { isFunction, safe_json_parse } from "@lm_fe/utils"
 import { FormInstance } from "antd"
@@ -18,7 +17,6 @@ export function InterceptComponent(props: { [x: string]: any, config: IMchc_Form
     const _onChange = (...arg: any[]) => {
         if (isFunction(processLocal)) {
             arg[0] = processLocal(arg[0], form, config) ?? arg[0]
-            mchcLogger.log('processLocal', { arg, form, config })
         }
         onChange?.(...arg) ?? _inputProps.onChange?.(...arg)
     }

@@ -4,12 +4,12 @@ import { AnyObject, assign, Browser, cloneDeep, downloadFile, formatDateTime, sa
 import { Divider, Form, message, Space, TablePaginationConfig } from 'antd';
 import { get, isFunction, isNil, isString, omit } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
-import { MyBaseListRenderFormSection } from './Helper';
+import { MyBaseList_FormSection } from './Helper';
 import './index.module.less';
 import { IMyBaseList_ActionCtx, IMyBaseList_ColumnType, MyBaseListProps } from './types';
-import { formatProps, get_dataIndex, get_title, tranform_query_data, use_my_baselist } from './utils';
+import { formatProps, get_title, use_my_baselist } from './utils';
 
-import { MyIcon, Table_L, useMyEffectSafe } from '@lm_fe/components';
+import { format_dataIndex, MyIcon, Table_L, tranform_query_data, useMyEffectSafe } from '@lm_fe/components';
 import { getDefaultRequiredRules, InterceptDisplayFC, MyBaseListComponents, OkButton } from '@lm_fe/components_m';
 import { use_provoke } from '@lm_fe/provoke';
 import { TableRowSelection } from 'antd/es/table/interface';
@@ -202,7 +202,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
     }
     function search_node() {
         try {
-            return searchConfig ? <MyBaseListRenderFormSection config={searchConfig} disabled={loading} /> : null
+            return searchConfig ? <MyBaseList_FormSection config={searchConfig} disabled={loading} /> : null
         } catch (error) {
             return null
         }
@@ -640,7 +640,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
                 const isOperativeCell = isString(dataIndex) && ['__operation', 'operation'].includes(dataIndex)
                 const format_data = {
                     title: get_title(col!),
-                    dataIndex: get_dataIndex(col!)
+                    dataIndex: format_dataIndex(col!)
                 }
                 const a: IMyBaseList_ColumnType<T> = {
                     width: (width ?? 120),
@@ -775,7 +775,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
             >
                 {
                     cal_columns.filter(_ => _.form_hidden).map(_ => {
-                        return <Form.Item hidden name={get_dataIndex(_)} />
+                        return <Form.Item hidden name={format_dataIndex(_)} />
                     })
                 }
 

@@ -1,11 +1,9 @@
-import React from 'react'
-import { IMchc_FormDescriptions_Field, IMchc_FormDescriptions_Field_Nullable, IMchc_TableConfig, SMchc_FormDescriptions } from "@lm_fe/service";
-import { IMyBaseList_ColumnType, MyBaseListProps, TableProps, RcTableProps } from "./types";
-import { get, isFunction, isNil, isObject, isString } from "lodash";
-import { AnyObject, expect_array, flat, safe_async_call, safe_json_parse, safe_json_parse_arr, safeGetFromFuncOrData } from "@lm_fe/utils";
-import { ICommonOption } from "@lm_fe/env";
+import { IMchc_TableConfig, SMchc_FormDescriptions } from "@lm_fe/service";
+import { expect_array, safeGetFromFuncOrData } from "@lm_fe/utils";
+import { isNil } from "lodash";
 import { useEffect, useState } from "react";
-export { TableProps }
+import { IMyBaseList_ColumnType, MyBaseListProps, TableProps } from "./types";
+export { TableProps };
 export function formatProps(props: any, config?: IMchc_TableConfig) {
   const _props: MyBaseListProps = { ...props }
   const bf_conf = _props.bf_conf ?? config
@@ -36,96 +34,10 @@ export function formatProps(props: any, config?: IMchc_TableConfig) {
   return _props
 }
 
-export function tranform_query_data(values: AnyObject, searchConfig: IMchc_FormDescriptions_Field_Nullable[] = [], isFuck = false) {
-  const newValues = { ...values }
-  const straws = flat(searchConfig.filter(_ => _?.inputType === 'straw')?.map(_ => _?.children ?? [])).map(_ => ({ ..._, straw_children: true }))
-  const kvArr = [...searchConfig, ...straws]
-    .filter(_ => _)
-    .map(conf => {
-      // const k = _?.name!
-      const k = SMchc_FormDescriptions.get_form_item_name_str(conf)
-      const v = get(newValues, k)
-      return [k, v, conf] as const
-    })
-  return kvArr.reduce((sum, [k, v, conf]) => {
-
-    if (isFuck) return { ...sum, [k]: v }
-    const res = (conf && !get(conf, 'straw_children')) ? calcKeyByType(k, v, conf) : { [k]: v }
-    return { ...sum, ...res }
-  }, {})
-
-}
-function calcKey(k: string, v: any, searchConfig: IMchc_FormDescriptions_Field_Nullable[] = [],) {
-  const config = searchConfig?.find(_ => _?.name === k)
-  if (config) {
-    return calcKeyByType(k, v, config)
-  }
-
-
-  return {}
-}
-function calcKeyByType(k: string, v: any, config: IMchc_FormDescriptions_Field) {
-
-  const filter_type = config.filterType
-  if (filter_type === null) return { [k]: v }
-
-  const input_type = config.inputType! ?? 'input'
-  const filter_type_arr = filter_type?.split?.(',') ?? []
-
-  const type = config.inputProps?.type || config.inputProps?.mode
-  const is_multiple = type === 'multiple' || type === 'tags'
-
-  const f1 = filter_type_arr[0]
-  const f2 = filter_type_arr[1]
-
-  if (['input', 'Input', 'MyInput', 'address', 'MyAddress', 'MA'].includes(input_type)) {
-    return { [`${k}.${f1 || 'contains'}`]: v }
-  }
-  if (['input_number', 'InputNumber', 'DatePicker', 'MSW', 'MySwitch', 'switch'].includes(input_type)) {
-    return { [`${k}.${f1 || 'equals'}`]: v }
-  }
-  if (['select', 'Select', 'MySelect', 'MS'].includes(input_type)) {
-    const obj = safe_json_parse(v, v)
-    if (Array.isArray(obj)) {
 
 
 
-      const arr = obj.map(_ => isObject(_) ? (_ as ICommonOption).value : _)
 
-      const _v = arr.length > 1 ? arr.join(',') : arr[0]
-
-      const has_comma = isString(_v) && _v.includes(',')
-
-      const _df = (is_multiple || has_comma) ? 'in' : 'equals'
-
-      return { [`${k}.${f1 || _df}`]: _v }
-
-    } else {
-      const has_comma = isString(v) && v.includes(',')
-
-      const _df = (is_multiple || has_comma) ? 'in' : 'equals'
-      return { [`${k}.${f1 || _df}`]: v }
-
-    }
-  }
-  if (['RangePicker', 'rangeDate', 'MyRangeDate', 'rangeDateTime', 'MyRangeDateTime', 'ArrayInput'].includes(input_type)) {
-    const value = safe_json_parse_arr(v)
-    return {
-      [`${k}.${f1 || 'greaterOrEqualThan'}`]: value[0],
-      [`${k}.${f2 || 'lessOrEqualThan'}`]: value[1],
-
-    }
-  }
-
-  return f1 ? { [`${k}.${f1}`]: v } : { [k]: v }
-}
-export function get_dataIndex<T>(record?: IMyBaseList_ColumnType) {
-  const _dataIndex = record?.dataIndex ?? record?.name ?? record?.key
-  if (isString(_dataIndex) && _dataIndex.includes('.')) {
-    return _dataIndex.split('.')
-  }
-  return _dataIndex
-}
 export function get_title<T>(record?: IMyBaseList_ColumnType) {
   const _title = record?.title ?? record?.label ?? record?.name
 

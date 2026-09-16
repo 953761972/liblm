@@ -3,7 +3,7 @@ import { expect_array, request, safe_async_call } from "@lm_fe/utils"
 
 import { isFunction, isObject, values } from "lodash"
 import { IMchc_FormDescriptions, IMchc_FormDescriptions_Field_Nullable, IMchc_FormDescriptions_Field_Nullable_Arr, IMchc_FormDescriptions_MIX } from './types'
-import { get_lazy, getCache, parse_form_item_name_raw, parseFormDescriptions, setCache } from "./utils"
+import { get_lazy, getCache, format_itemName_arr_by_name, parseFormDescriptions, setCache } from "./utils"
 export * from "./types"
 export * from "./utils"
 
@@ -74,7 +74,7 @@ export const SMchc_FormDescriptions = {
             let remote_filter_key = _?.remote_filter_key
             if (!remote_filter_key) return sum
             const old = sum[remote_filter_key] = sum[remote_filter_key] ?? { name: remote_filter_key, filter: [] };
-            const title = this.get_form_item_title_or_Name(_)
+            const title = this.get_the_fucking_itemLabel(_)
             old.filter.push(title)
             return sum
 
@@ -86,7 +86,7 @@ export const SMchc_FormDescriptions = {
             if (!_.children) {
                 return true
             }
-            const title = this.get_form_item_title_or_Name(_)
+            const title = this.get_the_fucking_itemLabel(_)
             const remote_filter_key = _.remote_filter_key!
             const remote_config = data.find(d => d.name === remote_filter_key)
             if (!remote_config) return true
@@ -98,13 +98,11 @@ export const SMchc_FormDescriptions = {
     },
 
 
-    get_form_item_title_or_Name(fd: IMchc_FormDescriptions_Field_Nullable) {
-        return this.get_form_item_title(fd) ?? this.get_form_item_name_str(fd)
-    },
+
     set_form_item_name(item: IMchc_FormDescriptions_Field_Nullable, name?: number | string | string[]) {
         if (!item) return
 
-        const arr = parse_form_item_name_raw(name)
+        const arr = format_itemName_arr_by_name(name)
         const str = arr.join('.')
         item.name = str
         item.key = str
@@ -112,32 +110,33 @@ export const SMchc_FormDescriptions = {
     },
     format_form_item_name_and_label(item: IMchc_FormDescriptions_Field_Nullable) {
         if (!item) return null
-        const arr = this.parse_form_item_name(item).filter(_ => _)
+        const arr = this.format_itemName_arr(item).filter(_ => _)
         const str = arr.join('.')
         item.name = str
         item.key = str
         // item.dataIndex = str
 
-        const title = this.get_form_item_title(item)
+        const title = this.get_the_fucking_itemLabel(item)
         item.label = title
         item.title = title
         return str
 
     },
-    get_form_item_name_raw(item: IMchc_FormDescriptions_Field_Nullable) {
+    get_the_fucking_itemName(item: IMchc_FormDescriptions_Field_Nullable) {
         return item?.name ?? item?.key ?? item?.dataIndex
     },
-    get_form_item_name_str(item: IMchc_FormDescriptions_Field_Nullable, separator = '.') {
-        const arr = this.parse_form_item_name(item).filter(_ => _)
+    get_the_fucking_itemLabel(item: IMchc_FormDescriptions_Field_Nullable, Compatible = false) {
+        return item?.label ?? item?.title ?? (Compatible ? this.format_itemName_str(item) : '')
+    },
+    format_itemName_str(item: IMchc_FormDescriptions_Field_Nullable, separator = '.') {
+        const arr = this.format_itemName_arr(item).filter(_ => _)
         const str = arr.join(separator)
         return str
     },
-    get_form_item_title(item: IMchc_FormDescriptions_Field_Nullable) {
-        return item?.label ?? item?.title
-    },
-    parse_form_item_name(item: IMchc_FormDescriptions_Field_Nullable) {
-        const key = this.get_form_item_name_raw(item)
-        return parse_form_item_name_raw(key)
+
+    format_itemName_arr(item: IMchc_FormDescriptions_Field_Nullable) {
+        const key = this.get_the_fucking_itemName(item)
+        return format_itemName_arr_by_name(key)
     },
 
 
