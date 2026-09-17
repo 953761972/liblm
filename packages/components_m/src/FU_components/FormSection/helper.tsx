@@ -1,4 +1,4 @@
-import { mchcEvent } from '@lm_fe/env';
+import { mchcEvent, mchcLogger } from '@lm_fe/env';
 import { IMchc_FormDescriptions_Field_Nullable, SMchc_FormDescriptions } from '@lm_fe/service';
 import { AnyObject, expect_array } from '@lm_fe/utils';
 import { FormInstance, Segmented, Tabs, message } from 'antd';
@@ -26,7 +26,7 @@ export function RenderTab(props: { fds: IMchc_FormDescriptions_Field_Nullable[],
 
     const configArr = expect_array(fds)
     const firstTab = configArr[0]
-    const FirstTitle = SMchc_FormDescriptions.get_the_fucking_itemLabel(firstTab)
+    const FirstTitle = SMchc_FormDescriptions.get_the_fucking_itemLabel(firstTab, true)
 
     const [activeKey, setActiveKey] = useState(FirstTitle)
 
@@ -54,7 +54,7 @@ export function RenderTab(props: { fds: IMchc_FormDescriptions_Field_Nullable[],
     >
         {
             configArr.map(_ => {
-                const title = SMchc_FormDescriptions.get_the_fucking_itemLabel(_)
+                const title = SMchc_FormDescriptions.get_the_fucking_itemLabel(_, true)
                 const tabConfig = _?.children ?? []
 
 
@@ -74,7 +74,7 @@ export function RenderSegs(props: { fds: IMchc_FormDescriptions_Field_Nullable[]
 
     const configArr = expect_array(fds)
     const firstTab = configArr[0]
-    const FirstTitle = SMchc_FormDescriptions.get_the_fucking_itemLabel(firstTab)
+    const FirstTitle = SMchc_FormDescriptions.get_the_fucking_itemLabel(firstTab, true)
 
     const [activeKey, setActiveKey] = useState(FirstTitle)
 
@@ -104,7 +104,7 @@ export function RenderSegs(props: { fds: IMchc_FormDescriptions_Field_Nullable[]
             options={
                 [
                     ...configArr.map(_ => {
-                        const title = SMchc_FormDescriptions.get_the_fucking_itemLabel(_)
+                        const title = SMchc_FormDescriptions.get_the_fucking_itemLabel(_, true)
                         return title
                     }),
                     // '全部'
@@ -117,7 +117,7 @@ export function RenderSegs(props: { fds: IMchc_FormDescriptions_Field_Nullable[]
         <div style={{ padding: 8, paddingTop: 16 }}>
             {
                 configArr.map(_ => {
-                    const title = SMchc_FormDescriptions.get_the_fucking_itemLabel(_)
+                    const title = SMchc_FormDescriptions.get_the_fucking_itemLabel(_, true)
 
                     // if (is全部)
                     //     return <RenderSection key={title} renderContent={renderContent} fd={{ ..._, containerType: 'section(default)' }} />
@@ -146,7 +146,8 @@ export function RenderSection(props: { fd: IMchc_FormDescriptions_Field_Nullable
     const bg = sys_theme.colors?.light[0]
     const { containerType = 'section(default)', children = [], collapsed } = fd
     if (isEmpty(children)) return null
-    const title = SMchc_FormDescriptions.get_the_fucking_itemLabel(fd)
+    const title = SMchc_FormDescriptions.get_the_fucking_itemLabel(fd, true)
+    mchcLogger.log('fucking', fd)
     const [hidden, setHidden] = useState(collapsed)
 
     const node = <div hidden={hidden}>{renderContent(children)}</div>

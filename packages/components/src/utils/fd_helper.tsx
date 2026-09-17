@@ -10,8 +10,8 @@ export function format_dataIndex(record?: AnyObject) {
     return _dataIndex
 }
 
-export function tranform_query_data(search_values: AnyObject, searchConfig: IMchc_FormDescriptions_Field_Nullable[] = [], isFuck = false) {
-    const newValues = { ...search_values }
+export function tranform_query_data(search_values?: AnyObject, searchConfig: IMchc_FormDescriptions_Field_Nullable[] = [], isFuck = false) {
+    const newValues = search_values ? { ...search_values } : {}
     const straws = flat(searchConfig.filter(_ => _?.inputType === 'straw')?.map(_ => _?.children ?? [])).map(_ => ({ ..._, straw_children: true }))
     const kvArr = [...searchConfig, ...straws]
         .filter(_ => _)
