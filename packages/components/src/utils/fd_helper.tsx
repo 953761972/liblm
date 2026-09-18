@@ -49,7 +49,7 @@ function calcKeyByType(k: string, v: any, config: IMchc_FormDescriptions_Field) 
     if (['input_number', 'InputNumber', 'DatePicker', 'MSW', 'MySwitch', 'switch'].includes(input_type)) {
         return { [`${k}.${f1 || 'equals'}`]: v }
     }
-    if (['select', 'Select', 'MySelect', 'MS'].includes(input_type)) {
+    if (['select', 'Select', 'MySelect', 'MS', 'MC', 'CheckBox', 'MyCheckBox'].includes(input_type)) {
         const obj = safe_json_parse(v, v)
         if (Array.isArray(obj)) {
 
