@@ -74,7 +74,7 @@ export const SMchc_FormDescriptions = {
             let remote_filter_key = _?.remote_filter_key
             if (!remote_filter_key) return sum
             const old = sum[remote_filter_key] = sum[remote_filter_key] ?? { name: remote_filter_key, filter: [] };
-            const title = this.get_the_fucking_itemLabel(_)
+            const title = this.get_the_fucking_itemLabel(_, true)
             old.filter.push(title)
             return sum
 
@@ -86,7 +86,7 @@ export const SMchc_FormDescriptions = {
             if (!_.children) {
                 return true
             }
-            const title = this.get_the_fucking_itemLabel(_)
+            const title = this.get_the_fucking_itemLabel(_, true)
             const remote_filter_key = _.remote_filter_key!
             const remote_config = data.find(d => d.name === remote_filter_key)
             if (!remote_config) return true
@@ -123,10 +123,10 @@ export const SMchc_FormDescriptions = {
 
     },
     get_the_fucking_itemName(item: IMchc_FormDescriptions_Field_Nullable) {
-        return item?.name ?? item?.key ?? item?.dataIndex
+        return item?.name || item?.key || item?.dataIndex
     },
     get_the_fucking_itemLabel(item: IMchc_FormDescriptions_Field_Nullable, Compatible = false) {
-        return item?.label ?? item?.title ?? (Compatible ? this.format_itemName_str(item) : '')
+        return item?.label || item?.title || (Compatible ? this.format_itemName_str(item) : '')
     },
     format_itemName_str(item: IMchc_FormDescriptions_Field_Nullable, separator = '.') {
         const arr = this.format_itemName_arr(item).filter(_ => _)

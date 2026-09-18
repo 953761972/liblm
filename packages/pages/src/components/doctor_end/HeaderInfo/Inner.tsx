@@ -45,7 +45,10 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
     const color_conf = use_headinfo_color(highriskLable)
 
     const info_addon = 头部信息拓展 ?? []
-    const caseManages = expect_array(headerInfo?.caseManages).filter((_) => _.code && _.name)
+    // const caseManages = expect_array(headerInfo?.caseManages).filter((_) => _.code && _.name)
+    const caseManages = expect_array(headerInfo?.labels).filter((_) => _.name && _.case)
+    const labels = expect_array(headerInfo?.labels).filter((_) => _.name)
+
 
     const infectionNoteLabels = handleFuckinginfectionNoteLabel(headerInfo?.infectionNote)
 
@@ -196,7 +199,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
             title: '标签管理',
             width: 'auto',
             modal_data: {
-                content: <CustomTag id={pregnancyId} dataSource={headerInfo?.labels} />,
+                content: <CustomTag id={pregnancyId} dataSource={labels} />,
             },
             onClose: fetchHeaderInfo,
         })
@@ -506,14 +509,14 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                             {/* 标签管理 */}
 
                             <>
-                                {map(headerInfo?.labels, (tag, i) => {
-                                    const code = tag.code
+                                {map(labels, (tag, i) => {
+                                    const is_case = tag.code && tag.case
                                     return (
                                         <Tag
-                                            icon={code ? <MyIcon value='StarOutlined' /> : null}
-                                            style={{ cursor: code ? 'pointer' : 'unset' }}
+                                            icon={is_case ? <MyIcon value='StarOutlined' /> : null}
+                                            style={{ cursor: is_case ? 'pointer' : 'unset' }}
                                             onClick={() => {
-                                                if (!code) return
+                                                if (!is_case) return
                                                 mchcModal__.open('拓展专案', {
                                                     modal_data: {
                                                         headerInfo,
