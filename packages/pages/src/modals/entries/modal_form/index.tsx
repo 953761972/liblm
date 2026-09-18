@@ -117,7 +117,7 @@ export default function MyModalForm<T extends string>({ modal_data, onOk, bodySt
 
         if (!formData) return
         setLoading(true)
-        safe_async_call(config?.beforeSubmit ?? onSubmit!, { ...data, ...formData }, data)
+        safe_async_call(onSubmit ?? config?.beforeSubmit, { ...data, ...formData }, data)
           .then(a => {
 
             if (!a) return
