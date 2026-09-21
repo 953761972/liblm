@@ -148,6 +148,7 @@ import { getFormSectionComponent } from './FormSectionComponent'
 import { form_control } from './form_control'
 import { formatFormConfig, render_form_label } from './utils'
 import my_styles from './RenderFormSectionComponent.module.less'
+import { SizeType } from 'antd/es/config-provider/SizeContext';
 interface IProps {
     formDescription: IMchc_FormDescriptions_Field_Nullable
     renderEditItem: (key: IMchc_FormDescriptions_Field_Nullable, ReactNode: React.ReactNode, others?: any) => any

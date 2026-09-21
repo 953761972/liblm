@@ -1,4 +1,4 @@
-import { formatDate, request } from "@lm_fe/utils";
+import { calGestationalWeekBySureEdd, formatDate, request } from "@lm_fe/utils";
 import dayjs, { Dayjs } from 'dayjs'
 import { TIdTypeCompatible } from "src/types";
 
@@ -15,7 +15,7 @@ export const SLocal_Calculator = {
         return {
             edd: value,
             sureEdd: value,
-            gestationalWeek: SLocal_Calculator.calGestationalWeekBySureEdd(value),
+            gestationalWeek: calGestationalWeekBySureEdd(value),
         }
     },
     // 根据末次月经计算预产期B超
@@ -25,25 +25,7 @@ export const SLocal_Calculator = {
     },
 
 
-    // 末次月经开始算
-    calGestationalWeekByLmp(lmp: Dayjs, defaultDate = dayjs().endOf('day')) {
-        const diffWeek = defaultDate.diff(lmp, 'week');
-        const diffDay = defaultDate.diff(lmp, 'day');
 
-        return `${diffWeek}+${diffDay % 7}`;
-    },
-
-    // 预产期B超开始算
-    calGestationalWeekBySureEdd(sureEdd: any, defaultDate = dayjs().endOf('day')) {
-        let sureEddMoment = dayjs(sureEdd).startOf('day');
-        const startDate = sureEddMoment.subtract(280, 'days');
-        const diffWeek = defaultDate.diff(startDate, 'week');
-        const diffDay = defaultDate.diff(startDate, 'day');
-        if (diffDay % 7 === 0) {
-            return diffWeek + '';
-        }
-        return `${diffWeek}+${diffDay % 7}`;
-    },
     async calcGesWeek(data: { date: string, sureEdd?: string, id: TIdTypeCompatible }) {
         const r = await request.put<{ gestationalWeek: string }>(`/api/doctor/getGestationalWeek`, data)
         return r.data

@@ -42,7 +42,7 @@ function Index(props: IProps & IInitial_Tab_props) {
   } = props;
   const preg_id = mchcUtils.single_id()
 
-  const { Wrap, config } = BF_Wrap2({ default_conf: { title: '门诊-诊断处理', tableColumns: () => import('./config') } })
+  const { Wrap, config } = BF_Wrap2({ default_conf: { title: '门诊-诊断处理', tableColumns: () => import('./config') } }, { form })
 
   const [diagnosesList, setDiagnosesList] = useState<IMchc_Doctor_Diagnoses[]>([])
 

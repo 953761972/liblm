@@ -50,12 +50,7 @@ export default function FurtherSidebar(props: IProps) {
   const [isShowListModal, set_isShowListModal] = useState(false)
   const [isShowManageModal, set_isShowManageModal] = useState(false)
   const [sidebarTab, set_sidebarTab] = useState('诊断')
-  const [prenatalTreeData, set_prenatalTreeData] = useState(null)
-  const [templateData, set_templateData] = useState<{
-    adviseTemplate: any[]
-    doctorTemplate: any[]
-    personalTemplate: any[]
-  } | null>(null)
+
 
   const [lackReports, set_lackReports] = useState('')
   const [recentPlanData, set_recentPlanData] = useState<{
@@ -85,12 +80,6 @@ export default function FurtherSidebar(props: IProps) {
 
 
 
-
-
-
-
-
-
   async function getLackReports(visitsData = props.visitsData) {
     const lackReports = get(visitsData, `lackReports`, []);
 
@@ -105,19 +94,7 @@ export default function FurtherSidebar(props: IProps) {
     }
   };
 
-  function handleBtnClick(e: any, type: string) {
-    e.stopPropagation();
-    switch (type) {
 
-
-      case 'manageBtn':
-        set_isShowManageModal(true)
-
-        break;
-      default:
-        break;
-    }
-  };
   function getId() {
     return get(headerInfo, 'id') || id;
   }
@@ -204,7 +181,7 @@ export default function FurtherSidebar(props: IProps) {
                       <OkButton
                         type='dashed'
                         size='small'
-                        onClick={(e) => handleBtnClick(e, 'manageBtn')}
+                        onClick={(e) => set_isShowManageModal(true)}
                       >
                         产检管理
                       </OkButton>
@@ -249,16 +226,6 @@ export default function FurtherSidebar(props: IProps) {
   function render_tools() {
     return <Segmented size='small' value={sidebarTab} block onChange={set_sidebarTab} options={['诊断', '产检树', '历史', '模板']} />
   }
-  function handleTabClick(value: any) {
-
-    set_sidebarTab(value)
-  }
-
-
-
-
-
-
 
   return (
     <Card size='small' styles={{

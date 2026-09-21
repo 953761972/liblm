@@ -5,6 +5,7 @@ export interface IMchc_Doctor_OutpatientHeaderInfo<T extends MchcTypes = MCHC_TY
     tags: string | null
     labelEnabled: boolean
     labels: {
+        case: boolean
         id: number
         module: number
         type: number

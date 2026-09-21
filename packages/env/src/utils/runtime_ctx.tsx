@@ -7,15 +7,18 @@ import { mchcUtils } from "../utils/mchcUtils";
 import { getGlobalHistory } from "./state";
 
 
-function Array_(arr: any[], linker: string | false = '/', value_path?: string,) {
+function Array_(arr: any[], linker: string | false = '/', value_path?: string | false, max?: number) {
     if (!arr) return null
     if (!Array.isArray(arr)) return <span>非数组：{JSON.stringify(arr)}</span>
-    const _arr = arr
+    const too_much = max ? (arr.length > max) : false
+    const safe_arr = too_much ? arr.slice(0, max) : arr
+    const _arr = safe_arr
         .map(_ => isObjectLike(_) ? (value_path ? get(_, value_path) : '{}') : _)
         .map(_ => _ || '-')
-    if (!linker) return <div style={{ whiteSpace: 'normal' }}>{_arr.map(i => <Tag>{i}</Tag>)}</div>
+    const too_much_tip = too_much ? '...' : ''
+    if (!linker) return <div style={{ whiteSpace: 'normal' }}>{_arr.map(i => <Tag>{i}</Tag>)} {too_much_tip}</div>
     let _linker = isString(linker) ? linker : '/'
-    return <span>{_arr.join(_linker)}</span>
+    return <span>{_arr.join(_linker)} {too_much_tip}</span>
 }
 function Color_(content: number | string | boolean, is_red = false, color = 'red') {
     return <span style={{ color: is_red ? color : 'unset' }}>{content ?? ''}</span>

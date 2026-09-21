@@ -9,8 +9,8 @@ const ctx = rt_ctx
 const React = rt_ctx.React
 function MyConfigTable2(props: ICommonProps) {
 
-    const title: any = decodeURI(get_global_happy_arg('usr1') ?? props.configId)
-    if (!title || title === 'undefined') return <div>请配置title</div>
+    const conf_title: string = decodeURI(get_global_happy_arg('usr1') ?? props.configId)
+    if (!conf_title || conf_title === 'undefined') return <div>请配置title</div>
     return <MyBaseList
 
         {...props}
@@ -24,7 +24,8 @@ function MyConfigTable2(props: ICommonProps) {
         }}
         table_preset={
             {
-                title: `动态表格-${title}`, name: '/api/users',
+                title: conf_title.includes('-') ? (conf_title as any) : `动态表格-${conf_title}`,
+                name: '/api/users',
                 showAction: 1,
                 initialSearchValue: { nationality: '中' },
                 searchParams: { args: 'abcd' },

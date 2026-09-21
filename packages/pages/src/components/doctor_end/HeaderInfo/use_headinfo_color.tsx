@@ -15,7 +15,7 @@ export function use_headinfo_color(highriskLable?: TLevelType) {
 
   const colors = calc_colors(cur?.color)
 
-  const 高危背景 = is_dark ? sys_theme.bg_color : colors?.light[2]
+  const 高危背景 = is_dark ? sys_theme.bg_color : colors?.light[3]
   const 高危文字颜色 = is_dark ? colors?.primary : colors?.dark[1]
 
   return {

@@ -47,7 +47,7 @@ function MyConfigPanel(props: ICommonProps) {
             onPrint={() => {
                 mchcModal__.open('print_modal', {
                     modal_data: {
-                        requestData: { url: `${getConfigFullUrl(config)}print` }
+                        requestData: { url: `${getConfigFullUrl(config)}/print` }
                     }
                 })
             }}

@@ -8,6 +8,7 @@ export default defineFormConfig([
 
   {
     label: '根据门诊号选择孕妇联动',
+    containerType: 'segs',
     children: [
       {
         label: '就诊卡号',
@@ -66,6 +67,7 @@ export default defineFormConfig([
   },
   {
     label: 'bmi联动',
+    containerType: 'segs',
     children: [
       {
         label: 'weight',
@@ -103,6 +105,7 @@ export default defineFormConfig([
   },
   {
     label: '证件联动',
+    containerType: 'segs',
     children: [
       {
 
@@ -197,6 +200,7 @@ export default defineFormConfig([
   },
   {
     label: '接口联动(通过接口计算预产期)',
+    containerType: 'segs',
     children: [
 
       {
@@ -1202,7 +1206,17 @@ export default defineFormConfig([
           check_invert_values: {
             yj1: [2, 3],
             yj2: [2, 3],
+            yjinput: ['你够了吗？', '我够了！']
           }
+        }
+      },
+      {
+        inputType: "MA",
+        label: '输入框',
+        name: 'yjinput',
+        layout: "1/3",
+        inputProps: {
+          options: '11,22,33'
         }
       },
       {

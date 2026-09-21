@@ -1,27 +1,24 @@
-import { MyIcon, MyLazyComponent, OkButton, fuck_the_form, getBMI, handle_form_error, useMyEffectSafe } from '@lm_fe/components_m'
+import { MyIcon, MyLazyComponent, OkButton, fuck_the_form, handle_form_error, useMyEffectSafe } from '@lm_fe/components_m'
 import {
     IMchc_Doctor_Diagnoses,
     IMchc_Doctor_OutpatientHeaderInfo,
     IMchc_Doctor_RvisitInfoOfOutpatient,
     IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit,
-    SLocal_Calculator,
     TIdTypeCompatible,
     process_OutpatientDocument_physicalExam_local,
     process_OutpatientDocument_physicalExam_remote
 } from '@lm_fe/service'
-import { copyText, get, getFutureDate, request, set } from '@lm_fe/utils'
+import { copyText, request } from '@lm_fe/utils'
 import { Button, Card, Form, FormInstance, Space, message } from 'antd'
-import { size } from 'lodash'
 import React, { useEffect, useState } from 'react'
-import DiabetesAppointment from '../../../.components/DiabetesAppointment'
 
-import { mchcConfig, mchcEnv, mchcEvent, mchcLogger, mchcUtils } from '@lm_fe/env'
+import { mchcConfig, mchcEnv, mchcEvent, mchcUtils } from '@lm_fe/env'
 import { HighRiskTableEntry, mchcModal__ } from '@lm_fe/pages'
 import { use_provoke } from '@lm_fe/provoke'
 import { expect_array } from '@lm_fe/utils'
 import classNames from 'classnames'
-import FormBlock from './form_config/Form'
 import { use_doctor_sign } from '../../../.utils/use_doctor_sign'
+import FormBlock from './form_config/Form'
 import styles from './index.module.less'
 // 弹窗枚举
 interface IProps {
@@ -155,21 +152,7 @@ function FurtherForm(props: IProps) {
         })
         const rm_runone = mchcEvent.on_rm('outpatient', e => {
             if (e.type === '复诊表单走一个') {
-                mchcLogger.log('走一个~~~~', e)
                 fuck_the_form(e.action, form, e.data, e.keys)
-                // if (e.action === '覆') {
-                //     form.setFieldsValue(e.data)
-                // } else {
-                //     const values = form.getFieldsValue()
-                //     const obj = e.keys.reduce((res, k) => {
-                //         const v = get(e.data, k)
-                //         if (!v) return res
-                //         const old_v = get(values, k)
-                //         const new_v = old_v ? `${old_v} / ${v}` : v
-                //         return set(res, k, new_v)
-                //     }, {})
-                //     form.setFieldsValue(obj)
-                // }
             }
         })
         return () => {
@@ -178,21 +161,12 @@ function FurtherForm(props: IProps) {
         }
     }, [])
 
-    function setItemValue(val: string, key: string) { }
 
     async function get_form_data() {
 
 
         try {
             const values = await form.validateFields()
-
-            // if (mchcEnv.is('扬州妇幼')) {
-            //     const yes = window.confirm('温馨提醒：是否需要更新高危评估？')
-            //     if (yes) {
-            //         mchcEnv.success('请点击高危色卡，更新高危评估后再重新操作！')
-            //         return null
-            //     }
-            // }
 
             values.physicalExam = process_OutpatientDocument_physicalExam_local(values.physicalExam)
             return values as Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>
@@ -201,17 +175,6 @@ function FurtherForm(props: IProps) {
             if (first?.text) mchcEnv.warning(first.text)
             return null
         }
-        // return form
-        //     .validateFields()
-        //     .then((values) => {
-        //         values.physicalExam = process_OutpatientDocument_physicalExam_local(values.physicalExam)
-        //         return values as Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>
-        //     })
-        //     .catch((error) => {
-        //         const first = handle_form_error(error)
-        //         if (first?.text) mchcEnv.warning(first.text)
-        //         return null
-        //     })
     }
     async function on_submit() {
         if (!sign_confirm())

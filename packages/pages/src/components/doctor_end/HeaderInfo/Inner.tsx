@@ -45,7 +45,10 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
     const color_conf = use_headinfo_color(highriskLable)
 
     const info_addon = 头部信息拓展 ?? []
-    const caseManages = expect_array(headerInfo?.caseManages).filter((_) => _.code && _.name)
+    // const caseManages = expect_array(headerInfo?.caseManages).filter((_) => _.code && _.name)
+    const caseManages = expect_array(headerInfo?.labels).filter((_) => _.name && _.case)
+    const labels = expect_array(headerInfo?.labels).filter((_) => _.name)
+
 
     const infectionNoteLabels = handleFuckinginfectionNoteLabel(headerInfo?.infectionNote)
 
@@ -196,7 +199,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
             title: '标签管理',
             width: 'auto',
             modal_data: {
-                content: <CustomTag id={pregnancyId} dataSource={headerInfo?.labels} />,
+                content: <CustomTag id={pregnancyId} dataSource={labels} />,
             },
             onClose: fetchHeaderInfo,
         })
@@ -358,11 +361,11 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                             {get(headerInfo, `labourState`) ? (
                                 <>
                                     <div className={styles['small-item']}>
-                                        <span className={styles['label']}>产后：</span>
+                                        <span className={styles['label']}>产后:</span>
                                         <span className={styles['value']}>{getValue('daysAfterDelivery')}</span>
                                     </div>
                                     <div className={styles['small-item']}>
-                                        <span className={styles['label']}>分娩孕周：</span>
+                                        <span className={styles['label']}>分娩孕周:</span>
                                         <span className={styles['value']}>{getValue('labourWeek')}</span>
                                     </div>
                                 </>
@@ -370,27 +373,27 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                                 <>
                                     {check_week_show(getValue('curgesweek')) && (
                                         <div className={styles['small-item']}>
-                                            <span className={styles['label']}>孕周：</span>
+                                            <span className={styles['label']}>孕周:</span>
                                             <span className={styles['value']}>{getValue('curgesweek')}</span>
                                         </div>
                                     )}
 
                                     <div className={styles['small-item']}>
-                                        <span className={styles['label']}>预产期：</span>
+                                        <span className={styles['label']}>预产期:</span>
                                         <span className={styles['value']}>{getValue('edd')}</span>
                                     </div>
                                 </>
                             )}
 
                             <div className={styles['small-item']}>
-                                <span className={styles['label']}>就诊卡号：</span>
+                                <span className={styles['label']}>就诊卡号:</span>
                                 {render_select()}
                             </div>
                             {info_addon.map((_) => {
                                 const txt = getValue(_.value)
                                 return (
                                     <div key={_.label} className={styles['small-item']} title={txt}>
-                                        <span className={styles['label']}>{_.label}：</span>
+                                        <span className={styles['label']}>{_.label}:</span>
                                         <span className={styles['value']}>{txt}</span>
                                     </div>
                                 )
@@ -398,9 +401,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                         </div>
                         <div className={styles['msg-bottom']}>
                             <Space.Compact>
-                                {caseManages.map((ext) => {
-                                    // const show = __DEV__ ? true : is_show_专案(ext, headerInfo)
-                                    // if (!show) return null
+                                {/* {caseManages.map((ext) => {
                                     return (
                                         <Tag
                                             style={{ cursor: 'pointer' }}
@@ -418,7 +419,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                                             {ext.name}
                                         </Tag>
                                     )
-                                })}
+                                })} */}
                                 {is_show_乙肝 && (
                                     <Button type="text" size="small" onClick={open乙肝管理}>
                                         乙肝专案管理
@@ -508,10 +509,25 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                             {/* 标签管理 */}
 
                             <>
-                                {map(headerInfo?.labels, (tag, i) => {
+                                {map(labels, (tag, i) => {
+                                    const is_case = tag.code && tag.case
                                     return (
-                                        <Tag key={tag.id} color={tag?.color}>
+                                        <Tag
+                                            icon={is_case ? <MyIcon value='StarOutlined' /> : null}
+                                            style={{ cursor: is_case ? 'pointer' : 'unset' }}
+                                            onClick={() => {
+                                                if (!is_case) return
+                                                mchcModal__.open('拓展专案', {
+                                                    modal_data: {
+                                                        headerInfo,
+                                                        ...tag,
+                                                    },
+                                                })
+                                            }}
+                                            key={tag.id}
+                                            color={tag?.color}>
                                             {tag.name}
+
                                         </Tag>
                                     )
                                 })}
@@ -553,6 +569,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
             <div style={{ flex: 1 }}>
                 <div style={{ ...wrap_style, marginBottom: 4 }}>
                     <OkButton {...common_props} icon={<MyIcon value="ThunderboltOutlined" />} onClick={onDobuleClick} />
+                    <OkButton {...common_props} icon={<MyIcon value='ReloadOutlined' />} onClick={fetchHeaderInfo} />
                     <QuestionnaireButton {...common_props} btn_text='' icon={<MyIcon value='SendOutlined' />} onOk={(qs) =>
                         request.post('/api/send/questionnaire', { type: 1, id: pregnancyId, questionnaire: qs })
                     } />
@@ -578,10 +595,10 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
         if (mchcEnv.isSp) return headerInfo?.outpatientNO
         return (
             <PatientSelect
-                size="small"
+                // size="small"
                 // PatientSelect_url='/api/getPregnancies'
-                style={{ width: 120 }}
-                className={styles['outpatientNO']}
+                style={{ width: 120, }}
+                // className={styles['outpatientNO']}
                 value={headerInfo?.outpatientNO}
                 // PatientSelect_displayKey={['outpatientNO', 'info0', 'info1', 'info2',]}
                 onPatientSelect={(v, form) => {

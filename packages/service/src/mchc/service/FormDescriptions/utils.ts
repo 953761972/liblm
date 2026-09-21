@@ -115,7 +115,7 @@ export function get_lazy(config: any) {
 
 
 
-export function parse_form_item_name_raw(name?: number | string | string[]) {
+export function format_itemName_arr_by_name(name?: number | string | string[]) {
     if (isArray(name)) return name as string[]
     if (isNumber(name)) return [name.toString()]
 

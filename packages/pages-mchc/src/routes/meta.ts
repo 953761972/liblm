@@ -74,6 +74,7 @@ export const routesData = {
     "/task-logs":lazy(() => import("../pages/task-logs/index")),
     "/tasks/list":lazy(() => import("../pages/tasks/list/index")),
     "/test":lazy(() => import("../pages/test/index")),
+    "/videos/list":lazy(() => import("../pages/videos/list/index")),
     "/visit-management/remind-record":lazy(() => import("../pages/visit-management/remind-record/index")),
     "/visit-management/telephone-followup":lazy(() => import("../pages/visit-management/telephone-followup/index")),
     "/visit-management/telephone-followup-record":lazy(() => import("../pages/visit-management/telephone-followup-record/index")),

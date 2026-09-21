@@ -4,7 +4,7 @@ import { mchcEnv } from '@lm_fe/env';
 import { BF_Wrap2 } from '@lm_fe/pages';
 import { use_provoke } from '@lm_fe/provoke';
 import { IMchc_Doctor_RvisitInfoOfOutpatient, IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit, IMchc_FormDescriptions_Field } from '@lm_fe/service';
-import { cloneDeep, copyText, expect_array, get, isEmpty, isObject, isString } from '@lm_fe/utils';
+import { cloneDeep, copyText, expect_array, get, identity, isEmpty, isObject, isString } from '@lm_fe/utils';
 import { Divider, Empty } from 'antd';
 import React from 'react';
 import m_styles from './FurtherHistory.module.less'
@@ -25,7 +25,7 @@ export function FurtherHistory(props: IProps) {
 
 
 
-	const filtered_rvisits = (visitsData?.rvisits ?? []).filter(_ => _.id)
+	const filtered_rvisits = expect_array(visitsData?.rvisits).filter(identity)
 	const tableContentColumns = expect_array<IMchc_FormDescriptions_Field>(tableConfig?.tableColumns)
 
 

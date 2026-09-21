@@ -41,7 +41,7 @@ mchc 页面级模块
 | /gynecological-diseases/women/women-exam-records/edit | 缺省 |
 | /gynecological-diseases/women/women-exam-records | 缺省 |
 | /highrisk-management/list | 高危孕产妇管理-高危统计 |
-| /knowledge/list | 缺省 |
+| /knowledge/list | 宣教随访-知识库 |
 | /my-knowledge/list | 我的知识库 |
 | /pregnant-school/lessons | 孕妇学校-课程列表 |
 | /pregnant-school/midwifery-lessons | 助产士-课程列表 |
@@ -74,6 +74,7 @@ mchc 页面级模块
 | /task-logs | 宣教随访-宣教任务管理 |
 | /tasks/list | 宣教随访-宣教任务管理 |
 | /test | 测试页 |
+| /videos/list | 宣教随访-视频库 |
 | /visit-management/remind-record | 复诊追踪-预约提醒记录 |
 | /visit-management/telephone-followup | 复诊追踪-超时电话随访 |
 | /visit-management/telephone-followup-record | 复诊追踪-电话随访记录 |

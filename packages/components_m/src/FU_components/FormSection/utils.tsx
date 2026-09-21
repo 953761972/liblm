@@ -118,7 +118,7 @@ export function RenderEditItem(config: any, ReactNode: React.ReactNode, defaultO
     const safe_rules = safe_json_parse(rules)
     const required = safeExec(_config.required as any) ?? _config.required
     // let name = key?.includes('.') ? key.split('.') : key;
-    let name = SMchc_FormDescriptions.parse_form_item_name(config)
+    let name = SMchc_FormDescriptions.format_itemName_arr(config)
 
     const placeholder = get(inputProps, 'placeholder') || '';
     const labelAlign = get(_config, 'labelAlign') ?? get(inputProps, 'labelAlign');
@@ -183,7 +183,6 @@ export function RenderEditItemStandalone(config: any, ReactNode: React.ReactNode
 export function render_form_label(config: IMchc_FormDescriptions_Field,) {
     const { inputProps, label, title } = config;
     const _label = label || title
-    let name_str = SMchc_FormDescriptions.get_form_item_name_str(config)
     const unit = get(config, 'unit') || get(inputProps, 'unit');
     const tip = get(config, 'tip') || get(inputProps, 'tip');
 

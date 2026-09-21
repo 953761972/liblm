@@ -26,18 +26,18 @@ export function quick_doc(page_type: TPageType, onSubmit = (data: IMchc_Pregnanc
                 return res.data
             },
             async onValuesChange(changedValues, values, form) {
-                const __key = keys(changedValues)[0]
-                const is末次月经 = __key === 'lmp'
-                if (is末次月经) {
-                    const lmp = get(changedValues, 'lmp');
-                    const { edd, sureEdd, gestationalWeek } = await SLocal_Calculator.lmp_计算_edd_gestationalWeek(lmp);
-                    console.log({ edd, sureEdd, gestationalWeek })
-                    form.setFieldsValue({
-                        edd,
-                        sureEdd,
-                        gestationalWeek,
-                    });
-                }
+                // const __key = keys(changedValues)[0]
+                // const is末次月经 = __key === 'lmp'
+                // if (is末次月经) {
+                //     const lmp = get(changedValues, 'lmp');
+                //     const { edd, sureEdd, gestationalWeek } = await SLocal_Calculator.lmp_计算_edd_gestationalWeek(lmp);
+                //     console.log({ edd, sureEdd, gestationalWeek })
+                //     form.setFieldsValue({
+                //         edd,
+                //         sureEdd,
+                //         gestationalWeek,
+                //     });
+                // }
             },
             async onSubmit(v) {
                 const data = Object.assign(v, {

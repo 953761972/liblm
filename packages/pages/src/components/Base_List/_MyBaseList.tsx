@@ -4,12 +4,12 @@ import { AnyObject, assign, cloneDeep, downloadFile, formatDateTime, safe_async_
 import { Divider, Form, message, Space, TablePaginationConfig } from 'antd';
 import { get, isFunction, isNil, isString, omit } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
-import { MyBaseListRenderFormSection } from './Helper';
+import { MyBaseList_FormSection } from './Helper';
 import './index.module.less';
 import { IMyBaseList_ActionCtx, IMyBaseList_ColumnType, MyBaseListProps } from './types';
-import { formatProps, get_dataIndex, get_title, tranform_query_data, use_my_baselist } from './utils';
+import { formatProps, get_title, use_my_baselist } from './utils';
 
-import { MyIcon, Table_L, useMyEffectSafe } from '@lm_fe/components';
+import { format_dataIndex, MyIcon, Table_L, tranform_query_data, useMyEffectSafe } from '@lm_fe/components';
 import { getDefaultRequiredRules, InterceptDisplayFC, MyBaseListComponents, OkButton } from '@lm_fe/components_m';
 import { use_provoke } from '@lm_fe/provoke';
 import { TableRowSelection } from 'antd/es/table/interface';
@@ -189,7 +189,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
     }
     function search_node() {
         try {
-            return searchConfig ? <MyBaseListRenderFormSection config={searchConfig} disabled={loading} /> : null
+            return searchConfig ? <MyBaseList_FormSection config={searchConfig} disabled={loading} /> : null
         } catch (error) {
             return null
         }
@@ -199,23 +199,38 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
 
 
     function relayout() {
-        setTimeout(() => {
-
-            const h = document.body.clientHeight
-            const formHeight = formWrapper.current?.clientHeight ?? 0
-            const queryHeight = queryRef.current?.clientHeight ?? 0
-            const tableHeaderHeight = wrapRef.current?.querySelector('.ant-table-header')?.clientHeight ?? 0
-            const result = h - queryHeight - tableHeaderHeight - 120 - 86
-            setTableHeight(result)
-            mchcLogger.log(`tablelist tableHeight:${result} queryHeight:${queryHeight} tableHeaderHeight:${tableHeaderHeight}`)
-            if (formHeight > 40) {
-                setLongSearchForm(true)
-            }
-
-        }, 120);
+        const h = document.body.clientHeight
+        const formHeight = formWrapper.current?.clientHeight ?? 0
+        const queryHeight = queryRef.current?.clientHeight ?? 0
+        const tableHeaderHeight = wrapRef.current?.querySelector('.ant-table-header')?.clientHeight ?? 0
+        const result = h - queryHeight - tableHeaderHeight - 120 - 86
+        setTableHeight(result)
+        mchcLogger.log(`tablelist tableHeight:${result} queryHeight:${queryHeight} tableHeaderHeight:${tableHeaderHeight}`)
+        if (formHeight > 40) {
+            setLongSearchForm(true)
+        }
     }
     useEffect(() => {
+        init()
 
+
+
+        return () => { }
+
+    }, [name])
+
+
+
+    if (effect_ctx) {
+        useMyEffectSafe(effect_ctx)(() => {
+            if (inited.current) {
+                message.info('刷新成功！')
+                table_fetch()
+
+            }
+        }, [])
+    }
+    async function init() {
         if (!inited.current) {
 
             if (dbg_dataSource) {
@@ -238,32 +253,17 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
                             : undefined
                     )
                 if (myBaseListService.current) {
-                    init_or_click_search().then(relayout)
-
+                    // // 等初始化表单赋值
+                    // await sleep(240)
+                    init_or_click_search(initialSearchValue)
+                    relayout()
                     inited.current = true
                 }
             }
 
         }
 
-
-
-        return () => { }
-
-    }, [name])
-
-
-
-    if (effect_ctx) {
-        useMyEffectSafe(effect_ctx)(() => {
-            if (inited.current) {
-                message.info('刷新成功！')
-                table_fetch()
-
-            }
-        }, [])
     }
-
     const actionCtx: IMyBaseList_ActionCtx<T> = {
         handleSearch: table_fetch,
         getSearchParams,
@@ -413,7 +413,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
             modal_data: {
                 requestData: {
                     // url: name + rowPrintUrlSuffix,
-                    url: name + 'rowprint',
+                    url: name + '/rowprint',
                     id: rowData?.id,
                     ...getSearchParams()
                 }
@@ -543,10 +543,9 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
 
 
 
-    function getSearchParams(isFuck = false): AnyObject {
+    function getSearchParams(_values?: AnyObject, isFuck = false): AnyObject {
         const { searchConfig } = propsCache.current
-
-        const values = searchForm.getFieldsValue()
+        const values = isNil(_values) ? searchForm.getFieldsValue() : _values
         const data = tranform_query_data(values, searchConfig, isFuck)
         const v = beforeSearch?.(data as any) ?? data
 
@@ -624,7 +623,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
                 const isOperativeCell = isString(dataIndex) && ['__operation', 'operation'].includes(dataIndex)
                 const format_data = {
                     title: get_title(col!),
-                    dataIndex: get_dataIndex(col!)
+                    dataIndex: format_dataIndex(col!)
                 }
                 const a: IMyBaseList_ColumnType<T> = {
                     width: (width ?? 120),
@@ -683,14 +682,14 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
     };
 
 
-    async function init_or_click_search() {
+    async function init_or_click_search(init_search_obj?: AnyObject) {
         mchcLogger.log('ggxx init', cloneDeep(searchParams_cache.current))
 
         // setDataSource([])
         safe_set_check_rows([])
         setCurrent(1)
 
-        const q = getSearchParams()
+        const q = getSearchParams(init_search_obj)
         defaultQuery.current = q
         return table_fetch(q)
 
@@ -759,7 +758,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
             >
                 {
                     cal_columns.filter(_ => _.form_hidden).map(_ => {
-                        return <Form.Item hidden name={get_dataIndex(_)} />
+                        return <Form.Item hidden name={format_dataIndex(_)} />
                     })
                 }
 
@@ -803,7 +802,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
                                             mchcModal__.open('print_modal', {
                                                 modal_data: {
                                                     requestData: {
-                                                        url: name + 'print',
+                                                        url: name + '/print',
                                                         ...getSearchParams(),
                                                         ...printDefaultConfig
                                                     }

@@ -34,7 +34,6 @@
         "braft-editor": ">=2.3.9",
         "classnames": "*",
         "dayjs": "^1.11.13",
-        "echarts": "^5.0.1",
         "fabric": "5.*",
         "history": "^4.9.0",
         "quill": "1.*",

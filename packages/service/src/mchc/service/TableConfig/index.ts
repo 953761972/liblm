@@ -1,7 +1,8 @@
 import { safe_get_object_symbol, safe_get_symbol } from "@lm_fe/env"
 import { ModelService } from "../../../ModelService"
 import { IMchc_FormDescriptions_Field_Nullable, IMchc_FormDescriptions_Field_Nullable_Arr, SMchc_FormDescriptions } from "../FormDescriptions"
-import { tc_process_dep_conf, tc_convert_fn_wrapped_str, tc_stringify_fn_or_obj, tc_stringify_fn, tc_stringify_obj } from "./utils"
+import { tc_process_dep_conf, tc_convert_fn_wrapped_str, tc_stringify_fn_or_obj, tc_top_stringify_fn, tc_stringify_obj, wrap_fn_tag } from "./utils"
+import { get, isArray, isFunction } from "@lm_fe/utils"
 export { IMchc_FormDescriptions_Field_Nullable_Arr, tc_stringify_obj as stringify_bf_obj }
 export interface IMchc_TableConfig {
     "id": any,
@@ -83,16 +84,16 @@ class Mchc_TableConfig_Service extends ModelService<IMchc_TableConfig> {
 
         _con.tableColumns = await this.clippy_local(config.tableColumns, true)
 
-        _con.handleBeforePopup = tc_stringify_fn(config.handleBeforePopup,)
+        _con.handleBeforePopup = tc_top_stringify_fn(config.handleBeforePopup,)
         // _con.handleBeforePopup = make_bf_script_field(config.handleBeforePopup,)
 
-        _con.watchScript = tc_stringify_fn(config.watchScript,)
+        _con.watchScript = tc_top_stringify_fn(config.watchScript,)
 
-        _con.beforeSubmit = tc_stringify_fn(config.beforeSubmit,)
-        _con.renderBtns = tc_stringify_fn(config.renderBtns,)
- 
+        _con.beforeSubmit = tc_top_stringify_fn(config.beforeSubmit,)
+        _con.renderBtns = tc_top_stringify_fn(config.renderBtns,)
 
-        _con.genColumns = tc_stringify_fn(config.genColumns,)
+
+        _con.genColumns = tc_top_stringify_fn(config.genColumns,)
         _con.initialSearchValue = tc_stringify_fn_or_obj(config.initialSearchValue,)
         _con.searchParams = tc_stringify_fn_or_obj(config.searchParams,)
         _con.initialValues = tc_stringify_obj(config.initialValues,)
@@ -125,6 +126,15 @@ class Mchc_TableConfig_Service extends ModelService<IMchc_TableConfig> {
             tc_convert_fn_wrapped_str(cloned, 'processLocal')
             tc_convert_fn_wrapped_str(cloned, 'checkWarn')
             tc_convert_fn_wrapped_str(cloned, 'required')
+            const rules = get(cloned, 'rules') as any[]
+            if (isArray(rules)) {
+                cloned.rules = rules.map((r, idx) => {
+                    if (isFunction(r)) {
+                        return wrap_fn_tag(r)
+                    }
+                    return r
+                })
+            }
             // set_fn_string(cloned, 'disabledDeps')
             // set_fn_string(cloned, 'requiredDeps')
             // set_fn_string(cloned, 'showDeps')

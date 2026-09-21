@@ -85,7 +85,7 @@ export function BF_Wrap2(setting: IBF_props, props?: any) {
                                             size='small'
                                             shape='circle'
                                             type='primary'
-                                            style={{ position: 'absolute', top: 6, right: 6, opacity: .8, width: 'auto' }}
+                                            style={{ position: 'absolute', top: 6, right: 6, opacity: .8, width: 'auto', zIndex: 9 }}
                                             icon={<MyIcon value='AppstoreOutlined' />}
                                         />
 

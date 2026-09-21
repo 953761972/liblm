@@ -1,3 +1,4 @@
+import { AnyObject, get, isString } from "@noah-libjs/utils"
 
 
 
@@ -17,9 +18,6 @@ export function getTimeSlice(hour = 24, isShowSecond = false) {
 export function is_fuck_abnormal(conf?: { isNormal?: 'true' | 'false' | null }) {
     return conf?.isNormal === 'false'
 }
-
-
-
 
 
 

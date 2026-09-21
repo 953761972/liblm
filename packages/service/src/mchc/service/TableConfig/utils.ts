@@ -30,8 +30,9 @@ export function tc_convert_fn_wrapped_str(config: AnyObject, name: string) {
     if (str) {
         config[name] = str
     }
+    return str
 }
-function wrap_fn_tag(fn?: Function) {
+export function wrap_fn_tag(fn?: Function) {
     if (isFunction(fn)) {
         return `#${fn.toString()}#`
     }
@@ -42,10 +43,10 @@ export function tc_stringify_fn_or_obj(fn_or_obj?: Function) {
     if (!fn_or_obj) return ''
 
 
-    return isFunction(fn_or_obj) ? tc_stringify_fn(fn_or_obj) : tc_stringify_obj(fn_or_obj)
+    return isFunction(fn_or_obj) ? tc_top_stringify_fn(fn_or_obj) : tc_stringify_obj(fn_or_obj)
 
 }
-export function tc_stringify_fn(fn?: Function) {
+export function tc_top_stringify_fn(fn?: Function) {
     // if (!fd) return script_field_template(undefined, false)
     if (!fn) return ''
 

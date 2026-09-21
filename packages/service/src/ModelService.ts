@@ -183,20 +183,20 @@ export class ModelService<T extends { id?: TIdTypeCompatible } = any> extends Ev
     return result;
   }
   async export(data: Partial<T>) {
-    const result = await this._export<T>(`${this.name}export`, data);
+    const result = await this._export<T>(`${this.name}/export`, data);
     return result.data
   }
   async row_export(data: AnyObject) {
     const r = await request
-      .ins({ method: 'GET', url: this.getUrl(`${this.name}rowexport`, '/rowexport'), params: data, data, responseType: 'blob', });
+      .ins({ method: 'GET', url: this.getUrl(`${this.name}/rowexport`, '/rowexport'), params: data, data, responseType: 'blob', });
     return r.data
   }
   async print(data: Partial<T>) {
-    const result = await this._print<T>(`${this.name}export`, data);
+    const result = await this._print<T>(`${this.name}/export`, data);
     return result.data
   }
   async sync(data: any) {
-    const result = await this._sync<T>(`${this.name}sync`, data);
+    const result = await this._sync<T>(`${this.name}/sync`, data);
 
     return result
   }
@@ -373,36 +373,36 @@ export class ModelService<T extends { id?: TIdTypeCompatible } = any> extends Ev
   }
   getUrl(url: string, action = '') {
     const _action = this.prePath ? action : '';
-    return `${this.preFix}${this.prePath}${_action}${url}`;
+    return `${this.preFix ?? ''}${this.prePath}${_action}${url}`;
   }
-  async _get<T>(path: string, config: AxiosRequestConfig = {}) {
+  async _get<T>(path: string, config: IRequest_AxiosRequestConfig = {}) {
     const r = await this._request<T>({ method: 'GET', url: this.getUrl(path, '/get'), ...config });
     return this.getDataArr(r);
   }
-  async _delete<T>(path: string, config?: AxiosRequestConfig) {
+  async _delete<T>(path: string, config?: IRequest_AxiosRequestConfig) {
     const r = await this._request<boolean>({ method: 'DELETE', url: this.getUrl(path, '/delete'), ...config });
     return r;
   }
-  async _add<T>(path: string, data?: any, config?: AxiosRequestConfig) {
+  async _add<T>(path: string, data?: any, config?: IRequest_AxiosRequestConfig) {
     const r = await this._request<T>({ method: 'POST', url: this.getUrl(path, '/add'), data, ...config });
     return this.getDataArr(r);
   }
-  async _sync<T>(path: string, data?: any, config?: AxiosRequestConfig) {
+  async _sync<T>(path: string, data?: any, config?: IRequest_AxiosRequestConfig) {
     const r = await this._request<T>({ method: 'POST', url: this.getUrl(path, '/sync'), data, ...config });
     return this.getDataArr(r);
   }
 
-  async _update<T>(path: string, data?: any, config?: AxiosRequestConfig) {
+  async _update<T>(path: string, data?: any, config?: IRequest_AxiosRequestConfig) {
     const r = await this._request<T>({ method: 'PUT', url: this.getUrl(path, '/update'), data, ...config });
     return this.getDataArr(r);
   }
 
-  async _export<T>(path: string, data?: any, config?: AxiosRequestConfig) {
+  async _export<T>(path: string, data?: any, config?: IRequest_AxiosRequestConfig) {
     // const r = await request.ins({ method: 'POST', url: this.getUrl(path, '/export'), params: data, data, responseType: 'blob', ...config });
     const r = await request.ins({ method: 'GET', url: this.getUrl(path, '/export'), params: data, data, responseType: 'blob', ...config });
     return r
   }
-  async _print<T>(path: string, data?: any, config?: AxiosRequestConfig) {
+  async _print<T>(path: string, data?: any, config?: IRequest_AxiosRequestConfig) {
     const r = await request.ins({ method: 'POST', url: this.getUrl(path, '/print'), params: data, data, responseType: 'blob', ...config });
     return r
   }

@@ -38,11 +38,11 @@ export const MyFormList_必须搭配Form使用: TCommonComponent<IProps, string 
                             const configs = cloneDeep(formDescriptions)
                             const arr = configs.map(f => {
                                 if (!f) return f!
-                                const nArr = SMchc_FormDescriptions.parse_form_item_name(f)
+                                const nArr = SMchc_FormDescriptions.format_itemName_arr(f)
                                 const k1 = nArr[0]
                                 if (!isNaN(Number.parseInt(k1)))
                                     return f
-                                nArr.unshift(name)
+                                nArr.unshift(name.toString())
                                 SMchc_FormDescriptions.set_form_item_name(f, nArr)
                                 return f
 
