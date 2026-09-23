@@ -70,7 +70,6 @@ export function useTableConfig(props: any) {
             },
             modal_data: {
                 content: <PrenatalModal
-                    selectedRowData={rowData}
                     {...props}
                     onClose={() => mchcModal__.pop()}
                     id={get(rowData, `id`)}

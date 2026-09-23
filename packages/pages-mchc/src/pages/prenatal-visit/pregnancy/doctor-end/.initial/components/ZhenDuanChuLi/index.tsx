@@ -15,12 +15,9 @@ import { 诊断处理_Tools } from './诊断处理_Tools';
 interface IProps {
   diagnosis_addon_btns?: (data?: IMchc_Doctor_FirstVisitDiagnosisOutpatient) => React.ReactNode
   diagnosis_before_submit?: (submit: (values: any) => Promise<void>, data?: IMchc_Doctor_FirstVisitDiagnosisOutpatient, form?: FormInstance) => Promise<void>
-  serialNo: string
 
   headerInfo: IMchc_Doctor_OutpatientHeaderInfo,
-  // diagnosesList: IMchc_Doctor_Diagnoses[]
   handlePrint?(resource: string, id?: TIdType): void
-  // setDiagnosesList(l: IMchc_Doctor_Diagnoses[]): void
 
 }
 
@@ -28,13 +25,12 @@ const Title = '诊断处理';
 const ClassName = 'zhen-duan-chu-li';
 function Index(props: IProps & IInitial_Tab_props) {
 
-  const { serialNo,
+  const {
     // diagnosesList,
     handlePrint: _handlePrint,
 
 
     headerInfo,
-    // setDiagnosesList,
     active,
     diagnosis_before_submit,
     diagnosis_addon_btns,
@@ -88,6 +84,8 @@ function Index(props: IProps & IInitial_Tab_props) {
       setDiagnosesList(v.diagnoses)
       set_disabled_save(v.isBanned)
       form.setFieldsValue(v)
+      HighRiskTableEntry.highRiskTablePopup(v, headerInfo);
+
     })
   }
   function get_form_data() {
@@ -118,11 +116,7 @@ function Index(props: IProps & IInitial_Tab_props) {
   }
   async function handleSubmit(values: AnyObject) {
     const re = await SMchc_Doctor.updateFirstVisitDiagnosisOutpatient({
-      currentGestationalWeek: get(headerInfo, 'curgesweek')
-        ? get(headerInfo, 'curgesweek')
-        : get(headerInfo, 'gesweek'),
       diagnoses: diagnosesList,
-      serialNo,
       ...values
     })
     HighRiskTableEntry.highRiskTablePopup(re, headerInfo);

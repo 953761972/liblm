@@ -14,7 +14,6 @@ const single_id = mchcUtils.single_id
 export interface IDoctorEnd_FurtherProps {
   addon_btns?: (data?: Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>) => React.ReactNode
   before_submit?: (submit: (values: any) => Promise<void>, data?: Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>, form?: FormInstance) => Promise<void>
-  // setDiagnosesList(v: IMchc_Doctor_Diagnoses[]): void
   id: TIdTypeCompatible
 
   headerInfo: IMchc_Doctor_OutpatientHeaderInfo
@@ -29,7 +28,6 @@ export interface IDoctorEnd_FurtherProps {
 function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
 
   const {
-    // setDiagnosesList,
     headerInfo,
     id,
 
@@ -48,9 +46,20 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
   const { fuck, toggle_fuck } = use_fuck('DoctorEnd_FurtherPage')
 
 
-  function setVisitsData(v: IMchc_Doctor_RvisitInfoOfOutpatient) {
+  function set_visitsData(v: IMchc_Doctor_RvisitInfoOfOutpatient) {
     _setVisitsData(v)
     visitsData_cache.current = v
+  }
+  function set_diagnosesList(list?: IMchc_Doctor_Diagnoses[]) {
+
+    const __diagnoses = filter_diagnoses(list)
+
+    setDiagnosesList(expect_array(__diagnoses))
+  }
+  function set_formdata_and_diagnoses(data: Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>) {
+
+    setFormData(data)
+    set_diagnosesList(data.diagnosis ?? visitsData_cache.current?.diagnoses)
   }
   const outEmrId = Number(id)
 
@@ -91,37 +100,18 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
 
     const visitInfo = await fetchVisitData()
 
+    HighRiskTableEntry.highRiskTablePopup(visitInfo, headerInfo)
 
 
+    set_visitsData(visitInfo)
 
-    initDiagnoses(visitInfo)
-
-    initVisitData(visitInfo)
-
-    initFormData(visitInfo)
+    init_formData_and_diagnoses(visitInfo)
 
 
 
   }
-  async function initDiagnoses(v: IMchc_Doctor_RvisitInfoOfOutpatient) {
 
 
-    const __diagnoses = filter_diagnoses(v.diagnoses)
-
-
-    setDiagnosesList?.(__diagnoses);
-
-  }
-  async function initVisitData(v: IMchc_Doctor_RvisitInfoOfOutpatient) {
-
-
-
-    setVisitsData(v)
-
-
-    changeDoctorRecord(v)
-
-  }
 
   function get_id_null_data(v?: IMchc_Doctor_RvisitInfoOfOutpatient) {
 
@@ -137,21 +127,21 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
 
   }
 
-  async function initFormData(vv?: IMchc_Doctor_RvisitInfoOfOutpatient) {
+  function init_formData_and_diagnoses(vv?: IMchc_Doctor_RvisitInfoOfOutpatient) {
 
     if (!vv) {
-      setFormData(get_default_value())
+      set_formdata_and_diagnoses(get_default_value())
       return
     }
     const rvisits = vv.rvisits;
     const idNullRvisit = get_id_null_data(vv)
     const first = idNullRvisit ?? rvisits[0] ?? get_default_value()
 
-    // const _formdata_q = mchcEnv.is('广三') ? v.rvisits.find(_ => _.serialNo === serialNo_q) : null
     const _formdata_q = mchcEnv.is('广三') ? rvisits.find(_ => _.today) : null
 
     const _formdata = _formdata_q ?? first
-    setFormData(_formdata)
+    set_formdata_and_diagnoses(_formdata)
+    return _formdata
 
 
 
@@ -171,7 +161,7 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
         outEmrId
       }))
 
-      SMchc_Doctor.new_diagnosis_list(xxxa).then(setDiagnosesList)
+      SMchc_Doctor.new_diagnosis_list(xxxa).then(set_diagnosesList)
     }
 
     var set_data = assign(newData, { outEmrId, serialNo })
@@ -185,9 +175,8 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
   async function after_save(data: IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit) {
 
     const v = await fetchVisitData();
-    initVisitData(v)
-    setFormData(data)
-
+    set_visitsData(v)
+    set_formdata_and_diagnoses(data)
     HighRiskTableEntry.highRiskTablePopup(data, headerInfo)
 
     mchcEvent.emit('outpatient', { type: '刷新头部', })
@@ -200,11 +189,7 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
 
 
 
-  function changeDoctorRecord(v: IMchc_Doctor_RvisitInfoOfOutpatient) {
 
-    const u = mchcUtils.getUserData()
-
-  }
 
   // 同步导入上一次复诊记录的主诉等信息，不要再做维护！！！！！！！！！！！！！！！
   async function getLastRecord() {
@@ -214,13 +199,13 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
 
     const omit_data = omit(newFormData, ['id', 'isBanned',])
     const new_values = Object.assign(omit_data, get_default_value())
-    setFormData(new_values)
+    set_formdata_and_diagnoses(new_values)
   };
+  // 新增产检记录
   function onAddBtnClick() {
-    setDiagnosesList((visitsData?.diagnoses as any) || [])
     const idNullRvisit = get_id_null_data(visitsData)
     const first = idNullRvisit ?? get_default_value()
-    setFormData(first)
+    set_formdata_and_diagnoses(first)
 
   }
 
@@ -255,7 +240,7 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
           ? null
           : <FurtherSidebar
             serialNo={formData?.serialNo!}
-            setDiagnosesList={setDiagnosesList}
+            setDiagnosesList={set_diagnosesList}
             diagnosesList={diagnosesList}
             formData={formData}
 
@@ -275,7 +260,7 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
           fuck={fuck}
           toggle_fuck={toggle_fuck}
           visitsData={visitsData}
-          setFormData={setFormData}
+          setFormData={set_formdata_and_diagnoses}
           headerInfo={headerInfo}
           formData={formData}
           furtherRefresh={furtherRefresh}

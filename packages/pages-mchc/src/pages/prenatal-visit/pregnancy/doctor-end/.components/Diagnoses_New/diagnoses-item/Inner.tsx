@@ -129,9 +129,7 @@ export default function DiagnosesItem({
       </div>
     );
   };
-  function getPopupContainer() {
-    return document.getElementById(`diag-content`);
-  }
+
   const del_btn = <Button style={{ marginRight: 4 }} shape='circle' onClick={() => itemDelete()} >
     <MyIcon className='item-icon' value='DeleteOutlined' />
     <span className="item-number">{index + 2}</span>

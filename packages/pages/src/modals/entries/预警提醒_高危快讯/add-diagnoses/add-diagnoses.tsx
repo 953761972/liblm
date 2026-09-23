@@ -40,6 +40,7 @@ export default function AddDiagnoses({ handelProcess, diagId, diagnosesTemplate,
       note: '',
       sort: findMaxSort(),
       outEmrId: +id,
+      pregnancyId: +id,
       clear: true,
       // createDate: formatTimeToStandard(new Date()),
     };

@@ -244,7 +244,7 @@ export function HighriskSign_高危因素管理(props: IProps) {
     }
 
 
-    function renderTree({ treeData, expandedKeys }: { treeData?: DataNode[]; expandedKeys: string[] }) {
+    function renderTree({ treeData }: { treeData?: DataNode[]; }) {
         return (
             <Tree_L
                 multiple
@@ -269,46 +269,39 @@ export function HighriskSign_高危因素管理(props: IProps) {
     }
 
     function renderhiskTree() {
-        const treeData__ = transfer_to_treeNode(currentTreeData)
-
         const highriskVersion = mchcConfig.get('highriskVersion')
-
-        if (highriskVersion === 23 || mchcEnv.is('华医') || mchcEnv.is('南医增城')) {
-            return renderTree({ treeData: treeData__, expandedKeys })
+        const is_全国 = highriskVersion === 23
+        if (is_全国 || mchcEnv.is('华医') || mchcEnv.is('南医增城')) {
+            return render_tree_1()
         } else {
-            return (
-                <Row className={styles['row-content']} key={searchValue ? searchValue : currentTreeData.length}>
-                    <Col span={8}>
-                        <div className={styles['tree-title']}>{get(treeData__, `[0].title`)}</div>
-                        <div className={styles['col-content']}>
-                            {renderTree({ treeData: get(treeData__, `[0].children`), expandedKeys })}
-                        </div>
-                    </Col>
-                    <Col span={8}>
-                        <div className={styles['tree-title']}>{get(treeData__, `[1].title`)}</div>
-                        <div className={styles['col-content']}>
-                            {renderTree({ treeData: get(treeData__, `[1].children`), expandedKeys })}
-                        </div>
-                    </Col>
-                    <Col span={8}>
-                        <div className={styles['tree-title']}>{get(treeData__, `[2].title`)}</div>
-                        <div className={styles['col-content']}>
-                            {renderTree({ treeData: get(treeData__, `[2].children`), expandedKeys })}
-                        </div>
-                    </Col>
-                    {/* {
-            treeData.map((_: any) => {
-              return <Col span={7}>
-                <div className={styles["tree-title"]}>{get(_, `title`)}</div>
-                <div className={styles["col-content"]}>
-                  {renderTree({ treeData: get(_, `children`), expandedKeys })}
-                </div>
-              </Col>
-            })
-          } */}
-                </Row>
-            )
+            return render_tree_3()
         }
+    }
+    function render_tree_3() {
+        const treeData__ = transfer_to_treeNode(currentTreeData)
+        const b0 = treeData__?.[0]
+        const b1 = treeData__?.[1]
+        const b2 = treeData__?.[2]
+        return (
+            <Row className={styles['row-content']} key={searchValue ? searchValue : currentTreeData.length}>
+                {render_tree_3_col(b0)}
+                {render_tree_3_col(b1)}
+                {render_tree_3_col(b2)}
+            </Row>
+        )
+    }
+    function render_tree_3_col(item?: DataNode) {
+        if (!item) return null
+        return <Col span={8}>
+            <div className={styles['tree-title']}>{get(item, `title`)}</div>
+            <div className={styles['col-content']}>
+                {renderTree({ treeData: get(item, `children`), })}
+            </div>
+        </Col>
+    }
+    function render_tree_1() {
+        const treeData__ = transfer_to_treeNode(currentTreeData)
+        return renderTree({ treeData: treeData__, })
     }
     function getTargetNote(v: IMchc_TemplateTree_Item) {
         const p = get(highRiskTreeDataMapping.current, v.pid.toString())

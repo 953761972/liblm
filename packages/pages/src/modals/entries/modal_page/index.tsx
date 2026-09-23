@@ -32,14 +32,14 @@ export default function Modal_Page({ modal_data, close, ...others }: IGlobalModa
         mchcLogger.log('moda_page', modal_data)
 
 
-        if (route_conf?.url) {
-            const happy_conf = getHappyConfig(route_conf.url!)
-            mchcEnv.push_global_cache('happy_conf', happy_conf || { usr1: 'unset' })
+        const happy_conf = getHappyConfig(route_conf?.url!)
+        if (happy_conf) {
+            mchcEnv.push_global_cache('happy_conf', happy_conf)
 
         }
 
         return () => {
-            if (route_conf?.url) {
+            if (happy_conf) {
                 mchcEnv.pop_global_cache('happy_conf')
             }
         }

@@ -61,8 +61,6 @@ export function transferMenus(menus: Permission_With_Children[], parentid = 0) {
                         size='small'
                         onClick={async (e) => {
                             e.stopPropagation()
-                            // const happy_conf = getHappyConfig(key)
-                            // mchcEnv.setGlobalCache('happy_conf', happy_conf || { usr1: 'unset' })
 
                             mchcModal__.open('modal_page', {
                                 modal_data: {

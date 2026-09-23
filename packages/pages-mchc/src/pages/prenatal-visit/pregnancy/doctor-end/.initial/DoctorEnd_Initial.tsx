@@ -2,25 +2,21 @@
 import { MyIcon, MyLazyComponent } from '@lm_fe/components_m';
 import { Form, FormInstance } from 'antd';
 // import { getBMI, getGesWeek, menopauseWeek } from '@/utils/formula';
-import { getGesWeek } from '@lm_fe/components_m';
-import { mchcEnv, mchcEvent, mchcUtils } from '@lm_fe/env';
+import { mchcEvent, mchcUtils } from '@lm_fe/env';
 import { mchcModal__ } from '@lm_fe/pages';
 import { use_provoke } from '@lm_fe/provoke';
-import { IMchc_Doctor_Diagnoses, IMchc_Doctor_FirstVisitDiagnosisOutpatient, IMchc_Doctor_OutpatientHeaderInfo, TIdType, TIdTypeCompatible } from '@lm_fe/service';
+import { IMchc_Doctor_FirstVisitDiagnosisOutpatient, IMchc_Doctor_OutpatientHeaderInfo, TIdType, TIdTypeCompatible } from '@lm_fe/service';
 import { Button, Space, Tabs, message } from 'antd';
-import { cloneDeep, forEach, get, set } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
-import { filter_diagnoses } from '../.utils';
 import JYJC from './components/JianYanJianCha';
 import QTBS from './components/QiTaBingshi';
 import TGJC from './components/TiGeJianCha';
-import YBBS from './components/YiBanBingShi';
 import XBS from './components/XianBingShi';
+import YBBS from './components/YiBanBingShi';
 import YCS from './components/YunChanShi';
 import ZDCL from './components/ZhenDuanChuLi';
 import ZKJC from './components/ZhuanKeJianCha';
 import './index.less';
-import requestMethods, { getTabMethods } from './methods/request';
 const single_id = mchcUtils.single_id
 const tabContents = [XBS, YBBS, QTBS, YCS, TGJC, ZKJC, JYJC, ZDCL];
 export interface IDoctorEnd_InitialProps {
@@ -61,11 +57,9 @@ function DoctorEnd_Initial(props: IDoctorEnd_InitialProps) {
 
 
   const [cur_step, set_cur_step] = useState(allTabs[0].key)
-  const [all_tabs, set_tabs] = useState(allTabs)
   const forms = useRef(Array(10).fill(0).map(_ => Form.useForm()[0]))
 
   const [disabled_save, set_disabled_save] = useState(false)
-  const [serialNo, setSerialNo] = useState<string>('')
 
   useEffect(() => {
 
@@ -81,64 +75,10 @@ function DoctorEnd_Initial(props: IDoctorEnd_InitialProps) {
 
 
 
-
-
-
-
-
-  /**点击每一个tab查询该form的数据 */
-  async function requestTabFormData(tab: string,) {
-
-    let res = await requestMethods[getTabMethods[tab]](pregnancyId);
-
-    // if (res.serialNo) {
-    //   setSerialNo(res.serialNo)
-    // }
-
-    if (tab == 'tab-0') {
-      // reduceTab0(res);
-
-      // if (mchcEnv.is('越秀妇幼') && res.visitId) {
-      //   SMchc_Doctor.getVisitEmrEditable(res.visitId)
-      //     .then(set_disabled_save)
-      //     .catch(() => set_disabled_save(true))
-      // }
-
-    }
-
-
-
-    // if (tab == 'tab-7') {
-    //   const d = res.diagnoses as IMchc_Doctor_Diagnoses[]
-    //   const _diagnoses = filter_diagnoses(d)
-    //   setDiagnosesList(_diagnoses);
-    // }
-
-  }
-
-  function reduceTab0(res: any) {
-    if (!mchcEnv.is('越秀妇幼')) return
-    const newNtVal = cloneDeep(get(res, 'ntExams'));
-    const newNfVal = cloneDeep(get(res, 'nfExams'));
-    const sureEdd = get(res, 'sureEdd');
-    forEach(newNtVal, (item, index) => {
-      if (item.checkdate && sureEdd) {
-        item.menopause = getGesWeek(sureEdd, item.checkdate);
-      }
-    });
-    forEach(newNfVal, (item) => {
-      if (item.checkdate && sureEdd) {
-        item.menopause = getGesWeek(sureEdd, item.checkdate);
-      }
-    });
-    set(res, 'ntExams', newNtVal);
-    set(res, 'nfExams', newNfVal);
-  }
-
   function cal_next_tab(key: string,) {
-    const idx = all_tabs.findIndex((item) => item.key === key);
-    if (idx === -1 || idx === all_tabs.length) return
-    return all_tabs[idx + 1]
+    const idx = allTabs.findIndex((item) => item.key === key);
+    if (idx === -1 || idx === allTabs.length) return
+    return allTabs[idx + 1]
   }
   function cal_next_step(key: string,) {
     return cal_next_tab(key)?.key
@@ -146,7 +86,7 @@ function DoctorEnd_Initial(props: IDoctorEnd_InitialProps) {
 
   async function handleSubmit() {
     if (cur_step == 'tab-7') return
-    const tab = all_tabs.filter((item: any) => item.key === cur_step)[0];
+    const tab = allTabs.filter((item: any) => item.key === cur_step)[0];
 
     const idx = Number(tab.key.slice(-1))
 
@@ -209,12 +149,10 @@ function DoctorEnd_Initial(props: IDoctorEnd_InitialProps) {
         activeKey={cur_step}
         className="prenatal-visit-main_initial-tabs"
         onChange={(_next) => {
-          // handleSubmit(key, true)
           set_cur_step(_next)
-          requestTabFormData(_next);
         }}
       >
-        {all_tabs.map(({ key, title, Content, className }: any, idx) => {
+        {allTabs.map(({ key, title, Content, className }: any, idx) => {
           const isFunc = Content.tmp
 
           const optionNode = <Space className="prenatal-visit-main_initial-btns">
@@ -230,8 +168,6 @@ function DoctorEnd_Initial(props: IDoctorEnd_InitialProps) {
                 const _next = cal_next_step(cur_step)
                 if (_next) {
                   set_cur_step(_next)
-                  requestTabFormData(_next);
-
                 }
               }}>
                 <MyIcon value='ArrowRightOutlined' /> 下一页
@@ -244,7 +180,6 @@ function DoctorEnd_Initial(props: IDoctorEnd_InitialProps) {
               diagnosis_before_submit={props.diagnosis_before_submit}
               diagnosis_addon_btns={props.diagnosis_addon_btns}
               disabled_save={disabled_save}
-              serialNo={serialNo}
               active={key === cur_step}
               form={forms.current[idx]}
               handlePrint={handlePrint}

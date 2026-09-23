@@ -86,4 +86,5 @@ export interface IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit {
     caSignStatus?: boolean
 
     prenatalVisitId?: number
+    diagnosis?: IMchc_Doctor_Diagnoses[]
 }

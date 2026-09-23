@@ -107,13 +107,14 @@ function DiagnosesTemplateOld(props: IDiagnosesTemplate) {
   }
 
   function handleSearch(item: any) {
-    let postdata: any = {
+    let postdata: Partial<IMchc_Doctor_Diagnoses> = {
       diagnosis: '',
       diagnosisCode: '',
       highrisk: false,
       note: '',
       sort: findMaxSort(),
       outEmrId: get(headerInfo, `id`),
+      pregnancyId: get(headerInfo, `id`),
       // createDate: formatTimeToStandard(new Date()),
     };
     if (item) {

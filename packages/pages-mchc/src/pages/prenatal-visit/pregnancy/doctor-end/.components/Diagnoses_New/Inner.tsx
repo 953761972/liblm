@@ -29,7 +29,6 @@ function Diagnoses(props: IDiagnosesprops) {
 
   useEffect(() => {
 
-    // SMchc_Doctor.getFirstVisitDiagnosisOutpatient(headerInfo?.id).then(l => setList(l.diagnoses))
 
     return () => {
 
