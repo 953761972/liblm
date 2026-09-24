@@ -528,6 +528,12 @@ export default defineFormConfig(
                             inputType: 'MSW',
                             layout: '1/3',
                         },
+                        {
+                            label: '保存并审核',
+                            name: '护士端_保存并审核',
+                            inputType: 'MSW',
+                            layout: '1/3',
+                        },
                     ],
                 },
 

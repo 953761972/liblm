@@ -89,12 +89,12 @@ const MyEditTable: TCommonComponent<IMyEditTableProps, string | any[]> = (props)
           }
           return {
             ...column,
-            align: align || 'center',
+            align,
             title,
             width,
             dataIndex: format_dataIndex(column),
             render:
-              // render || 
+              // render ||
               (
                 (value: any, rowData: any, rowIndex: number) => {
 

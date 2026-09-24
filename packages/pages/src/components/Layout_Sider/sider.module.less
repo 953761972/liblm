@@ -1,68 +1,62 @@
 @primary-color: #0e318d;
 
-
-
-// new
-
 .layout-sider {
-
-  .preview-btn {
-    visibility: hidden;
-  }
-
-  .menu-item:hover {
-    background: fade(@primary-color, 10%);
-
     .preview-btn {
-      visibility: visible;
-    }
-  }
-
-  :global(.ant-menu-sub) {
-    background: fade(@primary-color, 10%);
-  }
-
-  :global(.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected) {
-    // background: @primary-color;
-    background: @primary-color;
-    color: #fff;
-
-    &:after {
-      display: none;
-    }
-  }
-
-  :global(.ant-menu-submenu-selected) {
-    position: relative;
-
-    &:before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 3px;
-      height: 100%;
-      background-color: @primary-color;
-      z-index: 9;
+        visibility: hidden;
     }
 
-    .ant-menu-submenu-arrow {
+    .menu-item:hover {
+        background: fade(@primary-color, 10%);
 
-      &::before,
-      &::after {
+        .preview-btn {
+            visibility: visible;
+        }
+    }
+
+    :global(.ant-menu-sub) {
+        background: fade(@primary-color, 10%);
+    }
+
+    :global(.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected) {
+        // background: @primary-color;
         background: @primary-color;
-      }
+        color: #fff;
+
+        &:after {
+            display: none;
+        }
     }
-  }
 
-  :global(.ant-layout-sider-children) {
-    padding-bottom: 36px;
-  }
-  :global(.ant-menu-submenu-title) {
-    padding-right: 18px !important;
-  }
+    :global(.ant-menu-submenu-selected) {
+        position: relative;
 
-  // :global(.ant-menu-submenu-title:hover) {
-  //   background: fade(@primary-color, 10%);
-  // }
+        &:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 3px;
+            height: 100%;
+            background-color: @primary-color;
+            z-index: 9;
+        }
+
+        .ant-menu-submenu-arrow {
+            &::before,
+            &::after {
+                background: @primary-color;
+            }
+        }
+    }
+
+    :global(.ant-layout-sider-children) {
+        padding-bottom: 36px;
+    }
+    :global(.ant-menu-submenu-title) {
+        padding-right: 18px !important;
+    }
+
+    // :global(.ant-menu-submenu-title:hover) {
+    //   background: fade(@primary-color, 10%);
+    // }
 }
