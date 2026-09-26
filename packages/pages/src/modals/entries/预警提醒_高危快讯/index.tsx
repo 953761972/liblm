@@ -1,5 +1,5 @@
 import { IGlobalModalProps, } from '@lm_fe/components';
-import { IMchc_Doctor_Diagnoses, IMchc_Doctor_OutpatientHeaderInfo, IMchc_TemplateTree_Item, SMchc_Doctor, SMchc_TemplateTrees } from '@lm_fe/service';
+import { IMchc_Doctor_Diagnoses, IMchc_Doctor_OutpatientHeaderInfo, SMchc_Doctor } from '@lm_fe/service';
 import { formatDate } from '@lm_fe/utils';
 import { Button, Checkbox, Empty, message, Modal, Tabs } from 'antd';
 import classnames from 'classnames';
@@ -57,7 +57,6 @@ export default function HighRiskWarn({
 
   const [selectRemind, setSelectRemind] = useState([]); // 选择的漏诊提醒标记数据标记数据
   const [selectRiskMark, setSelectRiskMark] = useState([]); // 选择的高危标记
-  const [diagnoses, setDiagnoses] = useState<{ [x: string]: IMchc_TemplateTree_Item[] }>({}); // 诊断模板
 
   const [noProcessData, setNoPorcessData] = useState([] as any); // 未处置预警提醒数据
   const [processData, setProcessData] = useState([] as any); // 已处置预警提醒数据
@@ -387,7 +386,7 @@ export default function HighRiskWarn({
   };
 
   const CheckboxOnChange = (item: any) => {
-    return async (e: any) => {
+    return (e: any) => {
       const newSelectRemind = [...selectRemind];
       const ind = findIndex(newSelectRemind, (value: any) => value.id == item.id);
       if (e.target.checked) {
@@ -397,14 +396,6 @@ export default function HighRiskWarn({
       } else {
         newSelectRemind.splice(ind, 1);
         setSelectRemind(newSelectRemind);
-      }
-      const olddata = diagnoses[item.id];
-      if (!olddata) {
-        const res = await SMchc_TemplateTrees.get_diagnoses_template(item.data.key);
-        const obj = {
-          [item.id]: res,
-        };
-        setDiagnoses({ ...diagnoses, ...obj });
       }
     };
   };
@@ -512,7 +503,7 @@ export default function HighRiskWarn({
           {chenked && tabBtn == handleType.noprocess && (
             <AddDiagnoses
               headerInfo={headerInfo}
-              diagnosesTemplate={diagnoses[item.id]}
+              diagnosesKey={item.data.key}
               diagId={item.id}
               handelProcess={handleProcess}
               diagnosesList={[]}

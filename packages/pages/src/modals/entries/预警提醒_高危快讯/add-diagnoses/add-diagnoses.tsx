@@ -1,28 +1,47 @@
 import { mchcEnv, mchcEvent } from '@lm_fe/env';
-import { IMchc_Doctor_Diagnoses, IMchc_Doctor_OutpatientHeaderInfo, IMchc_TemplateTree_Item, SMchc_Doctor } from '@lm_fe/service';
+import {
+    IMchc_Doctor_Diagnoses,
+    IMchc_Doctor_OutpatientHeaderInfo,
+    IMchc_TemplateTree_Item,
+    SMchc_Doctor,
+    SMchc_TemplateTrees,
+} from '@lm_fe/service'
 import { Input, message } from 'antd';
 import { cloneDeep, forEach, get, isString, map, set, size } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import styles from './index.module.less';
 interface IProps {
   headerInfo?: IMchc_Doctor_OutpatientHeaderInfo;
-  diagnosesTemplate: IMchc_TemplateTree_Item[];
+  diagnosesKey?: string; // 漏诊提醒选中记录的 item.data.key
   handelProcess: Function; // 把漏诊提醒标为已经处置
   diagId: any;
   setDiagnosesList?(v: IMchc_Doctor_Diagnoses[]): void
   diagnosesList?: IMchc_Doctor_Diagnoses[]
   page?: 'return'
 }
-export default function AddDiagnoses({ handelProcess, diagId, diagnosesTemplate, ...props }: IProps) {
+export default function AddDiagnoses({ handelProcess, diagId, diagnosesKey, ...props }: IProps) {
   const timer: any = useRef();
-  const [template, setTemplate] = useState(diagnosesTemplate); // 模板
+  const [template, setTemplate] = useState<IMchc_TemplateTree_Item[]>([]); // 诊断列表
+  const [keyword, setKeyword] = useState(diagnosesKey ?? ''); // 输入框筛选关键词
 
+  // 漏诊提醒选中后，将 item.data.key 设置到输入框，并调用接口获取诊断列表
   useEffect(() => {
-    setTemplate(diagnosesTemplate);
-  }, [diagnosesTemplate]);
+    if (diagnosesKey === undefined || diagnosesKey === null) return;
+    setKeyword(diagnosesKey);
+    getDiagnosesTemplate(diagnosesKey);
+    return () => {
+      if (timer.current) clearTimeout(timer.current);
+    };
+  }, [diagnosesKey]);
+
+  async function getDiagnosesTemplate(value: string) {
+    const res = await SMchc_TemplateTrees.get_diagnoses_template(value);
+    setTemplate(res ?? []);
+  }
+
   function findMaxSort() {
     let max: any = 0;
-    map(diagnosesTemplate, (item) => {
+    map(template, (item) => {
       const sort = get(item, `sort`);
       if (sort > max) {
         max = sort;
@@ -60,17 +79,9 @@ export default function AddDiagnoses({ handelProcess, diagId, diagnosesTemplate,
   function handleChange(e: any) {
     if (timer.current) clearTimeout(timer.current);
     let value = e.target.value;
-    console.log({ value });
+    setKeyword(value);
     timer.current = setTimeout(() => {
-      if (value == '') {
-        setTemplate(diagnosesTemplate);
-      } else {
-        let newTemplate = diagnosesTemplate.filter((item: any) => {
-          let str = get(item, 'val');
-          return str.search(value) != -1;
-        });
-        setTemplate(newTemplate);
-      }
+      getDiagnosesTemplate(value);
     }, 500);
   }
   function hasKeyword(val: string, arr: any[]) {
@@ -155,6 +166,7 @@ export default function AddDiagnoses({ handelProcess, diagId, diagnosesTemplate,
       <Input
         className={styles["diag-ipt"]}
         placeholder="请输入筛选过滤诊断信息"
+        value={keyword}
         // enterButton="查询"
         onChange={handleChange}
       //   onSearch={this.handleSearch}

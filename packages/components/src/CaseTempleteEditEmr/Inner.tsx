@@ -1,7 +1,7 @@
 import { mchcEnv, mchcLogger } from "@lm_fe/env";
 import { load_src, request, sleep } from "@lm_fe/utils";
 import { MyIcon } from '@noah-libjs/components';
-import { Button, Modal, Space, Spin, message } from 'antd';
+import { Button, Space, message } from 'antd';
 import { get } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { ICaseEditProps } from "src/CaseTempleteEdit/types";
@@ -12,15 +12,16 @@ import { get_editor_frame, load_xemr } from "./utils";
 
 export default function CaseTempleteEditEmr(props: ICaseEditProps) {
   const {
-    toolbars,
-    // value = demo_text,
-    value = '',
-    onChange,
-    containerProps,
-    hidentoolbars,
-    hideSignButton,
-    title,
-  } = props;
+      toolbars,
+      // value = demo_text,
+      value = '',
+      onChange,
+      containerProps,
+      hidentoolbars,
+      hideSignButton,
+      title,
+      use_doctor_sign,
+  } = props
 
   const fuck_editor = useRef<IFuck_Xemr>()
   const value_cache = useRef(value)
@@ -40,25 +41,9 @@ export default function CaseTempleteEditEmr(props: ICaseEditProps) {
   }
 
   // ===================== CA电子签名 =====================
-  const [signModalVisible, setSignModalVisible] = useState(false)
-  const [signQrCode, setSignQrCode] = useState('')
+  // 复用统一的医生签名流程(本地http签名 / 扫码授权由hook内部处理)
+  const { handle_cs_sign, sign_btn_disabled, sign_btn_text, sign_confirm } = use_doctor_sign('caseTemplete')
   const [signLoading, setSignLoading] = useState(false)
-  const signPollTimer = useRef<any>(null)
-  const signRequesting = useRef(false)
-
-  const clearSignPollTimer = () => {
-    if (signPollTimer.current) {
-      clearInterval(signPollTimer.current)
-      signPollTimer.current = null
-    }
-  }
-
-  useEffect(() => () => clearSignPollTimer(), [])
-
-  const requestCaUserImage = async () => {
-    const result = (await request.get('/api/ca/queryUserImage')).data;
-    return result;
-  }
 
   // 将签名base64图片渲染到文书模板的 [{{signBase64}}] 占位符中
   const renderSignImage = (signBase64: string) => {
@@ -88,42 +73,10 @@ export default function CaseTempleteEditEmr(props: ICaseEditProps) {
     onChange?.(newContent);
   };
 
-  // 处理签名接口返回: 签名图片(user.signBase64) 或 待扫码授权(二维码)
-  const handleSignImageResult = (res: any) => {
-    // 已授权: 返回用户信息,签名图片在signBase64字段
-    if (get(res, 'signBase64')) {
-      clearSignPollTimer()
-      setSignModalVisible(false)
-      setSignLoading(false)
-      renderSignImage(get(res, 'signBase64'))
-      return
-    }
-    // 未授权: 返回CaResponseDTO,data为二维码base64,弹出让用户扫码授权
-    const qrCodeBase64 = get(res, 'data')
-    if (qrCodeBase64) {
-      setSignLoading(false)
-      setSignModalVisible(true)
-      setSignQrCode(`data:image/png;base64,${qrCodeBase64}`)
-      // 轮询,等待用户扫码授权
-      clearSignPollTimer()
-      signPollTimer.current = setInterval(async () => {
-        if (signRequesting.current) return
-        signRequesting.current = true
-        try {
-          const r = await requestCaUserImage()
-          handleSignImageResult(r)
-        } catch (e) {
-          // 轮询失败继续等待
-        } finally {
-          signRequesting.current = false
-        }
-      }, 2000)
-      return
-    }
-    // 其他失败情况
-    message.error(get(res, 'msg') || '获取签名图片失败')
-    setSignLoading(false)
-    setSignModalVisible(false)
+  // 获取当前用户已授权的电子签名图片
+  const requestCaUserImage = async () => {
+    const result = (await request.get('/api/ca/queryUserImage')).data;
+    return result;
   }
 
   const handleSignClick = async () => {
@@ -132,22 +85,25 @@ export default function CaseTempleteEditEmr(props: ICaseEditProps) {
       message.warning('当前文书模板未设置签名占位符[{{signBase64}}]')
       return
     }
+    if (!sign_confirm()) return
     setSignLoading(true)
     try {
+      // 复用统一签名hook完成CA授权(本地http签名 / 扫码授权)
+      //await handle_cs_sign({ title, content })
+      // 授权完成后获取签名图片,渲染到占位符
       const res = await requestCaUserImage()
-      handleSignImageResult(res)
+      const signBase64 = get(res, 'signBase64')
+      if (signBase64) {
+        renderSignImage(signBase64)
+      } else {
+        message.error('获取签名图片失败')
+      }
+      await save()
     } catch (e) {
-      message.error('获取签名失败')
+      message.error('签名失败')
+    } finally {
       setSignLoading(false)
-      setSignModalVisible(false)
-      clearSignPollTimer()
     }
-  }
-
-  const handleSignModalCancel = () => {
-    clearSignPollTimer()
-    setSignModalVisible(false)
-    setSignQrCode('')
   }
   // ===================== CA电子签名 end =====================
 
@@ -303,10 +259,11 @@ export default function CaseTempleteEditEmr(props: ICaseEditProps) {
             type="primary"
             onClick={handleSignClick}
             loading={signLoading}
+            disabled={sign_btn_disabled}
             icon={<MyIcon value='HighlightOutlined' />}
             style={hideSignButton ? { display: 'none' } : undefined}
           >
-            电子签名
+            {sign_btn_text || '电子签名'}
           </Button>
           <Button
             type="primary"
@@ -322,30 +279,6 @@ export default function CaseTempleteEditEmr(props: ICaseEditProps) {
           </Button>
         </Space.Compact>
       )}
-      <Modal
-        title="CA电子签名授权"
-        open={signModalVisible}
-        footer={null}
-        onCancel={handleSignModalCancel}
-        centered
-      >
-        <div style={{ textAlign: 'center', padding: '12px 0' }}>
-          <Spin spinning={signLoading || !signQrCode}>
-            {signQrCode ? (
-              <img
-                src={signQrCode}
-                alt="授权二维码"
-                style={{ width: 300, height: 300 }}
-              />
-            ) : (
-              <div style={{ width: 300, height: 300 }} />
-            )}
-          </Spin>
-          <p style={{ marginTop: 12, color: '#888' }}>
-            请使用CA客户端APP扫描二维码完成授权,授权后将自动获取签名
-          </p>
-        </div>
-      </Modal>
     </>
   );
 
