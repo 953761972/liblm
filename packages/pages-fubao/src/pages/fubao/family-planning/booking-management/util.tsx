@@ -121,9 +121,7 @@ export function checkDisabledHalfDay(scheduleData?: IModel_FamilyPlaningScheduli
   );
 }
 export function getWeekStartEnd(date: Dayjs) {
-  const startDayOfWeek = date.clone().subtract(date.weekday(), 'days');
-  const endDayOfWeek = startDayOfWeek.clone().add(6, 'day');
-  return [startDayOfWeek, endDayOfWeek];
+  return [date.startOf('week'), date.endOf('week')];
 }
 
 export function getMonthStartEnd(date: Dayjs) {
