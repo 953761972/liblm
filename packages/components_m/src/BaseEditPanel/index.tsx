@@ -125,7 +125,7 @@ export default class BaseEditPanel<T extends BaseEditPanelIProps = BaseEditPanel
     const { Form, printTemplate = '', printResource = '', history, targetLabelCol, ...rest } = this.props;
     const { formDescriptions, formDescriptionsWithoutSection, data, formKey, spinning } = this.state;
     return (
-      <div className={styles["base-edit-panel"]}>
+      <div className={styles["base-edit-panel"]} style={{ background: '#fff' }}>
         <Form
           targetLabelCol={targetLabelCol}
           {...rest}

@@ -5,7 +5,7 @@ import { SLocal_History } from '@lm_fe/service';
 import { Button, Space, message } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { get, size } from 'lodash';
-;
+import React from 'react';
 export default class AdmissionForm extends BaseEditPanelForm {
   // 地址组件 触发按钮
   getEvents = () => ({
