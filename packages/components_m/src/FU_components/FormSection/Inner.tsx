@@ -281,7 +281,7 @@ function MyFormSection(props: IFormSectionProps) {
   }
 
   function render() {
-    if (!f_config || isEmpty(f_config)) return <Empty />
+    if (!f_config || isEmpty(f_config)) return <Empty description='配置不存在' />
     const filterArr: any[] = (f_config ?? []).filter(_ => _)
 
     const fds = filterArr
