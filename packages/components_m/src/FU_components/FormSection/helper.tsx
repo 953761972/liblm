@@ -1,7 +1,7 @@
-import { mchcEvent, mchcLogger } from '@lm_fe/env';
+import { mchcEvent } from '@lm_fe/env';
 import { IMchc_FormDescriptions_Field_Nullable, SMchc_FormDescriptions } from '@lm_fe/service';
 import { AnyObject, expect_array } from '@lm_fe/utils';
-import { FormInstance, Segmented, Tabs, message } from 'antd';
+import { FormInstance, Segmented, Tabs } from 'antd';
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
@@ -147,7 +147,6 @@ export function RenderSection(props: { fd: IMchc_FormDescriptions_Field_Nullable
     const { containerType = 'section(default)', children = [], collapsed } = fd
     if (isEmpty(children)) return null
     const title = SMchc_FormDescriptions.get_the_fucking_itemLabel(fd, true)
-    mchcLogger.log('fucking', fd)
     const [hidden, setHidden] = useState(collapsed)
 
     const node = <div hidden={hidden}>{renderContent(children)}</div>

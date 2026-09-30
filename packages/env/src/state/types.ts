@@ -41,13 +41,14 @@ export type ISystemConfig = Partial<{
     高危管理_隐藏高危筛查: boolean
     护士端_审核禁用保存: boolean
     护士端_保存并审核: boolean
-    医生端_模块隐藏: string[] // the old version is string[]
-    住院_模块隐藏: string[] // the old version is string[]
-    护士端_模块隐藏: string[] // the old version is string[]
+    医生端_禁用首诊纠正预产期: boolean
+    医生端_模块隐藏: string[]
+    住院_模块隐藏: string[]
+    护士端_模块隐藏: string[]
     doctorOpenWebsocket: boolean
     VTE预防用药筛查表: string
-    nurseHide: ICommonOption[] // the old version is string[]
-    medicalHide: ICommonOption[] // the old version is string[]
+    nurseHide: ICommonOption[]
+    medicalHide: ICommonOption[]
     PDF预览组件版本?: string
     老人模式?: boolean
     列表一页显示条数?: number

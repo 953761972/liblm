@@ -109,9 +109,10 @@ export function checkDisabledHalfDay(scheduleData?: IModel_FamilyPlaningScheduli
   if (!scheduleData || !type) return true;
   const { schedulingDate } = scheduleData;
   const attendency = getAttendanceOfThisDay(scheduleData);
-
-  if (!schedulingDate.isSameOrAfter(dayjs(), 'day')) return true;
-  if (schedulingDate.isSame(dayjs(), 'day') && type === '上午' && dayjs().hours() >= 12) return true;
+  const now = dayjs()
+  const isSameOrAfter = schedulingDate.isSame(now, 'day') || schedulingDate.isAfter(now, 'day')
+  if (!isSameOrAfter) return true;
+  if (schedulingDate.isSame(dayjs(), 'day') && type === '上午' && dayjs().hour() >= 12) return true;
   const opposite: TMorningOrAfternoon = type === '上午' ? '下午' : '上午';
   return (
     attendency === '休息' ||
@@ -120,9 +121,7 @@ export function checkDisabledHalfDay(scheduleData?: IModel_FamilyPlaningScheduli
   );
 }
 export function getWeekStartEnd(date: Dayjs) {
-  const startDayOfWeek = date.clone().subtract(date.weekday(), 'days');
-  const endDayOfWeek = startDayOfWeek.clone().add(6, 'day');
-  return [startDayOfWeek, endDayOfWeek];
+  return [date.startOf('week'), date.endOf('week')];
 }
 
 export function getMonthStartEnd(date: Dayjs) {

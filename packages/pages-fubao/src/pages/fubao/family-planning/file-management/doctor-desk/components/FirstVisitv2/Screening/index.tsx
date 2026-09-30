@@ -1,12 +1,9 @@
-import React from 'react';
-import Form from './components/Form';
-import { valueToApi, valueToForm } from '../adapter';
 import { BaseEditPanel, formDescriptionsWithoutSectionApi } from '@lm_fe/components_m';
-import { get, isEqual, set, isEmpty } from 'lodash';
-import { message } from 'antd';
-import dayjs from 'dayjs';
-import { SMchc_FormDescriptions } from '@lm_fe/service';
 import { fubaoRequest as request } from '@lm_fe/utils';
+import dayjs from 'dayjs';
+import { get, isEmpty, isEqual, set } from 'lodash';
+import { valueToApi, valueToForm } from '../adapter';
+import Form from './components/Form';
 import { form_config } from './form_config';
 export default class AdmissionPanel extends BaseEditPanel {
   static defaultProps = {

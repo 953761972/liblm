@@ -1,17 +1,17 @@
-import { Timeline } from 'antd';
+import { Empty, Timeline } from 'antd';
 import { get, map } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './index.less';
 import { TIdType, TIdTypeCompatible } from '@lm_fe/service';
 import { mchcEvent } from '@lm_fe/env';
-import { request } from '@lm_fe/utils';
+import { AnyObject, isEmpty, request } from '@lm_fe/utils';
 interface Iprops {
   id: TIdTypeCompatible;
 }
 export default function PrenatalTree({ id, ...props }: Iprops) {
   const history = useHistory();
-  const [prenatalTreeData, set_prenatalTreeData] = useState(null)
+  const [prenatalTreeData, set_prenatalTreeData] = useState<AnyObject[]>([])
 
   const handleClick = useCallback((key: string, id?: string) => {
     if (id) {
@@ -29,10 +29,11 @@ export default function PrenatalTree({ id, ...props }: Iprops) {
   }, [])
   async function initTreeData() {
     if (prenatalTreeData) return;
-    let data: any = (await request.get('/api/doctor/getExamTree?id=' + id)).data;
-    data = data.sort((a: any, b: any) => a.date < b.date ? 1 : a.date > b.date ? -1 : 0)
+    let data = (await request.get<AnyObject[]>('/api/doctor/getExamTree?id=' + id)).data;
+    data = data.sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : 0)
     set_prenatalTreeData(data)
   }
+  if (isEmpty(prenatalTreeData)) return <Empty />
   return (
     <Timeline style={{ padding: 12 }}>
       {map(prenatalTreeData, (item, index) => {

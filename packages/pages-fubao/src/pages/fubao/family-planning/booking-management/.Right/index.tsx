@@ -32,9 +32,9 @@ function Label(props: { title: string; num?: number; color?: string }) {
 export interface IBaseProps {
   bookingData: IBooking[];
   dd: DD;
-  selectedDate: Moment;
+  selectedDate: Dayjs;
   mode: TabType;
-  setSelectedDate: (v: Moment) => void;
+  setSelectedDate: (v: Dayjs) => void;
   setMode: (v: TabType) => void;
   findColor2: (v: TOperationType) => string[];
   daysSetting?: IModel_FamilyPlanningDefaultSetting;
@@ -50,7 +50,7 @@ export default function Right(props: {
   const { dd, colorList, toggleNode } = props;
   const [mode, setMode] = useState<TabType>('day');
   const [bookingData, setBookingData] = useState<IBooking[]>([]);
-  const [selectedDate, setSelectedDate] = useState<Moment>(dayjs());
+  const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs());
   const [daysSetting, setDaysSetting] = useState<IModel_FamilyPlanningDefaultSetting>();
   const [activeOperationType, setActiveOperationType] = useState<Set<TOperationType>>(new Set());
   const [scheduleArr, setScheduleArr] = useState<IModel_FamilyPlaningSchedulingDetails[]>([]);

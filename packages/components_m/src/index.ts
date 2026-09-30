@@ -43,7 +43,6 @@ export * from './utils/levelOptions'
 export * from './utils'
 
 export * from './hooks'
-export * from './utils/adapter'
 export * from './utils/utils'
 export * from './utils/format'
 export * from './utils/defaultMethod'

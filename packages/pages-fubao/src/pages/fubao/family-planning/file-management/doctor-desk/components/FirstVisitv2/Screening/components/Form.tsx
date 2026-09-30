@@ -4,7 +4,7 @@ import { Space, message } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import dayjs from 'dayjs';
 import { get, set } from 'lodash';
-;
+import React from 'react';
 export default class AdmissionForm extends BaseEditPanelForm {
   renderBtns = () => {
     return (
