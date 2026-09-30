@@ -233,7 +233,7 @@ function RenderFormSectionComponent(props: IProps) {
                                 rootClassName={my_styles.compact}
                                 style={{ width: '100%' }}
                                 {...straw_props}
-                                // size={_config.inputProps?.size ?? 'small'}
+                            // size={_config.inputProps?.size ?? 'small'}
                             >
                                 {straw_conf.children?.map((c) => {
                                     if (!c || [false, 0].includes(c.isActive!)) return null
@@ -254,6 +254,7 @@ function RenderFormSectionComponent(props: IProps) {
                     </Row>
                 )
 
+            case 'blank_part': return renderEditItem(config, null,)
             case 'title':
                 // 显示小标题
                 return (
@@ -1661,9 +1662,9 @@ function RenderFormSectionComponent(props: IProps) {
                 return config?.plainForm
                     ? node
                     : renderEditItem(form_config, node, {
-                          ...formItemLayout,
-                          styles,
-                      })
+                        ...formItemLayout,
+                        styles,
+                    })
         }
     }
 
