@@ -1,14 +1,11 @@
 import { FormSectionForm } from '@lm_fe/components_m';
 import { mchcEvent, mchcUtils } from '@lm_fe/env';
-import { BF_Wrap2, conceive_fuck_edd, nt_fuck_edd } from '@lm_fe/pages';
-import { IMchc_Doctor_FirstVisitPresentmhOutpatient, SMchc_Doctor } from '@lm_fe/service';
-import { debounce } from '@lm_fe/utils';
-import React from 'react';
-import { useEffect, useState } from 'react';
-import { api } from '../../../.api';
+import { BF_Wrap2 } from '@lm_fe/pages';
+import { SMchc_Doctor } from '@lm_fe/service';
+import React, { useEffect } from 'react';
 import { IInitial_Tab_props } from '../../types';
 // import getConfig from './config';
-import { use_现病史 } from './use_现病史'
+import { use_现病史 } from './use_现病史';
 export default function JWS(props: IInitial_Tab_props) {
   const { form, active, set_disabled_save, disabled_save } = props
 
