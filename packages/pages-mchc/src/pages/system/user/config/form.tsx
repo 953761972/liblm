@@ -83,6 +83,15 @@ export const modalFormDescriptions = {
     },
     layout: '1/1',
   },
+  signBase64: {
+    key: 'signBase64',
+    label: '电子签名',
+    inputType: 'SignImageUpload',
+    inputProps: {
+      
+    },
+    layout: '1/1',
+  },
 };
 
 export const resetFormDescriptions = {
@@ -107,7 +116,7 @@ export const queryFormDescriptions = {
     label: '账号',
     // 输入组件类型 input/number/autoComplete/checkbox/address/select/multiselect/date/rangeDate/treeSelect/
     inputType: 'input',
-    // JPA CriteriaQuery //  equal, in, contains,specified, greaterThan, lessThan, greaterOrEqualThan, lessOrEqualThan
+    // JPA CriteriaQuery //  equal, in, contains,specified, greaterThan, lessThan, greaterOrEqualThan, lessOrEqualThan
     // 默认 contains 包含
     filterType: 'contains',
   },

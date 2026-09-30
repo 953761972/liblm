@@ -4,7 +4,7 @@ import { Button, Col, Input, Modal, Pagination, Row } from 'antd';
 import { get } from 'lodash';
 // import aImg from '@/assets/imgs/images/a.jpg';
 // import bImg from '@/assets/imgs/images/b.png';
-import { mchcLogger } from '@lm_fe/env';
+import { mchcEnv, mchcLogger } from '@lm_fe/env';
 // import { mchcModal__ } from '@lm_fe/pages';
 import { formatDate } from '@lm_fe/utils';
 import classnames from 'classnames';
@@ -54,15 +54,22 @@ export default function Inner(props: IProps) {
     console.log('record', record);
 
     if (record?.url1 && window.mchc_modal) {
-      // 第三方 url 处理
-      window.mchc_modal.open('modal_page', {
-        modal_data: {
-          // content: <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-          //   <iframe width="100%" height="100%" style={{ border: 'none', padding: 0, margin: 0 }} src={record?.url1} />
-          // </div>,
-          iframe_url: record?.url1
+        if (mchcEnv.in(['中大惠亚'])) {
+            let pdfPath = record.url1
+            let key = '&amp;'
+            let newUrl = pdfPath.replace(new RegExp(key, 'g'), '&')
+            window.open(newUrl, '_target')
+        }else{
+            // 第三方 url 处理
+            window.mchc_modal.open('modal_page', {
+                modal_data: {
+                    // content: <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+                    //   <iframe width="100%" height="100%" style={{ border: 'none', padding: 0, margin: 0 }} src={record?.url1} />
+                    // </div>,
+                    iframe_url: record?.url1
+                }
+            })
         }
-      })
       return
     }
 
@@ -110,7 +117,7 @@ export default function Inner(props: IProps) {
               type='text'
               onClick={() => open_modal(record)}
             >
-              查看
+              查看报告
             </Button>
           );
         }

@@ -1,7 +1,9 @@
 import { mchcEnv, mchcLogger } from "@lm_fe/env";
-import { load_src, sleep } from "@lm_fe/utils";
-import { Button, message, Space } from 'antd';
-import React, { useEffect, useRef } from 'react';
+import { load_src, request, sleep } from "@lm_fe/utils";
+import { MyIcon } from '@noah-libjs/components';
+import { Button, Space, message } from 'antd';
+import { get } from 'lodash';
+import React, { useEffect, useRef, useState } from 'react';
 import { ICaseEditProps } from "src/CaseTempleteEdit/types";
 import { IFuck_Xemr } from "./types";
 import { get_editor_frame, load_xemr } from "./utils";
@@ -10,17 +12,100 @@ import { get_editor_frame, load_xemr } from "./utils";
 
 export default function CaseTempleteEditEmr(props: ICaseEditProps) {
   const {
-    toolbars,
-    // value = demo_text,
-    value = '',
-    onChange,
-    containerProps,
-    hidentoolbars,
-  } = props;
+      toolbars,
+      // value = demo_text,
+      value = '',
+      onChange,
+      containerProps,
+      hidentoolbars,
+      hideSignButton,
+      title,
+      use_doctor_sign,
+  } = props
 
   const fuck_editor = useRef<IFuck_Xemr>()
   const value_cache = useRef(value)
   value_cache.current = value
+
+  // 将当前模板的title设置进X-EMR编辑器,保存时作为保存接口的ititle字段
+  const syncEmrTitle = () => {
+    if (title && fuck_editor.current) {
+      try {
+        // X-EMR编辑器有setTitle方法,保存接口ititle字段来自getTitle()
+        // @ts-ignore
+        fuck_editor.current?.setTitle?.(title)
+      } catch (e) {
+        mchcLogger.warn('设置X-EMR文书标题失败', { e, title })
+      }
+    }
+  }
+
+  // ===================== CA电子签名 =====================
+  // 复用统一的医生签名流程(本地http签名 / 扫码授权由hook内部处理)
+  const { handle_cs_sign, sign_btn_disabled, sign_btn_text, sign_confirm } = use_doctor_sign('caseTemplete')
+  const [signLoading, setSignLoading] = useState(false)
+
+  // 将签名base64图片渲染到文书模板的 [{{signBase64}}] 占位符中
+  const renderSignImage = (signBase64: string) => {
+    const content = fuck_editor.current?.getHtml() || '';
+    const placeholder = '[{{signBase64}}]';
+    if (content.indexOf(placeholder) === -1) {
+      message.warning('当前文书模板未设置签名占位符[{{signBase64}}]');
+      return;
+    }
+    const signImage = signBase64.startsWith('data:image')
+      ? signBase64
+      : `data:image/png;base64,${signBase64}`;
+    let newContent: string
+    // 占位符写在 <img src> 里时,直接替换dataURL;否则替换成<img>标签
+    if (
+      content.indexOf(`src="${placeholder}"`) !== -1 ||
+      content.indexOf(`src='${placeholder}'`) !== -1
+    ) {
+      newContent = content.split(placeholder).join(signImage);
+    } else {
+      newContent = content.split(placeholder).join(`<img src="${signImage}" style="width:120px;height:60px"/>`);
+    }
+    fuck_editor.current?.loadHtml(newContent);
+    syncEmrTitle()
+    message.success('电子签名成功');
+    // 触发保存,将签名内容持久化
+    onChange?.(newContent);
+  };
+
+  // 获取当前用户已授权的电子签名图片
+  const requestCaUserImage = async () => {
+    const result = (await request.get('/api/ca/queryUserImage')).data;
+    return result;
+  }
+
+  const handleSignClick = async () => {
+    const content = fuck_editor.current?.getHtml() || ''
+    if (content.indexOf('[{{signBase64}}]') === -1) {
+      message.warning('当前文书模板未设置签名占位符[{{signBase64}}]')
+      return
+    }
+    if (!sign_confirm()) return
+    setSignLoading(true)
+    try {
+      // 复用统一签名hook完成CA授权(本地http签名 / 扫码授权)
+      //await handle_cs_sign({ title, content })
+      // 授权完成后获取签名图片,渲染到占位符
+      const res = await requestCaUserImage()
+      const signBase64 = get(res, 'signBase64')
+      if (signBase64) {
+        renderSignImage(signBase64)
+      } else {
+        message.error('获取签名图片失败')
+      }
+      await save()
+    } catch (e) {
+      message.error('签名失败')
+    } finally {
+      setSignLoading(false)
+    }
+  }
+  // ===================== CA电子签名 end =====================
 
   useEffect(() => {
 
@@ -39,6 +124,7 @@ export default function CaseTempleteEditEmr(props: ICaseEditProps) {
   useEffect(() => {
     try {
       fuck_editor.current?.loadHtml(value);
+      syncEmrTitle()
     } catch (e) {
       message.warning('加载文档发生错误')
       mchcLogger.warn('加载文档发生错误', { e, value })
@@ -90,6 +176,7 @@ export default function CaseTempleteEditEmr(props: ICaseEditProps) {
 
 
     fuck_editor.current.loadHtml(value_cache.current);
+    syncEmrTitle()
 
     let _emreditor = get_editor_frame()
     load_src({
@@ -111,6 +198,8 @@ export default function CaseTempleteEditEmr(props: ICaseEditProps) {
 
   async function save() {
     try {
+      // 保存前将当前模板的title同步到编辑器,作为保存接口的ititle字段
+      syncEmrTitle()
       // 将文书的预览内容存起来
       const _pv = await prepare_preview()
 
@@ -166,6 +255,16 @@ export default function CaseTempleteEditEmr(props: ICaseEditProps) {
       <div id="editor_el" style={{ overflow: 'hidden auto', height: '100%', ...containerProps }}></div>
       {!hiddenButton && (
         <Space.Compact style={{ position: 'fixed', right: 36, bottom: 36 }}>
+          <Button
+            type="primary"
+            onClick={handleSignClick}
+            loading={signLoading}
+            disabled={sign_btn_disabled}
+            icon={<MyIcon value='HighlightOutlined' />}
+            style={hideSignButton ? { display: 'none' } : undefined}
+          >
+            {sign_btn_text || '电子签名'}
+          </Button>
           <Button
             type="primary"
             onClick={save}
