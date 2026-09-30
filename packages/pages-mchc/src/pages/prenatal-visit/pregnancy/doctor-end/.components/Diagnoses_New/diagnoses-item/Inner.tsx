@@ -1,28 +1,26 @@
 
 import { formatTimeToStandard, MyIcon } from '@lm_fe/components_m';
+import { mchcEvent } from '@lm_fe/env';
 import { IMchc_Doctor_Diagnoses, SMchc_Doctor } from '@lm_fe/service';
-import { request } from '@lm_fe/utils';
-import { Button, Divider, Input, Popover } from 'antd';
+import { Button, Divider, Input, Popover, PopoverProps, Typography } from 'antd';
 import classnames from 'classnames';
-import { cloneDeep, get, map, set, size } from 'lodash';
+import { cloneDeep, get, set, size } from 'lodash';
 import React, { useEffect, useMemo, useState } from 'react';
 import requestMethods_further from '../../../.further/methods/request';
 import './index.less';
 import { IDiagnosesItem_Props } from './types';
-import { mchcEvent } from '@lm_fe/env';
 export default function DiagnosesItem({
   do_del_diagnose_item,
   diagnose,
   index,
-  edit,
-  headerInfo,
+  edit = true,
+  operate = true,
   diagnosesList,
   setDiagnosesList,
-  isShowDiagnosesTemplate,
 }: IDiagnosesItem_Props) {
   const [note, setNote] = useState(get(diagnose, `note`));
   const [preNote, setPreNote] = useState(get(diagnose, `preNote`));
-  const [visibleId, setVisibleId] = useState(null);
+  const [visibleId, setVisibleId] = useState<number>();
   useEffect(() => {
     setNote(get(diagnose, `note`));
     setPreNote(get(diagnose, `preNote`));
@@ -57,34 +55,15 @@ export default function DiagnosesItem({
     const note = diagnose.note ? `后备注: ${diagnose.note}\n` : '';
     const doctor = diagnose.doctor ? `诊断医生: ${diagnose.doctor}\n` : '';
     return `${createdDate}${diagnosis}${preNote}${note}${doctor}`;
-    // return (
-    //   <div className="diag-title-tip">
-    //     {diagnose.createdDate && <span>{createdDate}</span>}
-    //     {diagnose.diagnosis && <span>{diagnosis}</span>}
-    //     {diagnose.preNote && <span>{preNote}</span>}
-    //     {diagnose.note && <span>{note}</span>}
-    //     {diagnose.doctor && <span>{doctor}</span>}
-    //     <span></span>
-    //   </div>
-    // );
   }, [diagnose]);
 
-  function handleVisibleChange(visible: boolean, i: number) {
-    const newList = cloneDeep(diagnosesList);
-    const item = newList[i];
-    map(newList, (it, ind) => {
-      if (get(it, `visible`)) {
-        set(it, `visible`, false);
-      }
-    });
-    item.visible = visible;
-    setDiagnosesList(newList);
-  }
-  const popoverContent = (item: any, i: number) => {
+
+  const popoverContent = (item: IMchc_Doctor_Diagnoses, i: number) => {
 
     const handleHighrisk = async () => {
       const newList = cloneDeep(diagnosesList);
       set(newList, `[${i}].highrisk`, newList[i].highrisk ? false : true);
+      setVisibleId(-1)
       const postData = newList[i];
       await SMchc_Doctor.new_Diagnosis(postData);
       setDiagnosesList(newList);
@@ -93,7 +72,7 @@ export default function DiagnosesItem({
 
     const handleSortChange = async (n: number) => {
       const newList = cloneDeep(diagnosesList);
-      item.visible = false;
+      setVisibleId(-1)
       newList[i] = newList[i + n];
       newList[i + n] = item;
       // 对诊断进行排序，sort赋值
@@ -107,34 +86,53 @@ export default function DiagnosesItem({
 
     return (
       <div>
-        <p>
-          <span className="diagHandle" onClick={() => handleHighrisk()}>
+        <Typography.Paragraph className="diagHandle">
+          <span onClick={() => handleHighrisk()}>
             {item.highrisk === true ? '取消高危诊断' : '标记高危诊断'}
           </span>
-        </p>
+        </Typography.Paragraph>
         {i ? (
-          <p>
-            <span className="diagHandle" onClick={() => handleSortChange(-1)}>
+          <Typography.Paragraph className="diagHandle">
+            <span onClick={() => handleSortChange(-1)}>
               上 移
             </span>
-          </p>
+          </Typography.Paragraph>
         ) : null}
         {i + 1 < size(diagnosesList) ? (
-          <p>
-            <span className="diagHandle" onClick={() => handleSortChange(1)}>
+          <Typography.Paragraph className="diagHandle">
+            <span onClick={() => handleSortChange(1)}>
               下 移
             </span>
-          </p>
+          </Typography.Paragraph>
         ) : null}
       </div>
     );
   };
 
-  const del_btn = <Button style={{ marginRight: 4 }} shape='circle' onClick={() => itemDelete()} >
+  const del_btn = <Button disabled={!operate} style={{ marginRight: 4 }} shape='circle' onClick={() => itemDelete()} >
     <MyIcon className='item-icon' value='DeleteOutlined' />
     <span className="item-number">{index + 2}</span>
 
   </Button>
+  const d_node = <div className={classnames('diagnoses-val margin', { highrisk: get(diagnose, `highrisk`) })}>
+    {get(diagnose, `diagnosis`)}
+  </div>
+  const p_d_node = <div className={classnames('prenote-val-content', { highrisk: get(diagnose, `highrisk`) })}>
+    {preNote && <div className="prenote">{preNote}</div>}
+    {d_node}
+  </div>
+  const popover_props: PopoverProps = {
+    onOpenChange(open) {
+      if (open) {
+        setVisibleId(get(diagnose, `id`));
+      } else {
+        setVisibleId(-1);
+      }
+    },
+    open: get(diagnose, `id`) == visibleId,
+    trigger: "click",
+    content: popoverContent(diagnose, index)
+  }
   return (
     // <Tooltip title={getTitle}>
     <div
@@ -160,28 +158,11 @@ export default function DiagnosesItem({
                 value={preNote}
               ></Input>
             </div>
-            <Popover
-              className="diag-popover2"
-              trigger="click"
-              content={popoverContent(diagnose, index)} //
-              // visible={!!diagnose.visible && edit}
-              visible={get(diagnose, `id`) == visibleId}
-              onVisibleChange={(visible) =>
-                setTimeout(() => {
-                  // handleVisibleChange(visible, index);
-                  if (visible) {
-                    setVisibleId(get(diagnose, `id`));
-                  } else {
-                    setVisibleId(null);
-                  }
-                }, 200)
-              }
-            // getPopupContainer={getPopupContainer}
-            >
-              <div className={classnames('diagnoses-val margin', { highrisk: get(diagnose, `highrisk`) })}>
-                {get(diagnose, `diagnosis`)}
-              </div>
-            </Popover>
+            {
+              operate
+                ? <Popover {...popover_props}>{d_node}</Popover>
+                : d_node
+            }
 
             <div className="input-conetnt">
               <Input
@@ -203,25 +184,11 @@ export default function DiagnosesItem({
             {/* <span className="item-number">{index + 2}</span> */}
             {/* <div className="border"></div> */}
 
-            <Popover
-              className="diag-popover2"
-              trigger="click"
-              content={popoverContent(diagnose, index)}
-              open={!isShowDiagnosesTemplate && !!diagnose.visible}
-              onOpenChange={(visible) =>
-                setTimeout(() => {
-                  handleVisibleChange(visible, index);
-                }, 200)
-              }
-            // getPopupContainer={getPopupContainer}
-            >
-              <div className={classnames('prenote-val-content', { highrisk: get(diagnose, `highrisk`) })}>
-                {preNote && <div className="prenote">{preNote}</div>}
-                <div className={classnames('diagnoses-val', { highrisk: get(diagnose, `highrisk`) })}>
-                  {get(diagnose, `diagnosis`)}
-                </div>
-              </div>
-            </Popover>
+            {
+              operate
+                ? <Popover {...popover_props}>{p_d_node}</Popover>
+                : p_d_node
+            }
 
             {note && <div className="note-content">{note}</div>}
           </div>
@@ -230,6 +197,6 @@ export default function DiagnosesItem({
 
 
     </div>
-    // </Tooltip>
+    // </Tooltidiv>
   );
 }

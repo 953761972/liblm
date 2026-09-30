@@ -50,6 +50,7 @@ export const routesData = {
     "/pregnant-school/personal-records":lazy(() => import("../pages/pregnant-school/personal-records/index")),
     "/pregnant-school/personal-statistics":lazy(() => import("../pages/pregnant-school/personal-statistics/index")),
     "/pregnant-school/statistics":lazy(() => import("../pages/pregnant-school/statistics/index")),
+    "/prenatal-visit/archive":lazy(() => import("../pages/prenatal-visit/archive/index")),
     "/prenatal-visit/fetal-monitor":lazy(() => import("../pages/prenatal-visit/fetal-monitor/index")),
     "/prenatal-visit/gbs":lazy(() => import("../pages/prenatal-visit/gbs/index")),
     "/prenatal-visit/physical-sign/list":lazy(() => import("../pages/prenatal-visit/physical-sign/list/index")),

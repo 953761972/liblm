@@ -50,6 +50,7 @@ mchc 页面级模块
 | /pregnant-school/personal-records | 孕妇学校-个人记录 |
 | /pregnant-school/personal-statistics | 孕妇学校-个人统计 |
 | /pregnant-school/statistics | 孕妇学校-统计 |
+| /prenatal-visit/archive | 归档管理 |
 | /prenatal-visit/fetal-monitor | 胎监-列表 |
 | /prenatal-visit/gbs | B族链球菌-列表 |
 | /prenatal-visit/physical-sign/list | 体格检查管理 |

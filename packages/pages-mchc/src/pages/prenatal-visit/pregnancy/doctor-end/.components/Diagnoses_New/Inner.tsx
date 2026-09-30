@@ -65,7 +65,6 @@ function Diagnoses(props: IDiagnosesprops) {
 
 
   const add_diag = async (diagnosisObj: any) => {
-    mchcEnv.success('添加成功！' + pv_id_for_diagnose);
     if (pv_id_for_diagnose) {
       diagnosisObj.prenatalVisitId = pv_id_for_diagnose
     }
@@ -116,6 +115,7 @@ function Diagnoses(props: IDiagnosesprops) {
             (mchcEnv.in(['建瓯'])) ?
               <OkButton
                 type='dashed'
+                disabled={!pv_id_for_diagnose}
                 onClick={() =>
                   request
                     .get<IMchc_Doctor_Diagnoses[]>('/api/syncDiagnosis', { params: { ...getSearchParamsAll(), id: headerInfo?.id }, successText: '同步成功' })
@@ -159,11 +159,11 @@ function Diagnoses(props: IDiagnosesprops) {
               return (
                 <DiagnosesItem
                   edit={false}
+                  operate={!!pv_id_for_diagnose}
                   index={index}
                   diagnose={item}
                   key={`${get(item, 'id')}-false`}
                   do_del_diagnose_item={del_diagnose_item}
-                  headerInfo={headerInfo}
                   diagnosesList={diagnosesList}
                   setDiagnosesList={setDiagnosesList}
                   isShowDiagnosesTemplate={false}

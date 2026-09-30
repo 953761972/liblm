@@ -278,8 +278,6 @@ function DiagnosesTemplateOld(props: IDiagnosesTemplate) {
                   diagnose={item}
                   index={i}
                   do_del_diagnose_item={del_diagnose_item_inner}
-                  edit={true}
-                  headerInfo={headerInfo}
                   diagnosesList={diagnosesList}
                   setDiagnosesList={setDiagnosesList}
                   isShowDiagnosesTemplate={true}
