@@ -6,7 +6,7 @@ import { cloneDeep, get, map, orderBy } from 'lodash';
 import { api } from '../.api';
 // import aImg from '@/assets/imgs/images/a.jpg';
 // import bImg from '@/assets/imgs/images/b.png';
-import { mchcLogger } from '@lm_fe/env';
+import { mchcEnv, mchcLogger } from '@lm_fe/env';
 import { mchcModal__ } from '@lm_fe/pages';
 import { IMchc_Doctor_OutpatientHeaderInfo } from '@lm_fe/service';
 import { filter_obj_to_url_search, request } from '@lm_fe/utils';
@@ -77,19 +77,24 @@ export default function Inner(props: IProps) {
     console.log('record', record);
 
     if (record?.url1) {
-      // 第三方 url 处理
-      mchcModal__.open('modal_page', {
-        modal_data: {
-          // content: <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-          //   <iframe width="100%" height="100%" style={{ border: 'none', padding: 0, margin: 0 }} src={record?.url1} />
-          // </div>,
-          iframe_url: record?.url1
+        if (mchcEnv.in(['中大惠亚'])) {
+            let pdfPath = record.url1
+            let key = '&amp;'
+            let newUrl = pdfPath.replace(new RegExp(key, 'g'), '&')
+            window.open(newUrl, '_target')
+        }else{
+            // 第三方 url 处理
+            mchcModal__.open('modal_page', {
+                modal_data: {
+                    // content: <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+                    //   <iframe width="100%" height="100%" style={{ border: 'none', padding: 0, margin: 0 }} src={record?.url1} />
+                    // </div>,
+                    iframe_url: record?.url1,
+                },
+            })
         }
-      })
-      return
+        return
     }
-
-
     let path = get(record, 'url') || '';
     let pathArr = path.split('`#');
     set_imgModalVisbile(true)
@@ -126,16 +131,10 @@ export default function Inner(props: IProps) {
       render: (text: any, record: any) => {
         if (true || get(record, 'isShot')) {
           return (
-            <Button
-              size='small'
-
-              style={{}}
-              type='text'
-              onClick={() => open_modal(record)}
-            >
-              查看
-            </Button>
-          );
+              <Button size="small" style={{}} type="text" onClick={() => open_modal(record)}>
+                  查看报告
+              </Button>
+          )
         }
         return (
           <>
