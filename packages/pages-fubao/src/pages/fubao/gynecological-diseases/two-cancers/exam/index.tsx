@@ -11,41 +11,6 @@ import { getSearchParamsAll, getSearchParamsValue, fubaoRequest as request, slee
 import { get } from 'lodash';
 import { mchcLogger } from '@lm_fe/env';
 import { Result } from 'antd';
-console.log('PanelWithChild styles', PanelWithChild.styles)
-const tabs = [
-  {
-    key: 'CervicalCarcinoma',
-    title: '宫颈癌筛查',
-  },
-  {
-    key: 'MammaryCancer',
-    title: '乳腺癌筛查',
-  },
-  {
-    key: 'SurveyReport',
-    title: '检验检查',
-  },
-  {
-    key: 'ImageReport',
-    title: '影像报告',
-  },
-  // {
-  //   key: 'InformedConsent',
-  //   title: '文书管理',
-  // },
-  // {
-  //   key: 'FollowUp',
-  //   title: '宣教随访',
-  // },
-  {
-    key: 'BasicInfo',
-    title: '基本信息',
-  },
-  // {
-  //   key: 'CaseReport',
-  //   title: '全景病历',
-  // },
-];
 
 export default function TowCancerExam(props: any) {
   const [loading, setLoading] = useState(false)

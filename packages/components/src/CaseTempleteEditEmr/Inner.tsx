@@ -252,7 +252,7 @@ export default function CaseTempleteEditEmr(props: ICaseEditProps) {
   }
   return (
     <>
-      <div id="editor_el" style={{ overflow: 'hidden auto', height: '100%', ...containerProps }}></div>
+      <div id="editor_el" style={{ height: '100%', ...containerProps }}></div>
       {!hiddenButton && (
         <Space.Compact style={{ position: 'fixed', right: 36, bottom: 36 }}>
           <Button

@@ -179,7 +179,7 @@ export default function CaseTempleteEdit(props: ICaseEditProps) {
 
 
     return (
-        <div className="case-templete-container" style={{ overflow: 'hidden auto', height: '100%', ...containerProps }}>
+        <div className="case-templete-container" style={{ height: '100%', ...containerProps }}>
             <div
                 className="sde-container"
                 key={props.sdeKey || Math.random()}

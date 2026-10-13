@@ -1,0 +1,31 @@
+.tracing-management-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &-header {
+    text-align: center;
+
+    &-ul {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      li {
+        width: 168px;
+        height: 64px;
+        padding: 12px;
+        font-size: 16px;
+
+        .number {
+          font-weight: 700;
+        }
+      }
+    }
+  }
+
+  &-table {
+    flex: 1;
+    overflow: auto;
+  }
+}
