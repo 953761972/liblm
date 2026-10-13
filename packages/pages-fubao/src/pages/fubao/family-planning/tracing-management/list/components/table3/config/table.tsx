@@ -2,6 +2,7 @@
 // import ywc from '../../../images/ywc.svg';
 // import wd from '../../../images/wd.svg';
 // import sf from '../../../images/sf.svg';
+import React from 'react';
 import { APP_CONFIG } from "@lm_fe/components_m";
 export const tableColumns = [
   {
