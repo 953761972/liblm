@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { get, isEmpty, isEqual, set } from 'lodash';
 import { valueToApi, valueToForm } from '../adapter';
 import Form from './components/Form';
-import { form_config } from './form_config';
+import form_config from './form_config';
 export default class AdmissionPanel extends BaseEditPanel {
   static defaultProps = {
     baseUrl: '/api/family/planning/addFamilyPlanningEarlyPregnancyCheck', request,

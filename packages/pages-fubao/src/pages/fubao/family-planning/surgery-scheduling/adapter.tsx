@@ -1,5 +1,5 @@
 import { map, get, isEmpty, set, pick, filter } from 'lodash';
-import { NurseTypesMapping } from "../file-management/doctor-desk/components/SurgicalRecordv2/config";
+import { 妇科专病_手术病历_mapping } from "../file-management/doctor-desk/components/SurgicalRecordv2/config";
 const toApi = (oldData: any, newData: any, date: any) => {
   //0为休息，1为上午，2为下午，3为全天 attendanceSet
   map(oldData, (value, key) => {
@@ -11,7 +11,7 @@ const toApi = (oldData: any, newData: any, date: any) => {
       const withInputValues = get(oldData, `${date}-surgery.withInputValues`);
 
       //过滤出未选择的值
-      const notCheckedValues = filter(NurseTypesMapping, (item) => {
+      const notCheckedValues = filter(妇科专病_手术病历_mapping, (item) => {
         return checkedValues.indexOf(`${get(item, 'key')}`) === -1;
       });
       //选择的值传1和号源数
@@ -40,7 +40,7 @@ const formApi = (oldData: any, newData: any, date: any) => {
     }
     //0未开放，1开放,2未开放有预约，3已满
     if (
-      itemIndex === get(NurseTypesMapping, `${itemIndex}.key`) &&
+      itemIndex === get(妇科专病_手术病历_mapping, `${itemIndex}.key`) &&
       get(oldData, `${itemIndex}`) !== 0 &&
       get(oldData, `${itemIndex}`) !== 2
     ) {

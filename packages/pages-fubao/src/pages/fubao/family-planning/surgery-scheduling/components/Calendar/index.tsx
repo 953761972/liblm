@@ -4,7 +4,7 @@ import './index.less';
 import { LeftOutlined, RightOutlined, SettingOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
 import { isEqual, map as _map, isEmpty, isNil, find, get } from 'lodash';
-import { NurseTypesMapping } from "../../../file-management/doctor-desk/components/SurgicalRecordv2/config";
+import { 妇科专病_手术病历_mapping } from "../../../file-management/doctor-desk/components/SurgicalRecordv2/config";
 const week = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 export default class Calendar extends React.Component<any, any> {
   state = {
@@ -35,9 +35,9 @@ export default class Calendar extends React.Component<any, any> {
     if (!isEmpty(dateDetail)) {
       _map(dateDetail, (item, key) => {
         //0未开放，1开放,2未开放有预约，3已满
-        if (key === get(NurseTypesMapping, `${key}.key`) && item) {
+        if (key === get(妇科专病_手术病历_mapping, `${key}.key`) && item) {
           dateDetailArr.push({
-            name: get(NurseTypesMapping, `${key}.name`),
+            name: get(妇科专病_手术病历_mapping, `${key}.name`),
             key: key,
             [`${key}`]: item,
             [`${key}Num`]: get(dateDetail, `${key}Num`),
@@ -202,7 +202,7 @@ export default class Calendar extends React.Component<any, any> {
 
       //判断不可约情况下是否之前有预约的
       const flag = find(dateDetail, (value, key) => {
-        return get(NurseTypesMapping, `${key}`) && value === 2;
+        return get(妇科专病_手术病历_mapping, `${key}`) && value === 2;
       });
 
       ui.push(
@@ -299,7 +299,7 @@ export default class Calendar extends React.Component<any, any> {
 
       //判断不可约情况下是否之前有预约的
       const flag = find(dateDetail, (value, key) => {
-        return get(NurseTypesMapping, `${key}`) && value === 2;
+        return get(妇科专病_手术病历_mapping, `${key}`) && value === 2;
       });
 
       if (isBefore) {

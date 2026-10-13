@@ -19,7 +19,7 @@ import { fubaoRequest as request } from '@lm_fe/utils';
 import { FormInstance } from 'antd/lib/form/Form';
 import { filter, get, isEmpty, map } from 'lodash';
 import dayjs from 'dayjs';
-import { NurseTypesMapping } from "../../file-management/doctor-desk/components/SurgicalRecordv2/config";
+import { 妇科专病_手术病历_mapping } from "../../file-management/doctor-desk/components/SurgicalRecordv2/config";
 import { modalFormDescriptions as formDescriptions, modifyValueToForm, valueToApi, valueToForm } from './adapter';
 import { DatePicker_L, DynamicForm, LazyAntd } from '@lm_fe/components_m';
 import { formatDate } from '@lm_fe/utils';
@@ -339,7 +339,7 @@ export default class Index extends DynamicForm<any> {
   getOperationKey = (operationName: any) => {
     let operationKey = '';
     if (operationName) {
-      map(NurseTypesMapping, (item, key) => {
+      map(妇科专病_手术病历_mapping, (item, key) => {
         if (get(item, 'name') === operationName) {
           operationKey = get(item, 'key');
         }

@@ -1,5 +1,5 @@
 import { map, get, isEmpty, set, filter } from 'lodash';
-import { NurseTypesMapping } from "../../../file-management/doctor-desk/components/SurgicalRecordv2/config";
+import { 妇科专病_手术病历_mapping } from "../../../file-management/doctor-desk/components/SurgicalRecordv2/config";
 
 
 //数据转换
@@ -10,7 +10,7 @@ export const valueToApi = (values: any, reservationNumObj: any) => {
   const withInputValues = get(values, `withInputValues`);
 
   //过滤出未选择的值
-  const notCheckedValues = filter(NurseTypesMapping, (item) => {
+  const notCheckedValues = filter(妇科专病_手术病历_mapping, (item) => {
     return checkedValues.indexOf(`${get(item, 'key')}`) === -1;
   });
 
@@ -41,7 +41,7 @@ export const valueToForm = (values: any) => {
   map(values, (item, itemIndex) => {
     //0未开放，1开放,2未开放有预约，3已满
     if (
-      itemIndex === get(NurseTypesMapping, `${itemIndex}.key`) &&
+      itemIndex === get(妇科专病_手术病历_mapping, `${itemIndex}.key`) &&
       get(values, `${itemIndex}`) !== 0 &&
       get(values, `${itemIndex}`) !== 2
     ) {

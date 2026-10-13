@@ -6,7 +6,8 @@ import React from 'react';
 import { CustomIcon, } from '../../GeneralComponents/CustomIcon';
 import styles from './index.module.less';
 import Template from './template';
-class Index extends React.Component {
+import { AnyObject, expect_array } from '@lm_fe/utils';
+class Index extends React.Component<{ value: any, list_fuck_off?: boolean, is_fuck?: boolean, onChange?(v: any): void }> {
   state = {
     isShowDiagnosesTemplate: false,
   };
@@ -17,20 +18,32 @@ class Index extends React.Component {
     const note = item.note ? `诊断备注: ${item.note}\n` : '';
     return `${createdDate}${diagnosis}${note}`;
   };
+  get_the_fucking_value() {
+    const { value, list_fuck_off = false } = this.props
+    const v = list_fuck_off ? value : get(value, 'list')
+    return expect_array<any>(v)
+  }
+  emit_the_fucking_value(newList: any[]) {
+    const { value, onChange, list_fuck_off = false } = this.props
+    if (list_fuck_off) {
+      onChange?.(newList);
+    } else {
+      onChange?.({ ...value, list: newList });
+    }
 
+  }
   handleDelete = async (item: any, i: number) => {
-    const { value, onChange } = this.props as any;
-    const newList = cloneDeep(get(value, 'list'));
+    const newList = cloneDeep(this.get_the_fucking_value());
     newList.splice(i, 1);
-    onChange({ ...value, list: newList });
+    this.emit_the_fucking_value(newList)
   };
 
   changeNote = (v: string, i: number) => {
-    const { value, onChange } = this.props as any;
-    const newList = cloneDeep(get(value, 'list'));
+    const newList = cloneDeep(this.get_the_fucking_value());
     const item = newList[i];
     item.note = v;
-    onChange({ ...value, list: newList });
+    this.emit_the_fucking_value(newList)
+
   };
 
   handleBtnClick = () => {
@@ -40,11 +53,10 @@ class Index extends React.Component {
   };
 
   addDiag = async (diagnosisObj: any) => {
-    const { value, onChange } = this.props as any;
-    const list = get(value, 'list') || [];
+    const arr = this.get_the_fucking_value() || [];
     const diag = get(diagnosisObj, 'diagnosis');
-    if (list.filter((item: any) => item.diagnosis === diag).length === 0) {
-      const newList = cloneDeep(list);
+    if (arr.filter((item: any) => item.diagnosis === diag).length === 0) {
+      const newList = cloneDeep(arr);
       set(diagnosisObj, 'createDate', dayjs().format('YYYY-MM-DD'));
       set(diagnosisObj, 'diagnosisCode', get(diagnosisObj, 'code'));
       // 诊断互斥项
@@ -66,7 +78,9 @@ class Index extends React.Component {
         subItem.sort = subIndex + 1;
       });
 
-      onChange({ ...value, list: newList });
+      this.emit_the_fucking_value(newList)
+
+
     } else {
       message.warning('添加诊断重复！');
     }
@@ -79,7 +93,7 @@ class Index extends React.Component {
   };
 
   renderDiagnoses = () => {
-    const { isAllPregnancies, value, id, isShow } = this.props as any;
+    const { isAllPregnancies, value, id, is_fuck } = this.props as any;
     return (
       <div className={styles["diagWrapper"]}>
         {!isAllPregnancies && (
@@ -87,7 +101,7 @@ class Index extends React.Component {
             添加诊断
           </Button>
         )}
-        {!isShow && (
+        {is_fuck && (
           <div className={styles["firstDiag"]}>
             <span className={styles["diagNum"]}>1、</span>G<span className={styles["diagGP"]}>{get(value, 'gravidity')}</span>P
             <span className={styles["diagGP"]}>{get(value, 'parity')}</span>
@@ -112,11 +126,11 @@ class Index extends React.Component {
           </div>
         )}
 
-        {get(value, 'list') &&
-          get(value, 'list').map((item: any, i: number) => (
+        {this.get_the_fucking_value() &&
+          this.get_the_fucking_value().map((item: any, i: number) => (
             <Row className={styles["singleDiag"]} title={this.getTitle(item)} key={i}>
               <Col span={18} className={styles["diagWord"]}>
-                <span className={styles["diagNum"]}>{!isShow ? i + 2 : i + 1}、</span>
+                <span className={styles["diagNum"]}>{is_fuck ? i + 2 : i + 1}、</span>
                 <span className={styles["diag-words"]}>{item.diagnosis}</span>
                 <Input
                   className={styles["diagNote"]}
@@ -136,7 +150,7 @@ class Index extends React.Component {
                     okText="确定"
                     cancelText="取消"
                   >
-                    <CustomIcon className={styles["delBtn"]} type="icon-cacncel" />
+                    <MyIcon value='DeleteOutlined' className={styles["delBtn"]} />
                   </Popconfirm>
                 </Col>
               )}

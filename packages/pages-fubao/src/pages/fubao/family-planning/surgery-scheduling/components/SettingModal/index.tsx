@@ -13,7 +13,7 @@ import { FormInstance } from 'antd/lib/form';
 import { get, map } from 'lodash';
 import dayjs from 'dayjs';
 import React from 'react';
-import { NurseTypesMapping } from "../../../file-management/doctor-desk/components/SurgicalRecordv2/config";
+import { 妇科专病_手术病历_mapping } from "../../../file-management/doctor-desk/components/SurgicalRecordv2/config";
 import SingleCheckBox from '../SingleCheckBox/index';
 import { valueToApi, valueToForm } from './adapter';
 import './index.less';
@@ -39,10 +39,10 @@ export default class SettingModal extends React.Component<any, any> {
 
   componentDidMount() {
     let surgeryOptions: any = [];
-    for (let i in NurseTypesMapping) {
+    for (let i in 妇科专病_手术病历_mapping) {
       surgeryOptions.push({
-        label: NurseTypesMapping[i].name,
-        value: NurseTypesMapping[i].key,
+        label: 妇科专病_手术病历_mapping[i].name,
+        value: 妇科专病_手术病历_mapping[i].key,
         withInput: true,
         style: { width: 50, border: 'none', borderBottom: '1px solid #FE547B', fontSize: 12, background: '#f5f6fa' },
       });
@@ -88,7 +88,7 @@ export default class SettingModal extends React.Component<any, any> {
     //关闭有预约的项目提示
     let reservationWarningText = '';
     map(data, (value) => {
-      reservationWarningText += NurseTypesMapping[value].name + ' ';
+      reservationWarningText += 妇科专病_手术病历_mapping[value].name + ' ';
     });
     return reservationWarningText;
   };
@@ -97,7 +97,7 @@ export default class SettingModal extends React.Component<any, any> {
     //关闭有预约的项目提示(Map数据结构遍历)
     let reservationWarningText = '';
     for (let key of data.keys()) {
-      reservationWarningText += NurseTypesMapping[key].name + ' ';
+      reservationWarningText += 妇科专病_手术病历_mapping[key].name + ' ';
     }
     return reservationWarningText;
   };

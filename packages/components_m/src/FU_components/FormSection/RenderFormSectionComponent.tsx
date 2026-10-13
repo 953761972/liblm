@@ -1429,7 +1429,7 @@ function RenderFormSectionComponent(props: IProps) {
             case 'diagnosis_list_v2':
                 return renderEditItem(
                     form_config,
-                    <DiagnosisListv2 {...formItemOthers} {...formDescriptionSpecialConfig} />,
+                    <DiagnosisListv2 {...formItemOthers} {...formDescriptionSpecialConfig} {...inputProps} />,
                     {
                         ...formItemLayout,
                         styles,

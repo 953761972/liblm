@@ -5,6 +5,7 @@ import React, { Component, useEffect, useState } from 'react';
 import { NurseTypesMapping } from './config';
 import { fubaoRequest as request } from '@lm_fe/utils';
 import styles from '../../../common.module.less'
+import RenderContentWrap from './RenderContentWrap';
 export default function ZKBL(props: any) {
   const { data, id, reload } = props
 
@@ -192,9 +193,22 @@ export default function ZKBL(props: any) {
   };
 
   function renderContent() {
-    if (NurseTypesMapping[activeTemplate]) {
-      const Component = NurseTypesMapping[activeTemplate]['component'];
-      return <Component {...props} activeItem={activeItem} onRefresh={handleInit} reload={reload} />;
+    const mod = NurseTypesMapping[activeTemplate as keyof typeof NurseTypesMapping]
+
+    if (mod) {
+
+      if (mod.conf)
+        return <RenderContentWrap
+          familyPlanningId={id}
+          tableColumns={mod.conf}
+          activeItem={activeItem}
+          active_key={activeTemplate}
+          active_title={mod.name}
+          onRefresh={handleInit}
+        />
+
+      return null
+
     } else {
       return (
         <div className={styles['gy-empty-page']}>

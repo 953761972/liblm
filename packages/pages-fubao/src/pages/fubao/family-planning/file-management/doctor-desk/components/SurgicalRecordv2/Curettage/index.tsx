@@ -34,24 +34,7 @@ export default class AdmissionPanel extends BaseEditPanel {
     },
   };
 
-  //打印
-  handlePrint(id = this.state.printId) {
-    const { printId, activeTemplate } = this.state;
 
-    mchcModal__.open('print_modal', {
-      modal_data: {
-        request,
-        requestData: {
-          url: '/api/family/planning/casePdfPreview',
-          resource: activeTemplate,
-          template: '',
-          version: '',
-          note: '',
-          id,
-        }
-      }
-    })
-  }
 
 
   static getDerivedStateFromProps(nextProps: any, prevState: any) {
@@ -165,7 +148,24 @@ export default class AdmissionPanel extends BaseEditPanel {
     }
     onRefresh && onRefresh();
   };
+  //打印
+  handlePrint(id = this.state.printId) {
+    const { printId, activeTemplate } = this.state;
 
+    mchcModal__.open('print_modal', {
+      modal_data: {
+        request,
+        requestData: {
+          url: '/api/family/planning/casePdfPreview',
+          resource: activeTemplate,
+          template: '',
+          version: '',
+          note: '',
+          id,
+        }
+      }
+    })
+  }
   renderOtherModal = () => {
     return null;
   };
