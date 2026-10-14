@@ -1,23 +1,30 @@
-import { DeleteOutlined, PlusCircleOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Modal, Popconfirm, Row, message } from 'antd';
-import { get, isEmpty, map, cloneDeep, first } from 'lodash';
+import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { fubaoRequest as request, text_ellipsis } from '@lm_fe/utils';
+import { Button, Card, Col, Modal, Popconfirm, Row } from 'antd';
+import { cloneDeep, first, get, isEmpty, map } from 'lodash';
 import React, { Component, lazy } from 'react';
-import { fubaoRequest as request } from '@lm_fe/utils';
-import styles from '../../../common.module.less'
-import { 妇科专病_手术病历_mapping } from './config';
+import { IModel_EarlyPregnancySurgicalTemplate, SModel_EarlyPregnancySurgicalTemplate } from 'src/pages/fubao/.stupid_model/models/EarlyPregnancySurgicalTemplate';
+import styles from '../../../common.module.less';
+import { conf_刮宫术 } from './Curettage/conf';
+import { mchcLogger } from '@lm_fe/env';
 const RenderContentWrap = lazy(() => import('./RenderContentWrap'))
-const mapping = 妇科专病_手术病历_mapping
 
 export default class Nursing extends Component<any, any> {
   state = {
     activeTemplate: '',
     siderPanels: [],
+    surgeryTemplates: [] as IModel_EarlyPregnancySurgicalTemplate[],
     oldsiderPanels: [],
     visible: false,
     activeItem: {},
   };
 
   async componentDidMount() {
+
+    const t = await SModel_EarlyPregnancySurgicalTemplate.getList()
+    this.setState({
+      surgeryTemplates: t
+    })
     this.handleInit();
   }
 
@@ -28,16 +35,11 @@ export default class Nursing extends Component<any, any> {
   };
 
   handleClickListItem = (item: any) => () => {
-    let code = 'dilatationAndCurettage';
-    map(mapping, (value, index) => {
-      if (get(item, 'operationName') === get(value, 'name')) {
-        code = index;
-      }
-    });
-    const activeTemplate = get(mapping, `${code}.key`);
+    mchcLogger.log('handleClickListItem xxgg', item, this.state.surgeryTemplates)
+    const target = this.state.surgeryTemplates.find(_ => _.operationName === get(item, 'operationName'))
     this.setState({
       activeItem: item,
-      activeTemplate,
+      activeTemplate: target?.schedulingField,
     });
   };
 
@@ -54,22 +56,22 @@ export default class Nursing extends Component<any, any> {
       newSiderPanels = get(data, 'data.earlyPregnancyCheckSurgeryType');
     }
 
-    let newActiveTemplate: any = activeTemplate;
+
+    let new_target = this.state.surgeryTemplates.find(_ => _.operationName === activeTemplate)
+
 
     //手术病历管理跳转对应的tab
     if (surgicalRecordId) {
       map(newSiderPanels, (item, index) => {
         if (Number(surgicalRecordId) === get(item, 'id')) {
-          map(mapping, (value, valIndex) => {
-            if (get(item, 'operationName') === get(value, 'name')) {
-              newActiveTemplate = get(mapping, `${valIndex}.key`);
-            }
-          });
+          const target = this.state.surgeryTemplates.find(_ => _.operationName === get(item, 'operationName'))
+
+
           this.setState({
             siderPanels: newSiderPanels,
             oldsiderPanels: newSiderPanels,
             activeItem: item,
-            activeTemplate: newActiveTemplate,
+            activeTemplate: target?.schedulingField,
           });
         }
       });
@@ -80,11 +82,10 @@ export default class Nursing extends Component<any, any> {
         newActiveItem = first(newSiderPanels);
         let operationName = get(newSiderPanels, '0.operationName');
 
-        map(mapping, (value, index) => {
-          if (operationName === get(value, 'name')) {
-            newActiveTemplate = get(mapping, `${index}.key`);
-          }
-        });
+        new_target = this.state.surgeryTemplates.find(_ => _.operationName === operationName)!
+
+
+
       }
 
       if (!get(activeItem, 'id')) {
@@ -95,7 +96,7 @@ export default class Nursing extends Component<any, any> {
         siderPanels: newSiderPanels,
         oldsiderPanels: newSiderPanels,
         activeItem: newActiveItem,
-        activeTemplate: newActiveTemplate,
+        activeTemplate: new_target?.schedulingField,
       });
     }
   };
@@ -111,15 +112,15 @@ export default class Nursing extends Component<any, any> {
     await this.handleInit();
   };
 
-  handleChooseTemplate = (nurseType: any) => () => {
-    const clickTempKey = get(nurseType, 'key');
+  handleChooseTemplate = (fuck_type: IModel_EarlyPregnancySurgicalTemplate) => () => {
+    const clickTempKey = get(fuck_type, 'schedulingField');
     const { oldsiderPanels } = this.state as any;
     let hasExist = false;
     if (!hasExist) {
       let newSiderPanels: any = cloneDeep(oldsiderPanels);
       let newItem = {
         id: '',
-        operationName: get(nurseType, 'name'),
+        operationName: get(fuck_type, 'operationName'),
       };
       newSiderPanels.push(newItem);
       this.setState({ siderPanels: newSiderPanels, activeItem: newItem });
@@ -132,7 +133,7 @@ export default class Nursing extends Component<any, any> {
       });
     }
     this.setState({
-      activeTemplate: get(nurseType, 'key'),
+      activeTemplate: get(fuck_type, 'schedulingField'),
       visible: false,
     });
   };
@@ -150,20 +151,24 @@ export default class Nursing extends Component<any, any> {
         {!isEmpty(siderPanels) && (
           <div className={styles['family-planning-list-container']}>
             {map(siderPanels, (data, index) => {
+              const op_name = get(data, 'operationName')
               return (
                 <div key={data.id} className={styles['family-planning-list']}>
                   {
                     <>
                       <div
-                        className={`${styles['doctor-desk-first-visit-sider-list__item']} ${get(activeItem, 'id') === get(data, 'id') ? styles['active'] : ''
-                          }`}
+                        title={op_name}
+                        className={
+                          `${styles['doctor-desk-first-visit-sider-list__item']} 
+                          ${get(activeItem, 'id') === get(data, 'id') ? styles['active'] : ''}`
+                        }
                         style={
                           get(activeItem, 'id') === get(data, 'id') ? { background: '#eaf4fd' } : { background: 'none' }
                         }
                         onClick={this.handleClickListItem(data)}
                       >
                         <span className={styles['doctor-desk-first-visit-sider-list__item-title']}>
-                          {get(data, 'operationName')}
+                          {text_ellipsis(op_name, 6)}
                         </span>
                         {get(data, 'id') && get(data, 'id') != -1 ? (
                           <Popconfirm
@@ -208,29 +213,29 @@ export default class Nursing extends Component<any, any> {
   };
 
   renderContent = () => {
-    const { activeTemplate, activeItem } = this.state;
-    const { reload } = this.props as any;
-    const mod = mapping[activeTemplate as keyof typeof mapping]
-    if (mod) {
-      if (mod.conf)
-        return <RenderContentWrap
-          familyPlanningId={this.props.id}
-          tableColumns={mod.conf}
-          activeItem={activeItem}
-          active_key={activeTemplate}
-          active_title={mod.name}
-          onRefresh={this.handleInit}
-        />
+    const { activeTemplate, activeItem, surgeryTemplates } = this.state;
+    const target = surgeryTemplates.find(_ => _.schedulingField === activeTemplate)
+    mchcLogger.log('renderContent xxgg', surgeryTemplates, activeTemplate, target)
+    if (target) {
+
+      return <RenderContentWrap
+        familyPlanningId={this.props.id}
+        tableColumns={conf_刮宫术}
+        activeItem={activeItem}
+        active_key={activeTemplate}
+        active_title={target.operationName}
+        onRefresh={this.handleInit}
+      />
 
     } else {
       return (
         <div className={styles['gy-empty-page']}>
           <div>暂无病历，请选择模板内容</div>
           <div>
-            {map(mapping, (nurseType, key) => {
+            {map(this.state.surgeryTemplates, (nurseType, key) => {
               return (
                 <Button style={{ margin: 8 }} key={key} onClick={this.handleChooseTemplate(nurseType)}>
-                  {nurseType.name}
+                  {nurseType.operationName}
                 </Button>
               );
             })}
@@ -254,10 +259,10 @@ export default class Nursing extends Component<any, any> {
             this.setState({ visible: false });
           }}
         >
-          {map(mapping, (nurseType, key) => {
+          {map(this.state.surgeryTemplates, (nurseType, key) => {
             return (
               <Button style={{ margin: 8 }} key={key} onClick={this.handleChooseTemplate(nurseType)}>
-                {nurseType.name}
+                {nurseType.operationName}
               </Button>
             );
           })}

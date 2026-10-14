@@ -10,12 +10,12 @@ import { mchcLogger } from '@lm_fe/env';
 import { fubaoRequest as request } from '@lm_fe/utils';
 import { Button, Form, message, Modal, Popconfirm } from 'antd';
 import { FormInstance } from 'antd/lib/form';
-import { get, map } from 'lodash';
 import dayjs from 'dayjs';
+import { get, map } from 'lodash';
 import React from 'react';
-import { 妇科专病_手术病历_mapping } from "../../../file-management/doctor-desk/components/SurgicalRecordv2/config";
+import { IModel_EarlyPregnancySurgicalTemplate, SModel_EarlyPregnancySurgicalTemplate } from 'src/pages/fubao/.stupid_model';
 import SingleCheckBox from '../SingleCheckBox/index';
-import { valueToApi, valueToForm } from './adapter';
+import { fucking_valueToApi, fucking_valueToForm } from './adapter';
 import './index.less';
 const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 dayjs().locale('zh-cn');
@@ -35,19 +35,24 @@ export default class SettingModal extends React.Component<any, any> {
     popconfirmVisible: false,
     submitData: {},
     surgeryObj: {},
+    templates: [] as IModel_EarlyPregnancySurgicalTemplate[]
   };
 
   componentDidMount() {
-    let surgeryOptions: any = [];
-    for (let i in 妇科专病_手术病历_mapping) {
-      surgeryOptions.push({
-        label: 妇科专病_手术病历_mapping[i].name,
-        value: 妇科专病_手术病历_mapping[i].key,
-        withInput: true,
-        style: { width: 50, border: 'none', borderBottom: '1px solid #FE547B', fontSize: 12, background: '#f5f6fa' },
+    SModel_EarlyPregnancySurgicalTemplate.getList().then(l => {
+      this.setState({
+        templates: l,
+        surgeryOptions: l.map(_ => {
+          return {
+            label: _.operationName,
+            value: _.schedulingField,
+            withInput: true,
+            style: { width: 50, border: 'none', borderBottom: '1px solid #FE547B', fontSize: 12, background: '#f5f6fa' },
+          }
+        })
       });
-    }
-    this.setState({ surgeryOptions });
+
+    })
     this.getTreatmentByDate();
   }
 
@@ -61,7 +66,7 @@ export default class SettingModal extends React.Component<any, any> {
     mchcLogger.log('xxg response', response)
     if (get(response, 'code') === 1) {
       values = get(response, 'data.0');
-      let newValuesObj = valueToForm(values);
+      let newValuesObj = fucking_valueToForm(values, this.state.templates);
 
       this.form?.setFieldsValue(newValuesObj.newValues);
 
@@ -87,17 +92,21 @@ export default class SettingModal extends React.Component<any, any> {
   isHaveReservation = (data: any) => {
     //关闭有预约的项目提示
     let reservationWarningText = '';
-    map(data, (value) => {
-      reservationWarningText += 妇科专病_手术病历_mapping[value].name + ' ';
+    map(data, (key) => {
+      const item = this.state.templates.find(_ => _.schedulingField === key)
+      reservationWarningText += item?.operationName + ' ';
     });
     return reservationWarningText;
   };
 
   getReservation = (data: Map<any, any>) => {
     //关闭有预约的项目提示(Map数据结构遍历)
+    mchcLogger.log('getReservation', data)
     let reservationWarningText = '';
-    for (let key of data.keys()) {
-      reservationWarningText += 妇科专病_手术病历_mapping[key].name + ' ';
+    for (let key of Object.keys(data)) {
+      const item = this.state.templates.find(_ => _.schedulingField === key)
+
+      reservationWarningText += item?.operationName + ' ';
     }
     return reservationWarningText;
   };
@@ -127,8 +136,9 @@ export default class SettingModal extends React.Component<any, any> {
 
   handleOk = async () => {
     const { schedulingDetail, reservationNumObj } = this.state;
+    mchcLogger.log('getReservation ok', reservationNumObj)
     let submitData = this.form?.getFieldsValue();
-    let surgeryObj = valueToApi(get(submitData, 'surgery'), reservationNumObj); //开发手术项目
+    let surgeryObj = fucking_valueToApi(get(submitData, 'surgery'), reservationNumObj, this.state.templates); //开发手术项目
 
     let reservationWarningText = this.isHaveReservation(get(surgeryObj, 'reservationArr'));
 
@@ -202,7 +212,7 @@ export default class SettingModal extends React.Component<any, any> {
         onOk={() => this.handleOk()}
         footer={[
           <Button key="cancel" onClick={() => this.props.setSettingModal(false)}>
-            关闭
+            关闭1111
           </Button>,
           <Popconfirm
             key="submit"

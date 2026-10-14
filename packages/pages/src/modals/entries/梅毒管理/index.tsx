@@ -181,6 +181,8 @@ export default function SyphilisManagement(props: IGlobalModalProps<IProos>) {
       },
       { name: 'tppa', key: 'tppa', label: 'TPPA滴度', input_type: 'input', span: 6 },
       { name: 'trust', key: 'trust', label: 'TRUST滴度', input_type: 'input', span: 6 },
+      { name: 'partnerTppa', key: 'trust', label: '配偶TPPA滴度', input_type: 'input', span: 6 },
+      { name: 'partnerTrust', key: 'trust', label: '配偶TRUST滴度', input_type: 'input', span: 6 },
 
       { name: '', key: '', label: '疗程', header_label: true, just_header: true, input_type: '' },
       {

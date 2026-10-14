@@ -17,16 +17,18 @@ function MyImageEditor__(props: IMyImageEditorProps) {
 
   if (!loaded) return <div>加载中...</div>
   return <>
-    <div style={{ margin: '13px 0 16px 58px' }}>
+    {/* <div style={{ margin: '13px 0 16px 58px' }}>
       <span>电子画板：</span>
       <Switch checkedChildren="开启" unCheckedChildren="关闭" checked={__checked} onChange={set_checked} />
-    </div>
+    </div> */}
     <MyLazyComponent>
-      {
+      <GynaecologyImageEditorInner {...props} />
+
+      {/* {
         __checked
           ? <GynaecologyImageEditorInner {...props} />
           : null
-      }
+      } */}
 
     </MyLazyComponent>
   </>

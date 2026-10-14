@@ -1,4 +1,4 @@
-import { mchcEvent, mchcLogger } from '@lm_fe/env';
+import { mchcEnv, mchcEvent, mchcLogger } from '@lm_fe/env';
 import { base64_to_image, safe_json_parse } from '@lm_fe/utils';
 import { MyColor, MyIcon } from '@noah-libjs/components';
 import { Button, Layout, Popover, Slider } from 'antd';
@@ -13,7 +13,7 @@ const { Sider, Content } = Layout;
 
 function MyImageEditor_Inner(props: IMyImageEditorProps) {
 
-  const { value, onChange, canvasOptions, legends = default_legends } = props;
+  const { value, onChange, canvasOptions, legends = default_legends, on_save } = props;
 
 
   const gyImageEditorRef = useRef<HTMLDivElement>(null);
@@ -46,7 +46,7 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
   const [colors, set_colors] = useState('#fe547b')
   const [strokeWidth, set_strokeWidth] = useState(1)
   const [fontSize, set_fontSize] = useState(18)
- 
+
 
   useEffect(() => {
     initCanvas()
@@ -65,6 +65,8 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
 
 
   function broadcast_event<T extends keyof typeof MyImageEditorEvents>(type: (typeof MyImageEditorEvents)[T]) {
+    on_save?.(containner.current)
+
     mchcEvent.emit('custom_msg', {
       type,
       data: { ins: containner.current }
@@ -580,6 +582,7 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
 
   //保存图片到后台
   function handleImgSave() {
+    mchcEnv.success('保存成功')
     const value = JSON.stringify(containner.current);
     containner.current?.requestRenderAll();
 

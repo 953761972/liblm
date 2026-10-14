@@ -14,7 +14,7 @@ import DropContainer from '../components/drop-continer';
 import { OPERATION_ARR } from '../constant';
 import { TMorningOrAfternoon } from '../type';
 import { checkDisabledHalfDay, openBookingModal, handleIsBefore, getResidue } from '../util';
-interface IProps extends IBaseProps {}
+interface IProps extends IBaseProps { }
 export default function DateSelect(props: IProps) {
   const { bookingData, dd, selectedDate, findColor2, scheduleArr, activeOperationType } = props;
 
@@ -104,13 +104,13 @@ export default function DateSelect(props: IProps) {
                                 onClick={
                                   statusLabel === '已完成'
                                     ? () => {
-                                        openBookingModal(selectedDate, morningOrAfternoon, data, () => {
-                                          dd.initData();
-                                          dd.getStatistic();
-                                          dd.getBetweenList();
-                                        });
-                                      }
-                                    : () => {}
+                                      openBookingModal(selectedDate, morningOrAfternoon, data, () => {
+                                        dd.initData();
+                                        dd.getStatistic();
+                                        dd.getBetweenList();
+                                      });
+                                    }
+                                    : () => { }
                                 }
                                 className="hover-shadow date-item"
                                 style={{
@@ -260,28 +260,29 @@ export default function DateSelect(props: IProps) {
                                 </div>
                               </div>
                             ) : (
-                              <div
-                                className={`date-booking-button ${realDataArr.length === realIndex ? 'visible' : ''}`}
-                                hidden={disabled || !get(residueObj, 'isOpen')}
-                                title="添加或拖动预约"
-                                onClick={() =>
-                                  openBookingModal(selectedDate, morningOrAfternoon, {}, () => {
-                                    dd.initData();
-                                    dd.getStatistic();
-                                    dd.getBetweenList();
-                                  })
-                                }
-                                style={{
-                                  height: '100%',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  color: '#8A96A0',
-                                }}
-                              >
-                                <PlusCircleOutlined style={{ marginRight: 4 }} />
-                                添加或拖动预约
-                              </div>
+                              (disabled || !get(residueObj, 'isOpen'))
+                                ? null
+                                : <div
+                                  className={`date-booking-button ${realDataArr.length === realIndex ? 'visible' : ''}`}
+                                  title="添加或拖动预约"
+                                  onClick={() =>
+                                    openBookingModal(selectedDate, morningOrAfternoon, {}, () => {
+                                      dd.initData();
+                                      dd.getStatistic();
+                                      dd.getBetweenList();
+                                    })
+                                  }
+                                  style={{
+                                    height: '100%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    color: '#8A96A0',
+                                  }}
+                                >
+                                  <PlusCircleOutlined style={{ marginRight: 4 }} />
+                                  添加或拖动预约
+                                </div>
                             )}
                           </DropContainer>
                         </td>

@@ -87,22 +87,27 @@ const DropContainer: FC<IProps> = ({
       }}
     >
       {children}
-      <div
-        hidden={mode === 'day' ? true : isBeforeFlag || !isWeekend || schedulingFlag}
-        style={{
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          top: 0,
-          left: 0,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <span className="disabled-img"></span>
-        <span className="disabled-word">不可约</span>
-      </div>
+      {
+        (mode === 'day' ? true : isBeforeFlag || !isWeekend || schedulingFlag)
+          ? null
+          : <div
+
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              top: 0,
+              left: 0,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <span className="disabled-img"></span>
+            <span className="disabled-word">不可约</span>
+          </div>
+      }
+
       {isOver && !canDrop && <Overlay type={OverlayType.IllegalMoveHover} />}
       {!isOver && canDrop && <Overlay type={OverlayType.PossibleMove} />}
       {isOver && canDrop && <Overlay type={OverlayType.LegalMoveHover} />}
