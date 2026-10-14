@@ -55,8 +55,10 @@ export default function PAC_tracing_management_waiting(props: any) {
             width: 1360,
             title: 'PAC追踪-随访',
             modal_data: {
-                bf_title: 'PAC追踪-随访',
-                formDescriptions: [], // form_config,
+                bf_conf: {
+                    title: 'PAC追踪-随访',
+                    tableColumns: () => import('./form_config_随访')
+                },
                 getInitialData() {
                     return record.data
                 },
@@ -85,7 +87,7 @@ export default function PAC_tracing_management_waiting(props: any) {
                 ),
 
             },
-            onClose: () => {}, // 关闭弹窗 callback
+            onClose: () => { }, // 关闭弹窗 callback
         })
     }
 
@@ -96,7 +98,7 @@ export default function PAC_tracing_management_waiting(props: any) {
                 modalFormConfig={{
                     modal_data: {
                         // form: modal_form,
-                        onValuesChange(changedValues, values, form) {},
+                        onValuesChange(changedValues, values, form) { },
                     },
                 }}
                 customModelService={s}
@@ -112,7 +114,7 @@ export default function PAC_tracing_management_waiting(props: any) {
                 baseTitle="今日待随访"
                 showAdd={false}
                 showAction={false}
-                handleDoubleClickRow={() => {}}
+                handleDoubleClickRow={() => { }}
                 // needChecked
                 // ActionAddonBefore={({ handleSearch, rowData }) => {
                 //     return (

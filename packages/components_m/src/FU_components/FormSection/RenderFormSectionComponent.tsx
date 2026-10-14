@@ -133,7 +133,7 @@ import SelectWithOptionsOrInput from '../../selects/SelectWithOptionsOrInput'
 // import CustomEditor from '../../GeneralComponents/CustomEditor'
 import MobileEditor from '../../GeneralComponents/MobileEditor'
 // import PregnancyHistory from '../../BusinessComponents/PregnancyHistory'
-import { safe_json_parse } from '@lm_fe/utils'
+import { safe_json_parse, safeExec } from '@lm_fe/utils'
 import ImageUploadPreview from '../../GeneralComponents/ImageUploadPreview'
 import ImageUploadPreviewIntranet from '../../GeneralComponents/ImageUploadPreviewIntranet'
 // import { safe_json_parse } from '@lm_fe/utils';
@@ -1193,7 +1193,7 @@ function RenderFormSectionComponent(props: IProps) {
             case 'gynaecology_image_editor':
                 return renderEditItem(
                     form_config,
-                    <MyImageEditor {...formItemOthers} {...formDescriptionSpecialConfig} />,
+                    <MyImageEditor {...formItemOthers} {...inputProps} on_save={c => safeExec(get(inputProps, 'on_save'), c, form)} />,
                     {
                         ...formItemLayout,
                         styles,
@@ -1202,7 +1202,7 @@ function RenderFormSectionComponent(props: IProps) {
             case 'MyImageEditor':
                 return renderEditItem(
                     form_config,
-                    <MyImageEditor {...formItemOthers} {...formDescriptionSpecialConfig} />,
+                    <MyImageEditor  {...formItemOthers} {...inputProps} on_save={c => safeExec(get(inputProps, 'on_save'), c, form)} />,
                     {
                         ...formItemLayout,
                         styles,

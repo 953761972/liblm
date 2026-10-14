@@ -9,10 +9,10 @@ import { LazyAntd } from '@lm_fe/components';
 import { fubaoRequest as request } from '@lm_fe/utils';
 import { Button, Col, Form, message, Modal, Popconfirm, Row } from 'antd';
 import { FormInstance } from 'antd/lib/form';
-import { get, map } from 'lodash';
 import dayjs from 'dayjs';
+import { get, map } from 'lodash';
 import React from 'react';
-import { 妇科专病_手术病历_mapping } from "../../../file-management/doctor-desk/components/SurgicalRecordv2/config";
+import { SModel_EarlyPregnancySurgicalTemplate } from 'src/pages/fubao/.stupid_model/models/EarlyPregnancySurgicalTemplate';
 import { valueToApi, valueToForm } from '../../adapter';
 import SingleCheckBox from '../SingleCheckBox/index';
 import './index.less';
@@ -42,16 +42,20 @@ export default class GlobalSettingModal extends React.Component<any, any> {
     popconfirmVisible: false,
   };
   componentDidMount() {
-    let surgeryOptions: any = [];
-    for (let i in 妇科专病_手术病历_mapping) {
-      surgeryOptions.push({
-        label: 妇科专病_手术病历_mapping[i].name,
-        value: 妇科专病_手术病历_mapping[i].key,
-        withInput: true,
-        style: { width: 50, border: 'none', borderBottom: '1px solid #FE547B', fontSize: 12, background: '#f5f6fa' },
+    SModel_EarlyPregnancySurgicalTemplate.getList().then(l => {
+      this.setState({
+        surgeryOptions: l.map(_ => {
+          return {
+            label: _.operationName,
+            value: _.schedulingField,
+            withInput: true,
+            style: { width: 50, border: 'none', borderBottom: '1px solid #FE547B', fontSize: 12, background: '#f5f6fa' },
+          }
+        })
       });
-    }
-    this.setState({ surgeryOptions });
+
+    })
+
     this.getDefaultSetting();
   }
 

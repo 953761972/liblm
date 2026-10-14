@@ -1,10 +1,11 @@
-import React from 'react';
-import dayjs from 'dayjs';
-import './index.less';
-import { LeftOutlined, RightOutlined, SettingOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, LeftOutlined, RightOutlined, SettingOutlined } from '@ant-design/icons';
+import { mchcLogger } from '@lm_fe/env';
 import { Button, Tooltip } from 'antd';
-import { isEqual, map as _map, isEmpty, isNil, find, get } from 'lodash';
-import { 妇科专病_手术病历_mapping } from "../../../file-management/doctor-desk/components/SurgicalRecordv2/config";
+import dayjs from 'dayjs';
+import { map as _map, find, get, isEmpty, isEqual, isNil } from 'lodash';
+import React from 'react';
+import { IModel_EarlyPregnancySurgicalTemplate, SModel_EarlyPregnancySurgicalTemplate } from 'src/pages/fubao/.stupid_model/models/EarlyPregnancySurgicalTemplate';
+import './index.less';
 const week = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 export default class Calendar extends React.Component<any, any> {
   state = {
@@ -13,6 +14,7 @@ export default class Calendar extends React.Component<any, any> {
     dateObj: {}, // 通过date作为key 存储日期的schedulingDetailsVMList
     reservationStatusObj: {},
     attendanceSetObj: {},
+    templates: [] as IModel_EarlyPregnancySurgicalTemplate[]
   };
   componentDidUpdate(prevProps: any) {
     if (!isEqual(prevProps.reservationPanel, this.props.reservationPanel)) {
@@ -27,17 +29,25 @@ export default class Calendar extends React.Component<any, any> {
         return dateObj;
       });
       this.setState({ dateObj, reservationStatusObj, attendanceSetObj });
+
+
+      SModel_EarlyPregnancySurgicalTemplate.getList().then(templates => {
+        this.setState({
+          templates: templates
+        })
+      })
     }
   }
 
   renderDateDetail = (dateDetail: any) => {
     let dateDetailArr: any = [];
+    mchcLogger.log('dateDetail', dateDetail)
     if (!isEmpty(dateDetail)) {
       _map(dateDetail, (item, key) => {
         //0未开放，1开放,2未开放有预约，3已满
-        if (key === get(妇科专病_手术病历_mapping, `${key}.key`) && item) {
+        if (item) {
           dateDetailArr.push({
-            name: get(妇科专病_手术病历_mapping, `${key}.name`),
+            name: this.state.templates.find(_ => _.schedulingField === key)?.operationName,
             key: key,
             [`${key}`]: item,
             [`${key}Num`]: get(dateDetail, `${key}Num`),
@@ -135,10 +145,10 @@ export default class Calendar extends React.Component<any, any> {
                           dayRange === '上午'
                             ? { backgroundColor: '#81FA9F' }
                             : dayRange === '下午'
-                            ? { backgroundColor: '#81D4FA' }
-                            : dayRange === '全天'
-                            ? { backgroundColor: '#FADC81' }
-                            : {}
+                              ? { backgroundColor: '#81D4FA' }
+                              : dayRange === '全天'
+                                ? { backgroundColor: '#FADC81' }
+                                : {}
                         }
                       >
                         {dayRange}
@@ -202,7 +212,7 @@ export default class Calendar extends React.Component<any, any> {
 
       //判断不可约情况下是否之前有预约的
       const flag = find(dateDetail, (value, key) => {
-        return get(妇科专病_手术病历_mapping, `${key}`) && value === 2;
+        return value === 2;
       });
 
       ui.push(
@@ -223,10 +233,10 @@ export default class Calendar extends React.Component<any, any> {
                         dayRange === '上午'
                           ? { backgroundColor: '#81FA9F' }
                           : dayRange === '下午'
-                          ? { backgroundColor: '#81D4FA' }
-                          : dayRange === '全天'
-                          ? { backgroundColor: '#FADC81' }
-                          : {}
+                            ? { backgroundColor: '#81D4FA' }
+                            : dayRange === '全天'
+                              ? { backgroundColor: '#FADC81' }
+                              : {}
                       }
                     >
                       {dayRange}
@@ -299,7 +309,7 @@ export default class Calendar extends React.Component<any, any> {
 
       //判断不可约情况下是否之前有预约的
       const flag = find(dateDetail, (value, key) => {
-        return get(妇科专病_手术病历_mapping, `${key}`) && value === 2;
+        return value === 2;
       });
 
       if (isBefore) {
@@ -318,9 +328,8 @@ export default class Calendar extends React.Component<any, any> {
         ui.push(
           <div
             key={'thisMonth_' + i}
-            className={`this-month-day day-container ${isSame ? 'now' : ''} ${
-              dayRange === '不可约' ? 'disabled' : ''
-            } ${isNil(attendanceSet) ? 'not-open' : ''}`}
+            className={`this-month-day day-container ${isSame ? 'now' : ''} ${dayRange === '不可约' ? 'disabled' : ''
+              } ${isNil(attendanceSet) ? 'not-open' : ''}`}
             // onClick={() => {
             //   this.setState({
             //     activeDay: todayMoment,
@@ -341,10 +350,10 @@ export default class Calendar extends React.Component<any, any> {
                           dayRange === '上午'
                             ? { backgroundColor: '#81FA9F' }
                             : dayRange === '下午'
-                            ? { backgroundColor: '#81D4FA' }
-                            : dayRange === '全天'
-                            ? { backgroundColor: '#FADC81' }
-                            : {}
+                              ? { backgroundColor: '#81D4FA' }
+                              : dayRange === '全天'
+                                ? { backgroundColor: '#FADC81' }
+                                : {}
                         }
                       >
                         {dayRange}

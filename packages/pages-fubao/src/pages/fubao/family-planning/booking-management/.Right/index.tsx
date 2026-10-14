@@ -197,13 +197,13 @@ export default function Right(props: {
         ) : (
           colorList
             .filter((_) => {
-              const isOpen = getOperationNum(dd.scheduleArr[0], _.operationName as any).isOpen;
-              return mode === 'day' ? isOpen : OPERATION_ARR.includes(_.operationName);
+              const isOpen = getOperationNum(dd.scheduleArr[0], _.schedulingField).isOpen;
+              return mode === 'day' ? isOpen : true
             })
             .map((_) => {
               const isActive = activeOperationType.has(_.operationName);
 
-              const reservedData = getOperationNum(dd.scheduleArr[0], _.operationName);
+              const reservedData = getOperationNum(dd.scheduleArr[0], _.schedulingField);
               return (
                 <Tag
                   onClick={() => toggleActiveType(_.operationName)}

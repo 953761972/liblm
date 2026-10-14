@@ -4,7 +4,7 @@ const 否是_options = [{ value: 1, label: '否' }, { value: 2, label: '是' },]
 
 export default defineFormConfig(
     [
-
+        { key: 'id', form_hidden: true },
         { key: 'earlyPregnancyCheckDiagnosisAndTreatment.id', form_hidden: true },
         { key: 'earlyPregnancyCheckInspection.id', form_hidden: true },
         { key: 'earlyPregnancyCheckMedicalHistory.id', form_hidden: true },

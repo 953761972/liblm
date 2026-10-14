@@ -1,4 +1,4 @@
-import { formatDate } from '@lm_fe/utils';
+import { AnyObject, formatDate } from '@lm_fe/utils';
 import { get, set } from 'lodash';
 import dayjs, { Dayjs } from 'dayjs'
 
@@ -15,6 +15,7 @@ import { TabType, TAttendanceType, TMorningOrAfternoon, TOperationType } from '.
 
 import { BookingModalNew } from '../../.StupidModal/modals/family_planning/BookingModal/index';
 import { mchcModal__ } from '@lm_fe/pages';
+import { mchcLogger } from '@lm_fe/env';
 export function handleIsBefore(date: Dayjs) {
   const today = dayjs();
   const isBefore = dayjs(formatDate(date)).diff(dayjs(formatDate(today)), 'days');
@@ -56,20 +57,22 @@ export function getResidue(
   return { isOpen, ...obj };
 }
 
-export function getOperationNum(config?: IModel_FamilyPlaningSchedulingDetails, type?: TOperationType) {
+export function getOperationNum(config?: IModel_FamilyPlaningSchedulingDetails, filed_key?: string) {
   if (!config) return { all: 0, reserved: 0, isOpen: false, left: 0 };
-  if (!type)
+  if (!filed_key)
     return {
       all: config.totalNumOfDay,
       reserved: config.totalReservationNumOfDay,
       left: config.totalNumOfDay - config.totalReservationNumOfDay,
       isOpen: !!config.openReservation,
     };
-  const key = OPERATION_NAME_MAP[type];
+  let _conf: AnyObject = config
+  const all: number = _conf[`${filed_key}Num`] || 0;
+  const reserved: number = _conf[`${filed_key}ReservationNum`] || 0;
+  const result = { all, reserved, left: all - reserved, isOpen: !!_conf[filed_key] }
+  mchcLogger.log('getOperationNum', config, filed_key, result)
 
-  const all: number = config[`${key}Num`] || 0;
-  const reserved: number = config[`${key}ReservationNum`] || 0;
-  return { all, reserved, left: all - reserved, isOpen: !!config[key] };
+  return result
 }
 export function getOperationOpenStatusAndNum(
   type: TOperationType,
@@ -194,6 +197,7 @@ export function openBookingModal(
 
   mchcModal__.open('test', {
     onClose,
+    width: '70vw',
     modal_data: {
       content: <BookingModalNew
         step={

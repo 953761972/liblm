@@ -1,4 +1,5 @@
 import { APP_CONFIG } from "@lm_fe/components_m";
+import React from 'react'
 export const tableColumns = [
   {
     title: '门诊号',

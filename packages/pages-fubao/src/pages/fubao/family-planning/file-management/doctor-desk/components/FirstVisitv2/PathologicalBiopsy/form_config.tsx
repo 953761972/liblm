@@ -3,6 +3,7 @@ import { defineFormConfig, IMchc_FormDescriptions_Field_Nullable } from "@lm_fe/
 
 export default defineFormConfig(
     [
+        { key: 'id', form_hidden: true },
         { key: 'earlyPregnancyCheckDiagnosisAndTreatment.id', form_hidden: true },
         { key: 'earlyPregnancyCheckInspection.id', form_hidden: true },
         { key: 'earlyPregnancyCheckMedicalHistory.id', form_hidden: true },
@@ -224,11 +225,11 @@ export default defineFormConfig(
                 "inputType": "gynaecology_image_editor",
 
 
+                inputProps: {
 
+                },
 
                 "span": 24,
-                "offset": 0,
-                "isNewRow": 0,
                 "formItemLayout": { 'labelCol': { 'span': 0 }, 'wrapperCol': { 'span': 24 } },
 
 
@@ -253,7 +254,7 @@ export default defineFormConfig(
                 "inputType": "diagnosis_list_v2",
 
 
-                "inputProps": {  list_fuck_off: true },
+                "inputProps": { list_fuck_off: true },
 
 
                 "span": 16,
