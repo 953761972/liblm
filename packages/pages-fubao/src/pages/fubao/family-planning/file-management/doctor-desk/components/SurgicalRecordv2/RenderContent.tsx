@@ -10,7 +10,7 @@ export interface IRenderContentProps {
     config?: IMchc_TableConfig
     activeItem?: AnyObject
     active_key: string
-    onRefresh: () => void
+    onRefresh: (id: any) => void
 }
 export function RenderContent(props: IRenderContentProps) {
     const { config, activeItem, active_key, onRefresh } = props
@@ -60,8 +60,9 @@ export function RenderContent(props: IRenderContentProps) {
             res = await request.post('/api/family/planning/addEarlyPregnancyCheckSurgicalType', params)
 
         }
-        set_data_cache(get(res.data, 'data'))
-        onRefresh && onRefresh();
+        let res_data = get(res.data, 'data')
+        set_data_cache(res_data)
+        onRefresh(get(res_data, 'id'));
     };
     //打印
     function handlePrint() {

@@ -12,10 +12,11 @@ import { FormInstance } from 'antd/lib/form';
 import dayjs from 'dayjs';
 import { get, map } from 'lodash';
 import React from 'react';
-import { SModel_EarlyPregnancySurgicalTemplate } from 'src/pages/fubao/.stupid_model/models/EarlyPregnancySurgicalTemplate';
-import { valueToApi, valueToForm } from '../../adapter';
+import { SModel_EarlyPregnancySurgicalTemplate, IModel_EarlyPregnancySurgicalTemplate } from 'src/pages/fubao/.stupid_model/models/EarlyPregnancySurgicalTemplate';
+import { fuck_scheduling_valueToApi, fuck_scheduling_valueToForm } from '../../adapter';
 import SingleCheckBox from '../SingleCheckBox/index';
 import './index.less';
+import { mchcLogger } from '@lm_fe/env';
 const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 const Option = Select.Option;
 dayjs().locale('zh-cn');
@@ -39,22 +40,22 @@ export default class GlobalSettingModal extends React.Component<any, any> {
     disabled5: false,
     disabled6: false,
     disabled7: false,
+    templates: [] as IModel_EarlyPregnancySurgicalTemplate[],
     popconfirmVisible: false,
   };
-  componentDidMount() {
-    SModel_EarlyPregnancySurgicalTemplate.getList().then(l => {
-      this.setState({
-        surgeryOptions: l.map(_ => {
-          return {
-            label: _.operationName,
-            value: _.schedulingField,
-            withInput: true,
-            style: { width: 50, border: 'none', borderBottom: '1px solid #FE547B', fontSize: 12, background: '#f5f6fa' },
-          }
-        })
-      });
-
-    })
+  async componentDidMount() {
+    const l = await SModel_EarlyPregnancySurgicalTemplate.getList()
+    this.setState({
+      templates: l,
+      surgeryOptions: l.map(_ => {
+        return {
+          label: _.operationName,
+          value: _.schedulingField,
+          withInput: true,
+          style: { width: 50, border: 'none', borderBottom: '1px solid #FE547B', fontSize: 12, background: '#f5f6fa' },
+        }
+      })
+    });
 
     this.getDefaultSetting();
   }
@@ -65,9 +66,10 @@ export default class GlobalSettingModal extends React.Component<any, any> {
 
     if (get(res, 'code') === 1) {
       values = get(res, 'data');
-      let familyPlanningDefaultSettingDetails = get(values, 'familyPlanningDefaultSettingDetails');
-      familyPlanningDefaultSettingDetails = valueToForm(familyPlanningDefaultSettingDetails);
+      let familyPlanningDefaultSettingDetails: any = get(values, 'familyPlanningDefaultSettingDetails');
+      familyPlanningDefaultSettingDetails = fuck_scheduling_valueToForm(familyPlanningDefaultSettingDetails, this.state.templates);
       let valuesCopy = { ...values, ...familyPlanningDefaultSettingDetails };
+      mchcLogger.log('abc getDefaultSetting', familyPlanningDefaultSettingDetails, values)
       this.form?.setFieldsValue(valuesCopy);
 
       if (get(valuesCopy, 'MONDAY-attendanceSet') === 0) {
@@ -98,7 +100,7 @@ export default class GlobalSettingModal extends React.Component<any, any> {
 
   onChange = (data: any) => { };
 
-  handleSubmitData = (data: [{}]) => {
+  handleSubmitData = (data: any[]) => {
     let day = '';
 
     const notSubmitData: any = data.filter((item) => {
@@ -143,9 +145,9 @@ export default class GlobalSettingModal extends React.Component<any, any> {
   handleConfirm = async () => {
     const { data } = this.state;
 
-    let submitData = this.form?.getFieldsValue();
+    let values = this.form?.getFieldsValue();
 
-    submitData = valueToApi(submitData, data);
+    let submitData = fuck_scheduling_valueToApi(values, data, this.state.templates);
 
     const familyPlanningDefaultSettingDetails = get(submitData, 'familyPlanningDefaultSettingDetails');
 
@@ -163,6 +165,7 @@ export default class GlobalSettingModal extends React.Component<any, any> {
       };
     }
 
+    mchcLogger.log('abc handleConfirm', data, submitData, values)
     const res: any = (await request.post(`${UpdateUrl}`, submitData)).data;
 
     if (get(res, 'code') === 1) {

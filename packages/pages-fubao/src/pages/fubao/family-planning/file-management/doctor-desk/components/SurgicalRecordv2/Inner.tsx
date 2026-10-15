@@ -1,152 +1,104 @@
 import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { fubaoRequest as request, text_ellipsis } from '@lm_fe/utils';
-import { Button, Card, Col, Modal, Popconfirm, Row } from 'antd';
+import { mchcLogger } from '@lm_fe/env';
+import { AnyObject, expect_array, fubaoRequest as request, text_ellipsis } from '@lm_fe/utils';
+import { Button, Card, Col, Empty, Modal, Popconfirm, Row } from 'antd';
 import { cloneDeep, first, get, isEmpty, map } from 'lodash';
-import React, { Component, lazy } from 'react';
+import React, { lazy, useEffect, useState } from 'react';
 import { IModel_EarlyPregnancySurgicalTemplate, SModel_EarlyPregnancySurgicalTemplate } from 'src/pages/fubao/.stupid_model/models/EarlyPregnancySurgicalTemplate';
 import styles from '../../../common.module.less';
 import { conf_刮宫术 } from './Curettage/conf';
-import { mchcLogger } from '@lm_fe/env';
 const RenderContentWrap = lazy(() => import('./RenderContentWrap'))
 
-export default class Nursing extends Component<any, any> {
-  state = {
-    activeTemplate: '',
-    siderPanels: [],
-    surgeryTemplates: [] as IModel_EarlyPregnancySurgicalTemplate[],
-    oldsiderPanels: [],
-    visible: false,
-    activeItem: {},
+interface IProps {
+  id: any
+  surgicalRecordId: any
+}
+export default function FuckingNursing({ id, surgicalRecordId }: IProps) {
+  const [siderPanels, set_siderPanels] = useState<any[]>([])
+
+  const [surgeryTemplates, set_surgeryTemplates] = useState<IModel_EarlyPregnancySurgicalTemplate[]>([])
+  const [visible, set_visible] = useState<boolean>(false)
+  const [activeItem, set_activeItem] = useState<AnyObject | undefined>()
+
+
+  useEffect(() => {
+
+    init();
+
+    return () => {
+
+    }
+  }, [])
+
+
+  function handleAdd() {
+    set_visible(true)
   };
 
-  async componentDidMount() {
+  function handleClickListItem(item: any) {
+    set_activeItem(item)
 
-    const t = await SModel_EarlyPregnancySurgicalTemplate.getList()
-    this.setState({
-      surgeryTemplates: t
-    })
-    this.handleInit();
-  }
-
-  handleAdd = () => {
-    this.setState({
-      visible: true,
-    });
   };
 
-  handleClickListItem = (item: any) => () => {
-    mchcLogger.log('handleClickListItem xxgg', item, this.state.surgeryTemplates)
-    const target = this.state.surgeryTemplates.find(_ => _.operationName === get(item, 'operationName'))
-    this.setState({
-      activeItem: item,
-      activeTemplate: target?.schedulingField,
-    });
-  };
+  async function fetch_data(the_surgicalRecordId?: any) {
 
-  handleInit = async (activeType?: any) => {
-    let newSiderPanels: any = [];
-    const id = get(this.props, 'id');
-    const { activeItem, activeTemplate } = this.state;
-    const surgicalRecordId = get(this.props, 'surgicalRecordId');
+
+
     let data = (await request.get(
       `/api/family/planning/getEarlyPregnancyCheckSurgicalTypeList?familyPlanningId.equals=${id}&deleteFlag.equals=0`,
     )).data;
 
-    if (get(data, 'data')) {
-      newSiderPanels = get(data, 'data.earlyPregnancyCheckSurgeryType');
-    }
 
+    let newSiderPanels = expect_array<AnyObject>(get(data, 'data.earlyPregnancyCheckSurgeryType'));
 
-    let new_target = this.state.surgeryTemplates.find(_ => _.operationName === activeTemplate)
+    set_siderPanels(newSiderPanels)
 
 
     //手术病历管理跳转对应的tab
-    if (surgicalRecordId) {
-      map(newSiderPanels, (item, index) => {
-        if (Number(surgicalRecordId) === get(item, 'id')) {
-          const target = this.state.surgeryTemplates.find(_ => _.operationName === get(item, 'operationName'))
-
-
-          this.setState({
-            siderPanels: newSiderPanels,
-            oldsiderPanels: newSiderPanels,
-            activeItem: item,
-            activeTemplate: target?.schedulingField,
-          });
-        }
-      });
+    if (the_surgicalRecordId) {
+      const target = newSiderPanels.find(item => Number(the_surgicalRecordId) === get(item, 'id'))
+      set_activeItem(target)
     } else {
-      let newActiveItem: any = activeItem;
-
-      if (isEmpty(activeItem) && !isEmpty(newSiderPanels)) {
-        newActiveItem = first(newSiderPanels);
-        let operationName = get(newSiderPanels, '0.operationName');
-
-        new_target = this.state.surgeryTemplates.find(_ => _.operationName === operationName)!
-
-
-
-      }
-
-      if (!get(activeItem, 'id')) {
-        newActiveItem = first(newSiderPanels);
-      }
-
-      this.setState({
-        siderPanels: newSiderPanels,
-        oldsiderPanels: newSiderPanels,
-        activeItem: newActiveItem,
-        activeTemplate: new_target?.schedulingField,
-      });
+      set_activeItem(first(newSiderPanels))
     }
   };
+  async function init() {
 
-  handleDelete = (item: any) => async () => {
+    const ttt = await SModel_EarlyPregnancySurgicalTemplate.getList()
+    set_surgeryTemplates(ttt)
+    fetch_data(surgicalRecordId)
+  };
+
+  async function handleDelete(item: any) {
     const id = get(item, 'id');
     const res = (await request.delete(`/api/family/planning/deleteEarlyPregnancyCheckSurgicalType/${id}`)).data;
-    this.setState({
-      activeItem: {},
-      activeTemplate: '',
-    });
 
-    await this.handleInit();
+    set_activeItem(undefined)
+
+    await fetch_data();
   };
 
-  handleChooseTemplate = (fuck_type: IModel_EarlyPregnancySurgicalTemplate) => () => {
-    const clickTempKey = get(fuck_type, 'schedulingField');
-    const { oldsiderPanels } = this.state as any;
-    let hasExist = false;
-    if (!hasExist) {
-      let newSiderPanels: any = cloneDeep(oldsiderPanels);
-      let newItem = {
-        id: '',
-        operationName: get(fuck_type, 'operationName'),
-      };
-      newSiderPanels.push(newItem);
-      this.setState({ siderPanels: newSiderPanels, activeItem: newItem });
-    } else {
-      let item = oldsiderPanels.filter((data: any) => {
-        return data.code === clickTempKey;
-      })[0];
-      this.setState({
-        activeItem: item,
-      });
-    }
-    this.setState({
-      activeTemplate: get(fuck_type, 'schedulingField'),
-      visible: false,
-    });
+  function handleChooseTemplate(fuck_type: IModel_EarlyPregnancySurgicalTemplate) {
+    let newSiderPanels = cloneDeep(siderPanels);
+    let newItem = {
+      id: -1,
+      operationName: get(fuck_type, 'operationName'),
+    };
+    newSiderPanels.push(newItem);
+    set_visible(false)
+    set_siderPanels(newSiderPanels)
+    set_activeItem(newItem)
+
   };
 
-  renderSider = () => {
-    const { siderPanels, activeItem } = this.state as any;
+  function renderSider() {
     return (
       <Card
         size="small"
         bordered={false}
         style={{ height: '100%' }}
         title={<span style={{ color: '#150f55', fontWeight: 600 }}>就诊记录</span>}
-        extra={<PlusCircleOutlined onClick={this.handleAdd} />}
+        extra={<PlusCircleOutlined onClick={handleAdd} />}
       >
         {!isEmpty(siderPanels) && (
           <div className={styles['family-planning-list-container']}>
@@ -165,15 +117,15 @@ export default class Nursing extends Component<any, any> {
                         style={
                           get(activeItem, 'id') === get(data, 'id') ? { background: '#eaf4fd' } : { background: 'none' }
                         }
-                        onClick={this.handleClickListItem(data)}
+                        onClick={() => handleClickListItem(data)}
                       >
                         <span className={styles['doctor-desk-first-visit-sider-list__item-title']}>
-                          {text_ellipsis(op_name, 6)}
+                          {text_ellipsis(op_name, 10)}
                         </span>
                         {get(data, 'id') && get(data, 'id') != -1 ? (
                           <Popconfirm
                             title="确定要删除这个病历吗?"
-                            onConfirm={this.handleDelete(data)}
+                            onConfirm={() => handleDelete(data)}
                             okText="确定"
                             cancelText="取消"
                           >
@@ -212,62 +164,58 @@ export default class Nursing extends Component<any, any> {
     );
   };
 
-  renderContent = () => {
-    const { activeTemplate, activeItem, surgeryTemplates } = this.state;
-    const target = surgeryTemplates.find(_ => _.schedulingField === activeTemplate)
-    mchcLogger.log('renderContent xxgg', surgeryTemplates, activeTemplate, target)
-    if (target) {
-
-      return <RenderContentWrap
-        familyPlanningId={this.props.id}
-        tableColumns={conf_刮宫术}
-        activeItem={activeItem}
-        active_key={activeTemplate}
-        active_title={target.operationName}
-        onRefresh={this.handleInit}
-      />
-
-    } else {
+  function renderContent() {
+    const target_tpl = surgeryTemplates.find(_ => _.operationName === activeItem?.operationName)
+    mchcLogger.log('renderContent xxgg', surgeryTemplates, activeItem, target_tpl)
+    if (isEmpty(siderPanels)) {
       return (
         <div className={styles['gy-empty-page']}>
           <div>暂无病历，请选择模板内容</div>
           <div>
-            {map(this.state.surgeryTemplates, (nurseType, key) => {
+            {map(surgeryTemplates, (nurseType, key) => {
               return (
-                <Button style={{ margin: 8 }} key={key} onClick={this.handleChooseTemplate(nurseType)}>
+                <Button style={{ margin: 8 }} key={key} onClick={() => handleChooseTemplate(nurseType)}>
                   {nurseType.operationName}
                 </Button>
               );
             })}
           </div>
         </div>
-      );
+      )
     }
+    if (!target_tpl || !activeItem) {
+      return <Empty />
+    }
+    return <RenderContentWrap
+      familyPlanningId={id}
+      tableColumns={conf_刮宫术}
+      activeItem={activeItem}
+      active_key={target_tpl.schedulingField}
+      active_title={target_tpl.operationName}
+      onRefresh={fetch_data}
+    />
   };
 
-  render() {
-    const { visible } = this.state;
-    return (
-      <Row style={{ height: '100%' }}>
-        <Col style={{ height: '100%', width: 290, overflow: 'auto', backgroundColor: '#fff' }}>
-          {this.renderSider()}
-        </Col>
-        <Col style={{ height: '100%', width: 'calc(100% - 290px)', overflow: 'auto' }}>{this.renderContent()}</Col>
-        <Modal
-          open={visible}
-          onCancel={() => {
-            this.setState({ visible: false });
-          }}
-        >
-          {map(this.state.surgeryTemplates, (nurseType, key) => {
-            return (
-              <Button style={{ margin: 8 }} key={key} onClick={this.handleChooseTemplate(nurseType)}>
-                {nurseType.operationName}
-              </Button>
-            );
-          })}
-        </Modal>
-      </Row>
-    );
-  }
+  return (
+    <Row style={{ height: '100%' }}>
+      <Col style={{ height: '100%', width: 290, overflow: 'auto', backgroundColor: '#fff' }}>
+        {renderSider()}
+      </Col>
+      <Col style={{ height: '100%', width: 'calc(100% - 290px)', overflow: 'auto' }}>{renderContent()}</Col>
+      <Modal
+        open={visible}
+        onCancel={() => {
+          set_visible(false)
+        }}
+      >
+        {map(surgeryTemplates, (nurseType, key) => {
+          return (
+            <Button style={{ margin: 8 }} key={key} onClick={() => handleChooseTemplate(nurseType)}>
+              {nurseType.operationName}
+            </Button>
+          );
+        })}
+      </Modal>
+    </Row>
+  );
 }

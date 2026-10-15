@@ -44,10 +44,11 @@ export default class Calendar extends React.Component<any, any> {
     mchcLogger.log('dateDetail', dateDetail)
     if (!isEmpty(dateDetail)) {
       _map(dateDetail, (item, key) => {
+        const target = this.state.templates.find(_ => _.schedulingField === key)
         //0未开放，1开放,2未开放有预约，3已满
-        if (item) {
+        if (item && target) {
           dateDetailArr.push({
-            name: this.state.templates.find(_ => _.schedulingField === key)?.operationName,
+            name: target.operationName,
             key: key,
             [`${key}`]: item,
             [`${key}Num`]: get(dateDetail, `${key}Num`),
