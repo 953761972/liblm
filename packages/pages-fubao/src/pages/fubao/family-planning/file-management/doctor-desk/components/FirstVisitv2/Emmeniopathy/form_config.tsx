@@ -4,95 +4,96 @@ import { APP_CONFIG, rt_ctx } from '@lm_fe/env'
 import { peek_provoke } from '@lm_fe/provoke'
 const ctx = rt_ctx
 const React = ctx.React
+var c = React.createElement
 
 export default defineFormConfig([
-    { key: 'earlyPregnancyCheckDiagnosisAndTreatment.id', form_hidden: true },
-    { key: 'earlyPregnancyCheckInspection.id', form_hidden: true },
-    { key: 'earlyPregnancyCheckMedicalHistory.id', form_hidden: true },
-    { key: 'womenHealthcarePhysicalExamination.id', form_hidden: true },
-    {
-        name: '一般情况',
-        fields: [
-            {
-                key: 'name',
-                label: '姓名',
-                inputType: 'input',
-                span: 8,
-                offset: 0,
-                isNewRow: 0,
-                formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
-            },
+    { key: 'id', form_hidden: true },
+    { key: '病历记录.id', form_hidden: true },
+    { key: '体格检查.id', form_hidden: true },
+    { key: '辅助检查.id', form_hidden: true },
+    // {
+    //     name: '一般情况',
+    //     fields: [
+    //         {
+    //             key: 'name',
+    //             label: '姓名',
+    //             inputType: 'input',
+    //             span: 8,
+    //             offset: 0,
+    //             isNewRow: 0,
+    //             formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
+    //         },
 
-            {
-                key: 'birthDate',
-                label: '出生日期',
-                inputType: 'DatePicker',
-                span: 8,
-                offset: 0,
-                isNewRow: 0,
-                formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
-            },
-            {
-                key: '国籍',
-                label: '国籍',
-                inputType: 'country_select',
-                span: 8,
-                offset: 0,
-                isNewRow: 0,
-                formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
-            },
-            {
-                key: '民族',
-                label: '民族',
-                inputType: 'MS',
-                inputProps: { uniqueKey: '民族s', marshal: 0 },
-                span: 8,
-                offset: 0,
-                isNewRow: 1,
-                formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
-            },
-            {
-                key: 'idType',
-                label: '证件类型',
-                inputType: 'MS',
-                inputProps: { uniqueKey: '证件类型', marshal: 0 },
-                span: 8,
-                offset: 0,
-                isNewRow: 0,
-                formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
-            },
-            {
-                key: 'idNO',
-                label: '证件号码',
-                inputType: 'input',
-                span: 8,
-                offset: 0,
-                isNewRow: 0,
-                formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
-            },
-            {
-                key: 'residenceAddress',
-                label: '居住地址',
-                isNewRow: 1,
-                inputType: 'MyAddress',
-                // inputProps: {
-                //     addressBtns: [{ name: 'permanentResidenceAddress', label: '同上' }],
-                // },
-                span: 16,
-                offset: 0,
-                formItemLayout: { labelCol: { span: 4 }, wrapperCol: { span: 20 } },
-            },
-            {
-                key: 'telephone',
-                label: '联系电话',
-                inputType: 'input',
-                span: 8,
-                offset: 0,
-                isNewRow: 0,
-                formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
-            },
-        ],
-    },
+    //         {
+    //             key: 'birthDate',
+    //             label: '出生日期',
+    //             inputType: 'DatePicker',
+    //             span: 8,
+    //             offset: 0,
+    //             isNewRow: 0,
+    //             formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
+    //         },
+    //         {
+    //             key: '国籍',
+    //             label: '国籍',
+    //             inputType: 'country_select',
+    //             span: 8,
+    //             offset: 0,
+    //             isNewRow: 0,
+    //             formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
+    //         },
+    //         {
+    //             key: '民族',
+    //             label: '民族',
+    //             inputType: 'MS',
+    //             inputProps: { uniqueKey: '民族s', marshal: 0 },
+    //             span: 8,
+    //             offset: 0,
+    //             isNewRow: 1,
+    //             formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
+    //         },
+    //         {
+    //             key: 'idType',
+    //             label: '证件类型',
+    //             inputType: 'MS',
+    //             inputProps: { uniqueKey: '证件类型', marshal: 0 },
+    //             span: 8,
+    //             offset: 0,
+    //             isNewRow: 0,
+    //             formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
+    //         },
+    //         {
+    //             key: 'idNO',
+    //             label: '证件号码',
+    //             inputType: 'input',
+    //             span: 8,
+    //             offset: 0,
+    //             isNewRow: 0,
+    //             formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
+    //         },
+    //         {
+    //             key: 'residenceAddress',
+    //             label: '居住地址',
+    //             isNewRow: 1,
+    //             inputType: 'MyAddress',
+    //             // inputProps: {
+    //             //     addressBtns: [{ name: 'permanentResidenceAddress', label: '同上' }],
+    //             // },
+    //             span: 16,
+    //             offset: 0,
+    //             formItemLayout: { labelCol: { span: 4 }, wrapperCol: { span: 20 } },
+    //         },
+    //         {
+    //             key: 'telephone',
+    //             label: '联系电话',
+    //             inputType: 'input',
+    //             span: 8,
+    //             offset: 0,
+    //             isNewRow: 0,
+    //             formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
+    //         },
+    //     ],
+    // },
     {
         name: '病历记录',
         fields: [
@@ -117,11 +118,10 @@ export default defineFormConfig([
             {
                 label: '月经异常情况',
                 name: '月经异常情况',
-                layout: '1/1',
                 inputType: 'MC',
-                span: 24,
+                span: 16,
                 offset: 0,
-                formItemLayout: { labelCol: { span: 3 }, wrapperCol: { span: 21 } },
+                formItemLayout: { labelCol: { span: 4 }, wrapperCol: { span: 20 } },
                 inputProps: {
                     type: 'multiple',
                     marshal: 0,
@@ -166,17 +166,10 @@ export default defineFormConfig([
                         {
                             label: '痛经',
                             value: '痛经',
-                        },
-                        {
-                            label: '经前紧张征',
-                            value: '经前紧张征',
-                        },
-                        {
-                            label: '痛经：VAS评分',
-                            value: '痛经',
                             inputType: 'input',
                             props: {
-                                style: { width: 156 },
+                                style: { width: 208 },
+                                prefix: 'VAS评分',
                                 suffix: '分（0-10 分）',
                             },
                         },
@@ -397,14 +390,182 @@ export default defineFormConfig([
                     },
                 ],
             },
-
+            {
+                key: '家族史_其他',
+                label: '家族史_其他',
+                inputType: 'text_area',
+                inputProps: { placeholder: '请输入' },
+                layout: '2/3',
+                isNewRow: 1,
+                formItemLayout: { labelCol: { span: 4 }, wrapperCol: { span: 20 } },
+            },
             {
                 inputType: 'node',
                 inputProps: { node: '月经史' },
             },
             {
+                key: '初潮年龄',
+                label: '初潮年龄',
+                inputType: 'input_number',
+                layout: '1/4',
+                isNewRow: 1,
+                formItemLayout: { labelCol: { span: 10 }, wrapperCol: { span: 14 } },
+            },
+            {
+                key: '平素月经经期',
+                label: '平素月经经期',
+                inputType: 'input',
+                layout: '1/4',
+                isNewRow: 0,
+                formItemLayout: { labelCol: { span: 10 }, wrapperCol: { span: 14 } },
+            },
+            {
+                key: '平素月经周期',
+                label: '平素月经周期',
+                inputType: 'input',
+                layout: '1/4',
+                isNewRow: 0,
+                formItemLayout: { labelCol: { span: 10 }, wrapperCol: { span: 14 } },
+            },
+            {
+                key: 'lmp',
+                label: '末次月经（LMP）',
+                inputType: 'DatePicker',
+                layout: '1/4',
+                isNewRow: 1,
+                formItemLayout: { labelCol: { span: 10 }, wrapperCol: { span: 14 } },
+            },
+            {
+                key: 'PMP',
+                label: '前次月经（PMP）',
+                inputType: 'DatePicker',
+                layout: '1/4',
+                isNewRow: 0,
+                formItemLayout: { labelCol: { span: 10 }, wrapperCol: { span: 14 } },
+            },
+            {
+                label: '痛经',
+                key: '痛经',
+                layout: '2/3',
+                formItemLayout: { labelCol: { span: 4 }, wrapperCol: { span: 20 } },
+                inputType: 'MC',
+                isNewRow: 1,
+                inputProps: {
+                    options: [
+                        {
+                            value: 0,
+                            label: '无',
+                        },
+                        {
+                            value: 1,
+                            label: '有',
+                            inputType: 'MC',
+                            props: {
+                                options: '轻度,中度,重度',
+                                marshal: 0,
+                            },
+                        },
+                    ],
+                },
+            },
+            {
+                label: '是否绝经',
+                key: '是否绝经',
+                layout: '1/3',
+                formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
+                inputType: 'MC',
+                isNewRow: 1,
+                inputProps: {
+                    marshal: 0,
+                    options: [
+                        {
+                            value: 0,
+                            label: '否',
+                        },
+                        {
+                            value: 1,
+                            label: '是',
+                        },
+                    ],
+                },
+            },
+            {
+                key: '绝经_age',
+                inputType: 'MA',
+                label: '绝经年龄',
+                layout: '1/3',
+                formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
+                showDeps: {
+                    是否绝经: [1, '1'],
+                },
+                inputProps: {
+                    suffix: '岁',
+                },
+            },
+            {
+                key: '绝经_type',
+                label: '绝经类型',
+                isNewRow: 0,
+                showDeps: {
+                    是否绝经: [1, '1'],
+                },
+                inputType: 'MC',
+                inputProps: {
+                    marshal: 0,
+                    options: [
+                        {
+                            value: '自然绝经',
+                            label: '自然绝经',
+                        },
+                        {
+                            value: '手术绝经',
+                            label: '手术绝经',
+                        },
+                    ],
+                },
+                layout: '1/3',
+                formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
+            },
+            {
+                label: '绝经后激素治疗史',
+                key: '绝经后激素治疗史',
+                layout: '1/3',
+                formItemLayout: { labelCol: { span: 12 }, wrapperCol: { span: 12 } },
+                inputType: 'MC',
+                isNewRow: 1,
+                showDeps: {
+                    是否绝经: [1, '1'],
+                },
+                inputProps: {
+                    marshal: 0,
+                    options: [
+                        {
+                            value: 0,
+                            label: '无',
+                        },
+                        {
+                            value: 1,
+                            label: '有',
+                        },
+                    ],
+                },
+            },
+            {
+                key: '药物名称及使用时间',
+                label: '药物名称及使用时间',
+                inputType: 'input',
+                inputProps: { placeholder: '请输入', style: { width: 228 } },
+                layout: '1/3',
+                isNewRow: 0,
+                formItemLayout: { labelCol: { span: 12 }, wrapperCol: { span: 12 } },
+                showDeps: {
+                    绝经后激素治疗史: [1, '1'],
+                },
+            },
+            {
                 key: '性生活史',
                 label: '性生活史',
+                isNewRow: 1,
                 inputType: 'MC',
                 inputProps: {
                     marshal: 0,
@@ -433,9 +594,127 @@ export default defineFormConfig([
                 layout: '2/3',
                 inputProps: {
                     marshal: 0,
-                    options: '未婚,已婚,丧偶,离婚,其他',
+                    // options: '未婚,已婚,丧偶,离婚,其他',
+                    options: [
+                        {
+                            value: '未婚',
+                            label: '未婚',
+                        },
+                        {
+                            value: '已婚',
+                            label: '已婚',
+                        },
+                        {
+                            value: '丧偶',
+                            label: '丧偶',
+                        },
+                        {
+                            value: '离婚',
+                            label: '离婚',
+                        },
+                        {
+                            value: '其他',
+                            label: '其他',
+                            props: {
+                                style: { width: 186 },
+                            },
+                        },
+                    ],
                 },
-                formItemLayout: { labelCol: { span: 4 }, wrapperCol: { span: 20 } },
+                formItemLayout: { labelCol: { span: 3 }, wrapperCol: { span: 21 } },
+            },
+            {
+                label: '孕产史',
+                layout: '1/1',
+                formItemLayout: { labelCol: { span: 3 }, wrapperCol: { span: 21 } },
+                name: '孕产史',
+                inputType: 'ArrayInput',
+                inputProps: {
+                    options: [
+                        {
+                            inputType: 'MA',
+                            prefix: 'G',
+                        },
+                        {
+                            inputType: 'MA',
+                            prefix: 'P',
+                        },
+                        {
+                            inputType: 'MA',
+                            prefix: '其中，自然分娩',
+                            suffix: '次',
+                        },
+                        {
+                            inputType: 'MA',
+                            prefix: '剖宫产',
+                            suffix: '次',
+                        },
+                    ],
+                },
+            },
+            {
+                label: '人工流产',
+                layout: '1/1',
+                formItemLayout: { labelCol: { span: 3 }, wrapperCol: { span: 21 } },
+                name: '人工流产',
+                inputType: 'ArrayInput',
+                inputProps: {
+                    options: [
+                        {
+                            inputType: 'MA',
+                            prefix: '手术流产',
+                            suffix: '次',
+                        },
+                        {
+                            inputType: 'MA',
+                            prefix: '药物流产',
+                            suffix: '次',
+                        },
+                    ],
+                },
+            },
+            {
+                label: '自然流产',
+                layout: '1/1',
+                formItemLayout: { labelCol: { span: 3 }, wrapperCol: { span: 21 } },
+                name: '自然流产',
+                inputType: 'ArrayInput',
+                inputProps: {
+                    options: [
+                        {
+                            inputType: 'MA',
+                            suffix: '次',
+                        },
+                        {
+                            inputType: 'MA',
+                            prefix: '其中，早期流产',
+                            suffix: '次',
+                        },
+                        {
+                            inputType: 'MA',
+                            prefix: '晚期流产',
+                            suffix: '次',
+                        },
+                    ],
+                },
+            },
+            {
+                key: '引产',
+                label: '引产',
+                inputType: 'input_number',
+                inputProps: { placeholder: '请输入', suffix: '次' },
+                layout: '1/4',
+                isNewRow: 1,
+                formItemLayout: { labelCol: { span: 10 }, wrapperCol: { span: 14 } },
+            },
+            {
+                key: '异位妊娠',
+                label: '异位妊娠',
+                inputType: 'input_number',
+                inputProps: { placeholder: '请输入', suffix: '次' },
+                layout: '1/4',
+                isNewRow: 0,
+                formItemLayout: { labelCol: { span: 10 }, wrapperCol: { span: 14 } },
             },
             {
                 key: '生育计划',
@@ -454,8 +733,8 @@ export default defineFormConfig([
                             inputType: 'input',
                             props: {
                                 style: { width: 128 },
-                                suffix: '个月内'
-                            }
+                                suffix: '个月内',
+                            },
                         },
                     ],
                 },
@@ -542,26 +821,515 @@ export default defineFormConfig([
         name: '体格检查',
         fields: [
             {
-                key: 'earlyPregnancyCheckInspection.ultrasoundDate',
-                label: 'B超日期',
-
-                inputType: 'DatePicker',
-
-                span: 8,
-                offset: 0,
+                inputType: 'node',
+                inputProps: { node: '1.一般身体状况' },
+            },
+            pressure_fd(
+                { label: '血压', layout: '1/3', formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } } },
+                { name: '体格检查.systolic' },
+                { name: '体格检查.diastolic' },
+            ),
+            {
+                key: '体格检查.脉搏',
+                label: '脉搏',
+                inputType: 'input_number',
+                inputProps: { placeholder: '请输入', suffix: '次/分' },
+                layout: '1/3',
                 isNewRow: 0,
                 formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
             },
             {
-                key: 'earlyPregnancyCheckInspection.ultrasoundDiagnosis',
-                label: 'B超诊断',
+                key: '体格检查.height',
+                label: '身高',
+                inputType: 'input_number',
+                inputProps: { placeholder: '请输入', suffix: 'm' },
+                layout: '1/3',
+                isNewRow: 1,
+                formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
+                processLocal: function processLocal(v, form) {
+                    if (form) {
+                        var values = form.getFieldsValue()
+                        var weight = ctx.utils.get(values, '体格检查.weight')
+                        var bmi = ctx.utils.calc_bmi(weight, v)
+                        var new_values = ctx.utils.set({}, '体格检查.bmi', bmi)
+                        form.setFieldsValue(new_values)
+                    }
+                },
+            },
+            {
+                key: '体格检查.weight',
+                label: '体重',
+                inputType: 'input_number',
+                inputProps: { placeholder: '请输入', suffix: 'kg' },
+                layout: '1/3',
+                isNewRow: 0,
+                formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
+                processLocal: function processLocal(v, form) {
+                    if (form) {
+                        var values = form.getFieldsValue()
+                        var height = ctx.utils.get(values, '体格检查.height')
+                        var bmi = ctx.utils.calc_bmi(height, v)
+                        var new_values = ctx.utils.set({}, '体格检查.bmi', bmi)
+                        form.setFieldsValue(new_values)
+                    }
+                },
+            },
+            {
+                key: '体格检查.bmi',
+                label: 'BMI',
+                inputType: 'input_number',
+                inputProps: { placeholder: '请输入', suffix: 'kg/m²' },
+                layout: '1/3',
+                isNewRow: 0,
+                formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
+            },
+            {
+                key: '体格检查.腰围',
+                label: '腰围',
+                inputType: 'input_number',
+                inputProps: { placeholder: '请输入', suffix: 'cm' },
+                layout: '1/3',
+                isNewRow: 1,
+                formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
+            },
+            {
+                key: '体格检查.臀围',
+                label: '臀围',
+                inputType: 'input_number',
+                inputProps: { placeholder: '请输入', suffix: 'cm' },
+                layout: '1/3',
+                isNewRow: 0,
+                formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
+            },
+            {
+                key: '体格检查.腰臀比',
+                label: '腰臀比',
+                inputType: 'input_number',
+                inputProps: { placeholder: '请输入' },
+                layout: '1/3',
+                isNewRow: 0,
+                formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
+            },
 
-                inputType: 'text_area',
-
+            {
+                inputType: 'node',
+                inputProps: { node: '2.高雄体征筛查' },
+            },
+            {
+                key: '体格检查.痤疮',
+                label: '2.1 痤疮',
+                inputType: 'MC',
+                inputProps: {
+                    marshal: 0,
+                    options: [
+                        {
+                            value: 0,
+                            label: '无',
+                        },
+                        {
+                            value: 1,
+                            label: '有',
+                            inputType: 'input',
+                            props: {
+                                style: { width: 320 },
+                                placeholder: '补充描述，如经前加重/伴皮脂溢等...',
+                            },
+                        },
+                    ],
+                },
+                layout: '2/3',
+                isNewRow: 1,
+                formItemLayout: { labelCol: { span: 4 }, wrapperCol: { span: 20 } },
+            },
+            {
+                key: '体格检查.痤疮程度',
+                label: '痤疮程度',
+                inputType: 'MC',
+                inputProps: {
+                    marshal: 0,
+                    options: [
+                        {
+                            value: 1,
+                            label: '轻度（I 级）：仅有粉刺',
+                        },
+                        {
+                            value: 2,
+                            label: '中度（ Ⅱ级）：有炎性丘疹',
+                        },
+                        {
+                            value: 3,
+                            label: '中度（Ⅲ级）：出现脓疱',
+                        },
+                        {
+                            value: 4,
+                            label: '重度（ Ⅳ级）：有结节、囊肿',
+                        },
+                    ],
+                },
+                layout: '1/1',
+                isNewRow: 1,
+                formItemLayout: { labelCol: { span: 3 }, wrapperCol: { span: 21 } },
+            },
+            {
+                inputType: 'node',
+                inputProps: { node: '2.2 多毛,' },
+            },
+            {
+                key: '体格检查.胸毛',
+                label: '胸毛',
+                inputType: 'MC',
+                inputProps: {
+                    marshal: 0,
+                    options: [
+                        {
+                            value: 0,
+                            label: '无',
+                        },
+                        {
+                            value: 1,
+                            label: '有',
+                            inputType: 'input',
+                            props: {
+                                style: { width: 228 },
+                                placeholder: '补充描述，如经前加重/伴皮脂溢等...',
+                            },
+                        },
+                    ],
+                },
+                layout: '1/1',
+                isNewRow: 1,
+                formItemLayout: { labelCol: { span: 3 }, wrapperCol: { span: 20 } },
+            },
+            {
+                label: '情况',
+                name: '多毛_情况',
+                inputType: 'MC',
                 span: 16,
                 offset: 0,
-                isNewRow: 0,
                 formItemLayout: { labelCol: { span: 4 }, wrapperCol: { span: 20 } },
+                inputProps: {
+                    type: 'multiple',
+                    marshal: 0,
+                    options: [
+                        {
+                            label: '3个部位mF-G',
+                            value: '1',
+                            props: {
+                                style: { width: 208 },
+                                prefix: '评分',
+                                suffix: '分',
+                            },
+                        },
+                        {
+                            label: '9个部位mF-G',
+                            value: '2',
+                            inputType: 'input',
+                            props: {
+                                style: { width: 208 },
+                                prefix: '评分',
+                                suffix: '分',
+                            },
+                        },
+                        {
+                            label: '乳晕、脐部周围可见粗毛',
+                            value: '3',
+                        },
+                    ],
+                },
+            },
+            {
+                key: '女性雄激素性脱发',
+                label: '2.3 女性雄激素性脱发',
+                inputType: 'MC',
+                inputProps: {
+                    marshal: 0,
+                    options: [
+                        {
+                            value: 0,
+                            label: '无',
+                        },
+                        {
+                            value: 1,
+                            label: '有',
+                            inputType: 'MC',
+                            props: {
+                                marshal: 0,
+                                options: [
+                                    {
+                                        value: '1',
+                                        label: 'I级（轻度脱发）',
+                                    },
+                                    {
+                                        value: '2',
+                                        label: 'Ⅱ级（ 中度脱发）',
+                                    },
+                                    {
+                                        value: '3',
+                                        label: 'Ⅲ级（重度脱发）',
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                },
+                layout: '1/1',
+                isNewRow: 1,
+                formItemLayout: { labelCol: { span: 3 }, wrapperCol: { span: 20 } },
+            },
+            {
+                key: '黑棘皮症',
+                label: '3.黑棘皮症',
+                inputType: 'MC',
+                inputProps: {
+                    marshal: 0,
+                    options: [
+                        {
+                            value: 0,
+                            label: '无',
+                        },
+                        {
+                            value: 1,
+                            label: '有',
+                            inputType: 'MC',
+                            props: {
+                                marshal: 0,
+                                options: [
+                                    {
+                                        value: '1',
+                                        label: '颈部、腋窝有细小疣状斑块，伴/不伴有受累皮肤色素沉着',
+                                    },
+                                    {
+                                        value: '2',
+                                        label: '颈部、腋窝有粗糙疣状斑块，伴/不伴有受累皮肤色素沉着',
+                                    },
+                                    {
+                                        value: '3',
+                                        label: '颈部 、腋窝及躯干有粗糙的疣状斑块，伴/不伴有受累皮肤色素沉着',
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                },
+                layout: '1/1',
+                isNewRow: 1,
+                formItemLayout: { labelCol: { span: 3 }, wrapperCol: { span: 20 } },
+            },
+            {
+                key: '阴毛生长的Tanner分期',
+                label: '4.阴毛生长的 Tanner 分期',
+                inputType: 'MC',
+                inputProps: {
+                    marshal: 0,
+                    options: [
+                        {
+                            value: 0,
+                            label: '无',
+                        },
+                        {
+                            value: 1,
+                            label: '有',
+                            inputType: 'MC',
+                            props: {
+                                marshal: 0,
+                                options: [
+                                    {
+                                        value: '1',
+                                        label: 'I期',
+                                    },
+                                    {
+                                        value: '2',
+                                        label: 'Ⅱ期',
+                                    },
+                                    {
+                                        value: '3',
+                                        label: 'Ⅲ期',
+                                    },
+                                    {
+                                        value: '4',
+                                        label: 'Ⅳ期',
+                                    },
+                                    {
+                                        value: '5',
+                                        label: 'Ⅴ期',
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                },
+                layout: '1/1',
+                isNewRow: 1,
+                formItemLayout: { labelCol: { span: 3 }, wrapperCol: { span: 20 } },
+            },
+            {
+                key: '乳房生长的Tanner分期',
+                label: '5.乳房生长的 Tanner 分期',
+                inputType: 'MC',
+                inputProps: {
+                    marshal: 0,
+                    options: [
+                        {
+                            value: 0,
+                            label: '无',
+                        },
+                        {
+                            value: 1,
+                            label: '有',
+                            inputType: 'MC',
+                            props: {
+                                marshal: 0,
+                                options: [
+                                    {
+                                        value: '1',
+                                        label: 'I期',
+                                    },
+                                    {
+                                        value: '2',
+                                        label: 'Ⅱ期',
+                                    },
+                                    {
+                                        value: '3',
+                                        label: 'Ⅲ期',
+                                    },
+                                    {
+                                        value: '4',
+                                        label: 'Ⅳ期',
+                                    },
+                                    {
+                                        value: '5',
+                                        label: 'Ⅴ期',
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                },
+                layout: '1/1',
+                isNewRow: 1,
+                formItemLayout: { labelCol: { span: 3 }, wrapperCol: { span: 20 } },
+            },
+            {
+                key: '其他阳性体征',
+                label: '6.其他阳性体征（贫血貌，泌乳，满月脸等）',
+                inputType: 'text_area',
+                layout: '1/1',
+                formItemLayout: { labelCol: { span: 3 }, wrapperCol: { span: 16 } },
+            },
+            {
+                key: '未做妇科检查原因',
+                label: '7.未做妇科检查原因',
+                inputType: 'text_area',
+                layout: '1/1',
+                formItemLayout: { labelCol: { span: 3 }, wrapperCol: { span: 16 } },
+            },
+            {
+                inputType: 'node',
+                inputProps: { node: '8.经阴道检查' },
+            },
+            {
+                key: '外阴',
+                label: '外阴',
+                inputType: 'input',
+                required: false,
+                inputProps: { placeholder: '' },
+                layout: '1/4',
+                isNewRow: 0,
+                formItemLayout: { labelCol: { span: 10 }, wrapperCol: { span: 14 } },
+            },
+            {
+                key: '阴道',
+                label: '阴道',
+                inputType: 'input',
+                required: false,
+                inputProps: { placeholder: '' },
+                layout: '1/4',
+                isNewRow: 0,
+                formItemLayout: { labelCol: { span: 10 }, wrapperCol: { span: 14 } },
+            },
+            {
+                key: '宫颈',
+                label: '宫颈',
+                inputType: 'input',
+                required: false,
+                inputProps: { placeholder: '' },
+                layout: '1/4',
+                isNewRow: 0,
+                formItemLayout: { labelCol: { span: 10 }, wrapperCol: { span: 14 } },
+            },
+            {
+                key: '子宫',
+                label: '子宫',
+                inputType: 'input',
+                required: false,
+                inputProps: { placeholder: '' },
+                layout: '1/4',
+                isNewRow: 0,
+                formItemLayout: { labelCol: { span: 10 }, wrapperCol: { span: 14 } },
+            },
+            {
+                key: '经阴道检查_双附件',
+                label: '双附件',
+                inputType: 'input',
+                required: false,
+                inputProps: { placeholder: '' },
+                layout: '1/4',
+                isNewRow: 0,
+                formItemLayout: { labelCol: { span: 10 }, wrapperCol: { span: 14 } },
+            },
+            {
+                key: '经阴道检查_其他',
+                label: '其他',
+                inputType: 'input',
+                required: false,
+                inputProps: { placeholder: '' },
+                layout: '1/4',
+                isNewRow: 0,
+                formItemLayout: { labelCol: { span: 10 }, wrapperCol: { span: 14 } },
+            },
+            {
+                inputType: 'node',
+                inputProps: { node: '9.肛查（不宜行阴道检查女性）' },
+            },
+            {
+                key: '肛查_外阴',
+                label: '外阴',
+                inputType: 'input',
+                required: false,
+                inputProps: { placeholder: '' },
+                layout: '1/4',
+                isNewRow: 0,
+                formItemLayout: { labelCol: { span: 10 }, wrapperCol: { span: 14 } },
+            },
+            {
+                key: '肛查_子宫',
+                label: '子宫',
+                inputType: 'input',
+                required: false,
+                inputProps: { placeholder: '' },
+                layout: '1/4',
+                isNewRow: 0,
+                formItemLayout: { labelCol: { span: 10 }, wrapperCol: { span: 14 } },
+            },
+            {
+                key: '肛查_双附件',
+                label: '双附件',
+                inputType: 'input',
+                required: false,
+                inputProps: { placeholder: '' },
+                layout: '1/4',
+                isNewRow: 0,
+                formItemLayout: { labelCol: { span: 10 }, wrapperCol: { span: 14 } },
+            },
+            {
+                key: '肛查_其他',
+                label: '其他',
+                inputType: 'input',
+                required: false,
+                inputProps: { placeholder: '' },
+                layout: '1/4',
+                isNewRow: 0,
+                formItemLayout: { labelCol: { span: 10 }, wrapperCol: { span: 14 } },
             },
         ],
     },
@@ -588,7 +1356,7 @@ export default defineFormConfig([
                 key: 'hb',
                 label: 'HB(g/L)',
                 inputType: 'input_number',
-                required: true,
+                required: false,
                 inputProps: { placeholder: '请输入HB', style: { width: 156 } },
                 span: 8,
                 offset: 0,
@@ -858,7 +1626,7 @@ export default defineFormConfig([
                 formItemLayout: { labelCol: { span: 10 }, wrapperCol: { span: 14 } },
             },
             {
-                key: '双附件',
+                key: '盆腔超声_双附件',
                 label: '双附件',
                 inputType: 'input',
                 required: false,

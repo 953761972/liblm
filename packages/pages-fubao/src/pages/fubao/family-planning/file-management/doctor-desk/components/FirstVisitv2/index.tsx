@@ -6,6 +6,7 @@ import { NurseTypesMapping } from './config';
 import { fubaoRequest as request } from '@lm_fe/utils';
 import styles from '../../../common.module.less'
 import RenderContentWrap from './RenderContentWrap';
+
 export default function ZKBL(props: any) {
   const { data, id, reload } = props
 

@@ -127,6 +127,8 @@ export default class EmmeniopathyPanel extends BaseEditPanel {
       familyPlanningId: Number(id),
     };
 
+    return console.log('---787878--onsubmit: ', params);
+
     if (get(values, 'id')) {
       // 修改
       const _res = await request.put('/api/family/planning/updateFamilyPlanningEarlyPregnancyCheck', params);
