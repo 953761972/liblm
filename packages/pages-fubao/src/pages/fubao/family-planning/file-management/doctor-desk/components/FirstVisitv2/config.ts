@@ -1,5 +1,6 @@
 import Screening from './Screening';
 import PathologicalBiopsy from './PathologicalBiopsy';
+import Emmeniopathy from './Emmeniopathy';
 import DrugAbortion from './DrugAbortion';
 import Common from './Common';
 
@@ -51,4 +52,13 @@ export const NurseTypesMapping = {
   //   api: '/api/labour-records',
   //   component: DrugAbortion,
   // },
+  Emmeniopathy: {
+    key: 'Emmeniopathy',
+    name: '月经病',
+    icon: '',
+    api: '/api/labour-records',
+    component: Emmeniopathy,
+    conf: () => import('./Emmeniopathy/form_config')
+
+  },
 };
