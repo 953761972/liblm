@@ -38,21 +38,19 @@ export default class SettingModal extends React.Component<any, any> {
     templates: [] as IModel_EarlyPregnancySurgicalTemplate[]
   };
 
-  componentDidMount() {
-    SModel_EarlyPregnancySurgicalTemplate.getList().then(l => {
-      this.setState({
-        templates: l,
-        surgeryOptions: l.map(_ => {
-          return {
-            label: _.operationName,
-            value: _.schedulingField,
-            withInput: true,
-            style: { width: 50, border: 'none', borderBottom: '1px solid #FE547B', fontSize: 12, background: '#f5f6fa' },
-          }
-        })
-      });
-
-    })
+  async componentDidMount() {
+    let l = await SModel_EarlyPregnancySurgicalTemplate.getList()
+    this.setState({
+      templates: l,
+      surgeryOptions: l.map(_ => {
+        return {
+          label: _.operationName,
+          value: _.schedulingField,
+          withInput: true,
+          style: { width: 50, border: 'none', borderBottom: '1px solid #FE547B', fontSize: 12, background: '#f5f6fa' },
+        }
+      })
+    });
     this.getTreatmentByDate();
   }
 
@@ -137,13 +135,13 @@ export default class SettingModal extends React.Component<any, any> {
   handleOk = async () => {
     const { schedulingDetail, reservationNumObj } = this.state;
     mchcLogger.log('getReservation ok', reservationNumObj)
-    let submitData = this.form?.getFieldsValue();
-    let surgeryObj = fucking_valueToApi(get(submitData, 'surgery'), reservationNumObj, this.state.templates); //开发手术项目
+    let values = this.form?.getFieldsValue();
+    let surgeryObj = fucking_valueToApi(get(values, 'surgery'), reservationNumObj, this.state.templates); //开发手术项目
 
     let reservationWarningText = this.isHaveReservation(get(surgeryObj, 'reservationArr'));
 
     const oldAttendanceSet = get(schedulingDetail, 'attendanceSet');
-    const newAttendanceSet = get(submitData, 'attendanceSet');
+    const newAttendanceSet = get(values, 'attendanceSet');
 
     //单天号源总数大于30不能提交
     const flag = this.handleSubmitData(get(surgeryObj, 'newValues'));
@@ -155,24 +153,24 @@ export default class SettingModal extends React.Component<any, any> {
     //有预约且上午改成下午时提示
     if (reservationNumObj.size > 0 && oldAttendanceSet === 1 && newAttendanceSet === 2) {
       reservationWarningText = this.getReservation(reservationNumObj);
-      this.setState({ submitData, surgeryObj, reservationWarningText, popconfirmVisible: true });
+      this.setState({ submitData: values, surgeryObj, reservationWarningText, popconfirmVisible: true });
       return;
     }
     //有预约且下午改成上午时提示
     if (reservationNumObj.size > 0 && oldAttendanceSet === 2 && newAttendanceSet === 1) {
       reservationWarningText = this.getReservation(reservationNumObj);
-      this.setState({ submitData, surgeryObj, reservationWarningText, popconfirmVisible: true });
+      this.setState({ submitData: values, surgeryObj, reservationWarningText, popconfirmVisible: true });
       return;
     }
 
     if (reservationWarningText) {
       //关闭有预约的项目弹出提示
-      this.setState({ submitData, surgeryObj, reservationWarningText, popconfirmVisible: true });
+      this.setState({ submitData: values, surgeryObj, reservationWarningText, popconfirmVisible: true });
     } else {
-      submitData = {
+      const submitData = {
         id: get(schedulingDetail, 'id'),
         ...schedulingDetail,
-        ...submitData,
+        ...values,
         ...get(surgeryObj, 'newValues'),
       };
 
@@ -212,7 +210,7 @@ export default class SettingModal extends React.Component<any, any> {
         onOk={() => this.handleOk()}
         footer={[
           <Button key="cancel" onClick={() => this.props.setSettingModal(false)}>
-            关闭1111
+            关闭设置
           </Button>,
           <Popconfirm
             key="submit"

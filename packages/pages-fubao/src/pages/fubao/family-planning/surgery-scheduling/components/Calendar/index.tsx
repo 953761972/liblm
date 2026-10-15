@@ -6,6 +6,7 @@ import { map as _map, find, get, isEmpty, isEqual, isNil } from 'lodash';
 import React from 'react';
 import { IModel_EarlyPregnancySurgicalTemplate, SModel_EarlyPregnancySurgicalTemplate } from 'src/pages/fubao/.stupid_model/models/EarlyPregnancySurgicalTemplate';
 import './index.less';
+import { formatDate } from '@lm_fe/utils';
 const week = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 export default class Calendar extends React.Component<any, any> {
   state = {
@@ -98,18 +99,18 @@ export default class Calendar extends React.Component<any, any> {
   lastMonth() {
     const { dateObj, attendanceSetObj } = this.state;
     const { curMonth } = this.props;
-    const date = dayjs(curMonth).date(1); // 当前月的1号
+    let date = dayjs(curMonth).date(1); // 当前月的1号
     const count = date.day(); //1号是星期几
-    date.subtract(count, 'day'); //比如本月1号是星期3，那么上个月的数据就应该显示3个
+    date = date.subtract(count, 'day'); //比如本月1号是星期3，那么上个月的数据就应该显示3个
     let ui = [];
     for (let i = 0; i < count; i++) {
       const todayMoment = dayjs(date);
       const isBefore = todayMoment.isBefore(dayjs(), 'day'); //判断是否今天前的日子
       const isSame = this.state.activeDay && todayMoment.isSame(this.state.activeDay, 'day'); //判断哪一天是选中日期
-      let formatDate = dayjs(date).format('YYYY-MM-DD');
-      let dateDetail = dateObj[formatDate] || {};
+      let f_date = dayjs(date).format('YYYY-MM-DD');
+      let dateDetail = dateObj[f_date] || {};
 
-      let attendanceSet = attendanceSetObj[formatDate];
+      let attendanceSet = attendanceSetObj[f_date];
 
       let dayRange = '';
       switch (attendanceSet) {
@@ -169,7 +170,7 @@ export default class Calendar extends React.Component<any, any> {
           </div>
         </div>,
       );
-      date.add(1, 'day');
+      date = date.add(1, 'day');
     }
     return ui;
   }
@@ -183,7 +184,7 @@ export default class Calendar extends React.Component<any, any> {
     const { dateObj, attendanceSetObj } = this.state;
     const { curMonth } = this.props;
     //选中的时间改为1号,并且加上1个月
-    const date = dayjs(curMonth).date(1).add(1, 'months');
+    let date = dayjs(curMonth).date(1).add(1, 'months');
     const count = 7 - date.day(); //7-星期几，就可知道要渲染几个下月数据
     if (count === 7) {
       return null;
@@ -263,7 +264,7 @@ export default class Calendar extends React.Component<any, any> {
           </div>
         </div>,
       );
-      date.add(1, 'day');
+      date = date.add(1, 'day');
     }
     return ui;
   }
@@ -276,7 +277,7 @@ export default class Calendar extends React.Component<any, any> {
   thisMonth() {
     const { dateObj, attendanceSetObj } = this.state;
     const { curMonth } = this.props;
-    const date = dayjs(curMonth).date(1); //获取本月1号数据
+    let date = dayjs(curMonth).date(1); //获取本月1号数据
     const count = date.daysInMonth(); //当前选中月份的总条数
     const hour = this.state.activeDay.hour(); // 当天时刻
 
@@ -399,7 +400,7 @@ export default class Calendar extends React.Component<any, any> {
           </div>,
         );
       }
-      date.add(1, 'day');
+      date = date.add(1, 'day');
     }
     return ui;
   }

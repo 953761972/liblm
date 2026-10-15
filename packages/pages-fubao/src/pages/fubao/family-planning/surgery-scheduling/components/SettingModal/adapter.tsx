@@ -1,3 +1,4 @@
+import { AnyObject } from '@lm_fe/utils';
 import { filter, get, isEmpty, map, set } from 'lodash';
 import { IModel_EarlyPregnancySurgicalTemplate } from 'src/pages/fubao/.stupid_model';
 
@@ -6,6 +7,7 @@ import { IModel_EarlyPregnancySurgicalTemplate } from 'src/pages/fubao/.stupid_m
 export const fucking_valueToApi = (values: any, reservationNumObj: any, templates: IModel_EarlyPregnancySurgicalTemplate[]) => {
   let newValues = {};
   let reservationArr: any = [];
+  debugger
   const checkedValues = get(values, `checkedValues`) || [];
   const withInputValues = get(values, `withInputValues`);
 
@@ -33,12 +35,14 @@ export const fucking_valueToApi = (values: any, reservationNumObj: any, template
   }
   return { newValues: newValues, reservationArr: reservationArr };
 };
-export const fucking_valueToForm = (values: any, templates: IModel_EarlyPregnancySurgicalTemplate[]) => {
+export const fucking_valueToForm = (values: AnyObject, templates: IModel_EarlyPregnancySurgicalTemplate[]) => {
   let checkedValues: any = [];
   let withInputValues = {};
   const m = new Map();
 
   map(values, (item, itemIndex) => {
+    debugger
+    if (templates.every(_ => _.schedulingField !== itemIndex)) return
     //0未开放，1开放,2未开放有预约，3已满
     if (
       get(values, `${itemIndex}`) !== 0 &&
