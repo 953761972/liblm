@@ -2,6 +2,7 @@ import { mchcModal__, MyBaseListProps } from "@lm_fe/pages";
 import { Button, Space } from "antd";
 import React from "react";
 import PrenatalModalArchive from "../../pregnancy/list/components/prenatal-modal-archive/prenatal-modal-archive";
+import PrenatalModalArchiveServer from "../../pregnancy/list/components/prenatal-modal-archive/prenatal-modal-archive-server";
 import { getPregnancyId, isArchived } from "./constant";
 
 export function useTableConfig(props: any) {
@@ -16,6 +17,30 @@ export function useTableConfig(props: any) {
             },
             modal_data: {
                 content: <PrenatalModalArchive
+                    selectedRowData={rowData}
+                    {...props}
+                    onClose={() => mchcModal__.pop()}
+                    id={getPregnancyId(rowData)}
+                />
+            }
+        })
+    }
+
+    /**
+     * 打开产检本归档预览（服务端模式）
+     * 曲线图绘制与 pdf 合并全部由后端完成，前端只传孕册 id；
+     * 与原有「归档」按钮的前端渲染模式并行，便于切换归档模式。
+     */
+    function handleServerArchive(rowData: any) {
+        mchcModal__.open('test', {
+            title: null,
+            closeIcon: null,
+            width: '95vw',
+            styles: {
+                header: { width: 0, height: 0 },
+            },
+            modal_data: {
+                content: <PrenatalModalArchiveServer
                     selectedRowData={rowData}
                     {...props}
                     onClose={() => mchcModal__.pop()}
@@ -46,10 +71,17 @@ export function useTableConfig(props: any) {
         RenderAction: ({ rowData }) => {
             return (
                 <Space>
+                    {/*<Button*/}
+                    {/*    type="link"*/}
+                    {/*    size="small"*/}
+                    {/*    onClick={() => handleArchive(rowData)}*/}
+                    {/*>*/}
+                    {/*    归档*/}
+                    {/*</Button>*/}
                     <Button
                         type="link"
                         size="small"
-                        onClick={() => handleArchive(rowData)}
+                        onClick={() => handleServerArchive(rowData)}
                     >
                         归档
                     </Button>
