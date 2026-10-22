@@ -84,8 +84,8 @@ export function RenderContent(props: IRenderContentProps) {
     return <BaseEditPanelFormFC
         // renderBtns={config?.}
         targetLabelCol={5}
-        // print_btn_props={{ disabled: !data_cache.id }}
-        // onPrint={handlePrint}
+        print_btn_props={{ disabled: !data_cache.id }}
+        onPrint={handlePrint}
         form={form}
         formDescriptions={config?.tableColumns}
         onFinish={handleSubmit}

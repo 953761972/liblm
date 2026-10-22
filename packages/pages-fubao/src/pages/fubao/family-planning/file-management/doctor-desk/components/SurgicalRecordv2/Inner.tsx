@@ -79,9 +79,9 @@ export default function FuckingNursing({ id, surgicalRecordId }: IProps) {
   };
 
   function handleChooseTemplate(fuck_type: IModel_EarlyPregnancySurgicalTemplate) {
-    let newSiderPanels = cloneDeep(siderPanels);
+    let newSiderPanels = cloneDeep(siderPanels.filter(_ => _.id !== null));
     let newItem = {
-      id: -1,
+      id: null,
       operationName: get(fuck_type, 'operationName'),
     };
     newSiderPanels.push(newItem);
