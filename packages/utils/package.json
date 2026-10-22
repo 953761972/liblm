@@ -28,7 +28,7 @@
         "@noah-libjs/request": "latest",
         "@noah-libjs/utils": "latest",
         "axios": "0.26.1",
-        "dayjs": "^1.11.21",
+        "dayjs": "^1.11.23",
         "reconnecting-websocket": "~4.4.0",
         "store": "~2.0.12"
     },

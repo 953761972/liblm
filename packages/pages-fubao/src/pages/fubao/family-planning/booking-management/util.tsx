@@ -16,6 +16,8 @@ import { TabType, TAttendanceType, TMorningOrAfternoon, TOperationType } from '.
 import { BookingModalNew } from '../../.StupidModal/modals/family_planning/BookingModal/index';
 import { mchcModal__ } from '@lm_fe/pages';
 import { mchcLogger } from '@lm_fe/env';
+import { open_签到_Modal } from './.Form1';
+import { open_预约_Modal } from './.Form0';
 export function handleIsBefore(date: Dayjs) {
   const today = dayjs();
   const isBefore = dayjs(formatDate(date)).diff(dayjs(formatDate(today)), 'days');
@@ -57,9 +59,11 @@ export function getResidue(
   return { isOpen, ...obj };
 }
 
-export function getOperationNum(config?: IModel_FamilyPlaningSchedulingDetails, filed_key?: string) {
+export function getOperationNum(config?: IModel_FamilyPlaningSchedulingDetails, operationName?: string, templates?: IModel_EarlyPregnancySurgicalTemplate[]) {
+  mchcLogger.log('getOperationNum', config, operationName)
+  const field_name = templates?.find(_ => _.operationName === operationName)?.schedulingField
   if (!config) return { all: 0, reserved: 0, isOpen: false, left: 0 };
-  if (!filed_key)
+  if (!field_name)
     return {
       all: config.totalNumOfDay,
       reserved: config.totalReservationNumOfDay,
@@ -67,10 +71,10 @@ export function getOperationNum(config?: IModel_FamilyPlaningSchedulingDetails, 
       isOpen: !!config.openReservation,
     };
   let _conf: AnyObject = config
-  const all: number = _conf[`${filed_key}Num`] || 0;
-  const reserved: number = _conf[`${filed_key}ReservationNum`] || 0;
-  const result = { all, reserved, left: all - reserved, isOpen: !!_conf[filed_key] }
-  mchcLogger.log('getOperationNum', config, filed_key, result)
+  const all: number = _conf[`${field_name}Num`] || 0;
+  const reserved: number = _conf[`${field_name}ReservationNum`] || 0;
+  const result = { all, reserved, left: all - reserved, isOpen: !!_conf[field_name] }
+  mchcLogger.log('getOperationNum', config, field_name, result)
 
   return result
 }
@@ -236,4 +240,26 @@ export function openBookingModal(
   //     },
   //   },
   // });
+}
+export function open_booking(
+  appointmentDate: Dayjs,
+  appointmentMorningOrAfternoon: TMorningOrAfternoon,
+  data: Partial<IModel_EarlyPregnancyCheckSurgeryType> = {},
+  onClose = () => { },
+) {
+  const status = data.progressStatus
+  if (!status || status === 1)
+    return open_预约_Modal(
+      appointmentDate,
+      appointmentMorningOrAfternoon,
+      data,
+      onClose,
+    );
+  if (status >= 2)
+    return open_签到_Modal(
+      appointmentDate,
+      appointmentMorningOrAfternoon,
+      data,
+      onClose,
+    );
 }

@@ -1,6 +1,6 @@
 import { AnyObject, get, IRequest_AxiosRequestConfig, isObjectLike, isString, request } from "@lm_fe/utils";
 import { Button, ButtonProps, Space, Switch, QRCode, Tag, Table } from "antd";
-import React, { MouseEventHandler } from 'react';
+import React, { MouseEventHandler, useEffect, useState } from 'react';
 import { mchcEnv } from "../env/MchcEnv";
 import { mchcEvent } from "../event";
 import { mchcUtils } from "../utils/mchcUtils";
@@ -26,6 +26,21 @@ function Color_(content: number | string | boolean, is_red = false, color = 'red
 function render_btn(text: any, onClick: MouseEventHandler<HTMLElement>, others: ButtonProps = {}) {
     return <Button {...others} onClick={onClick}>{text}</Button>
 }
+interface IOnFetchProps {
+    on: (params: AnyObject, set_data: ((data: any) => void)) => void
+    render: (data: any) => any
+    type: string
+}
+function OnSetRender({ on, type, render }: IOnFetchProps) {
+    const [data, set_data] = useState()
+    useEffect(() => {
+        return mchcEvent.on_rm('custom_msg', e => { e.type === type && on(e.data, set_data) })
+    }, [])
+
+    if (!data) return '--'
+    return render(data) ?? '--'
+
+}
 //@ts-ignore
 const const_ctx: IRTCtx = {
     required: true,
@@ -34,7 +49,7 @@ const const_ctx: IRTCtx = {
     mchcEvent,
     React,
     utils: mchcUtils,
-    ui: { Button, QRCode, Space, Tag, Switch, render_arr: Array_, render_color: Color_, Table, render_btn },
+    ui: { Button, QRCode, Space, Tag, Switch, OnSetRender, render_arr: Array_, render_color: Color_, Table, render_btn },
     modal() {
         if (!window.mchc_modal) mchcEnv.error('mchc_modal 不存在')
         return window.mchc_modal
@@ -78,7 +93,7 @@ export interface IRTCtx {
     print(requestConfig: IRequest_AxiosRequestConfig): void
     modal(): any
     safeTo(url_conf: string, params?: AnyObject): void
-    ui: { QRCode: typeof QRCode, Table: typeof Table, Button: typeof Button, Space: typeof Space, Tag: typeof Tag, Switch: typeof Switch, render_arr: typeof Array_, render_color: typeof Color_, render_btn: typeof render_btn },
+    ui: { OnSetRender: typeof OnSetRender, QRCode: typeof QRCode, Table: typeof Table, Button: typeof Button, Space: typeof Space, Tag: typeof Tag, Switch: typeof Switch, render_arr: typeof Array_, render_color: typeof Color_, render_btn: typeof render_btn },
     utils: typeof mchcUtils
 
 }

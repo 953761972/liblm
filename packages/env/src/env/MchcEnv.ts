@@ -20,6 +20,12 @@ class MchcEnv<T> extends AppEnv<T> {
     debug_flag() {
         return getSearchParamsValue('debug')
     }
+    async validate_form(form: any) {
+        if (window.validate_form)
+            return window.validate_form(form)
+        this.info('没有找到 validate_form')
+        return null
+    }
     info(msg: string, duration?: number) { return new Promise(res => { mchcEvent.emit('toast', { type: 'info', msg, duration, cb: () => res(null) }) }) }
     warning(msg: string, duration?: number) { return new Promise(res => { mchcEvent.emit('toast', { type: 'warning', msg, duration, cb: () => res(null) }) }) }
     success(msg: string, duration?: number) { return new Promise(res => { mchcEvent.emit('toast', { type: 'success', msg, duration, cb: () => res(null) }) }) }
@@ -94,7 +100,7 @@ class MchcEnv<T> extends AppEnv<T> {
 
 
     in_group(...gs: string[]) {
-        
+
         const u = this.user_data
         return u?.groups?.some?.((_: any) => gs.includes(_.name?.toLowerCase()))
     }
