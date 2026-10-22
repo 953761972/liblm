@@ -1,19 +1,17 @@
-import { SModel_EarlyPregnancyCheckSurgeryType, stupidEnums } from '../../../.stupid_model';
 import {
-  PlusCircleOutlined,
-  QuestionCircleOutlined,
-  DeleteOutlined,
-  EditOutlined,
-  LeftCircleOutlined,
+  PlusCircleOutlined
 } from '@ant-design/icons';
-import { Tag, Row, Col, Popconfirm } from 'antd';
-import React from 'react';
+import { MyIcon } from '@lm_fe/components';
+import { OkButton } from '@lm_fe/components_m';
+import { Col, Row, Space, Tag } from 'antd';
 import { get } from 'lodash';
+import React from 'react';
 import { IBaseProps } from '.';
+import { SModel_EarlyPregnancyCheckSurgeryType, stupidEnums } from '../../../.stupid_model';
 import DropContainer from '../components/drop-continer';
 import { OPERATION_ARR } from '../constant';
 import { TMorningOrAfternoon } from '../type';
-import { checkDisabledHalfDay, openBookingModal, handleIsBefore, getResidue } from '../util';
+import { checkDisabledHalfDay, getResidue, handleIsBefore, open_booking } from '../util';
 interface IProps extends IBaseProps { }
 export default function DateSelect(props: IProps) {
   const { bookingData, dd, selectedDate, findColor2, scheduleArr, activeOperationType } = props;
@@ -88,7 +86,26 @@ export default function DateSelect(props: IProps) {
                       const statusLabel = stupidEnums.EarlyPregnancyCheckSurgeryType.progressStatus.getLabel(
                         data?.progressStatus,
                       );
+                      const sign_btn = <OkButton
+                        icon={<MyIcon title="签到" value='ClockCircleOutlined' />}
 
+                        shape='circle'
+                        type='text'
+                        style={{ color: fontColor }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          open_booking(
+                            selectedDate,
+                            morningOrAfternoon,
+                            data,
+                            () => {
+                              dd.initData();
+                              dd.getStatistic();
+                              dd.getBetweenList();
+                            },
+                          );
+                        }}
+                      />
                       return (
                         <td rowSpan={1} key={colIndex} style={{ position: 'relative' }}>
                           <DropContainer
@@ -104,7 +121,7 @@ export default function DateSelect(props: IProps) {
                                 onClick={
                                   statusLabel === '已完成'
                                     ? () => {
-                                      openBookingModal(selectedDate, morningOrAfternoon, data, () => {
+                                      open_booking(selectedDate, morningOrAfternoon, data, () => {
                                         dd.initData();
                                         dd.getStatistic();
                                         dd.getBetweenList();
@@ -146,101 +163,54 @@ export default function DateSelect(props: IProps) {
                                 <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
                                   <Tag color={fontColor}>{statusLabel}</Tag>
                                   <div className="handle">
-                                    {(statusLabel === '待签到' || statusLabel === '超时') && (
-                                      <>
-                                        <QuestionCircleOutlined
-                                          title="签到"
-                                          style={{ color: fontColor }}
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            openBookingModal(
-                                              selectedDate,
-                                              morningOrAfternoon,
-                                              data,
-                                              () => {
-                                                dd.initData();
-                                                dd.getStatistic();
-                                                dd.getBetweenList();
-                                              },
-                                              1,
-                                            );
-                                          }}
-                                        />
-                                        <EditOutlined
-                                          title="编辑"
-                                          className="space"
-                                          style={{ color: fontColor }}
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            openBookingModal(
-                                              selectedDate,
-                                              morningOrAfternoon,
-                                              data,
-                                              () => {
-                                                dd.initData();
-                                                dd.getStatistic();
-                                                dd.getBetweenList();
-                                              },
-                                              0,
-                                            );
-                                          }}
-                                        />
-                                        <Popconfirm
-                                          title={`取消后则不再显示，是否确认取消?`}
-                                          onConfirm={() => {
-                                            SModel_EarlyPregnancyCheckSurgeryType.cancelAppointmentSurgery(
+                                    <Space.Compact size='small'>
+
+                                      {(statusLabel === '待签到' || statusLabel === '超时') && (
+                                        <>
+
+                                          <OkButton
+                                            shape='circle'
+                                            type='text'
+                                            icon={<MyIcon title='预约' value='EditOutlined' />}
+
+                                            style={{ color: fontColor }}
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              open_booking(
+                                                selectedDate,
+                                                morningOrAfternoon,
+                                                data,
+                                                () => {
+                                                  dd.initData();
+                                                  dd.getStatistic();
+                                                  dd.getBetweenList();
+                                                },
+                                              );
+                                            }}
+                                          />
+
+                                          {sign_btn}
+
+                                          <OkButton onClick={() => {
+                                            confirm('确定删除吗') && SModel_EarlyPregnancyCheckSurgeryType.cancelAppointmentSurgery(
                                               data.id,
                                             ).then(() => {
                                               dd.initData();
                                               dd.getStatistic();
                                               dd.getBetweenList();
                                             });
-                                          }}
-                                          okText="确定"
-                                          cancelText="取消"
-                                        >
-                                          <DeleteOutlined title="取消" style={{ color: fontColor }} />
-                                        </Popconfirm>
-                                        {/* <DeleteOutlined
-                                          title="取消"
-                                          style={{ color: fontColor }}
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            if (confirm('取消后则不再显示，是否确认取消?')) {
-                                              SModel_EarlyPregnancyCheckSurgeryType.cancelAppointmentSurgery(
-                                                data.id,
-                                              ).then(() => {
-                                                dd.initData();
-                                                dd.getStatistic();
-                                                dd.getBetweenList();
-                                              });
-                                            }
-                                          }}
-                                        /> */}
-                                      </>
-                                    )}
-                                    {statusLabel === '已签到' && (
-                                      <>
-                                        <EditOutlined
-                                          title="编辑"
-                                          style={{ color: fontColor }}
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            openBookingModal(
-                                              selectedDate,
-                                              morningOrAfternoon,
-                                              data,
-                                              () => {
-                                                dd.initData();
-                                                dd.getStatistic();
-                                                dd.getBetweenList();
-                                              },
-                                              1,
-                                            );
-                                          }}
-                                        />
-                                      </>
-                                    )}
+                                          }} type='text' shape='circle' icon={<MyIcon value='DeleteOutlined' />} title="取消" style={{ color: fontColor }}
+                                          />
+                                        </>
+                                      )}
+                                      {statusLabel === '已签到' && (
+                                        <>
+                                          {sign_btn}
+
+                                        </>
+                                      )}
+                                    </Space.Compact>
+
                                   </div>
                                   {/* {(statusLabel === '待签到' || statusLabel === '超时') && (
                                     <Tag
@@ -266,7 +236,7 @@ export default function DateSelect(props: IProps) {
                                   className={`date-booking-button ${realDataArr.length === realIndex ? 'visible' : ''}`}
                                   title="添加或拖动预约"
                                   onClick={() =>
-                                    openBookingModal(selectedDate, morningOrAfternoon, {}, () => {
+                                    open_booking(selectedDate, morningOrAfternoon, {}, () => {
                                       dd.initData();
                                       dd.getStatistic();
                                       dd.getBetweenList();

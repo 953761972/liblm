@@ -1,6 +1,6 @@
 import { mchcEvent, mchcLogger } from '@lm_fe/env';
 import { TIdTypeCompatible } from '@lm_fe/service';
-import { flat, group, isEmpty, listify, mapValues, request } from '@lm_fe/utils';
+import { expect_array, flat, group, isArray, isEmpty, listify, mapValues, request } from '@lm_fe/utils';
 import { AutoComplete_L } from '@noah-libjs/components';
 import { AutoCompleteProps, Col, Divider, FormInstance, Row } from 'antd';
 import { DefaultOptionType } from 'antd/es/select';
@@ -41,7 +41,8 @@ export default function PatientSelect(props: IProps) {
   const _style = getInputStyle(props)
   const init = useRef(false)
   const [raw_opts, set_raw_opts] = useState<TRawItem[]>([]);
-  const nice_key = keys__.current[0].value!
+  // const nice_key = keys__.current[0].value!
+  const nice_key = PatientSelect_filterKey!
   const scrollPage = useRef(0)
 
   const key_len = keys__.current.length
@@ -51,7 +52,7 @@ export default function PatientSelect(props: IProps) {
   const [local_value, set_local_value] = useState(value);
 
   function safe_set_options(arr: any[]) {
-    set_raw_opts(arr)
+    set_raw_opts(expect_array(arr))
   }
   function process_repeated(arr: any[]) {
     const x = group(arr, _ => get(_, nice_key)) // {aa:[{key:'aa'},{key:'aa'}]}
@@ -89,7 +90,7 @@ export default function PatientSelect(props: IProps) {
       keys__.current = default_keys
       return handleSearch(text)
     }
-    const res = result ?? []
+    const res = isArray(result) ? result : get(result, 'data')
     safe_set_options(res);
     scrollPage.current = 0
     return res
@@ -124,7 +125,7 @@ export default function PatientSelect(props: IProps) {
   };
   return (
     <AutoComplete_L
-      dropdownRender={menu => {
+      popupRender={menu => {
         return <>
           <Row style={{ padding: 6 }}>
             {
@@ -155,7 +156,7 @@ export default function PatientSelect(props: IProps) {
       options={
         process_repeated(raw_opts || [])
           .map(_ => {
-            const label = get(_, keys__.current[0].value!)
+            const label = get(_, nice_key)
             const opts = { label, value: label, key: _?.id, option_data: _ }
             return opts
           })}

@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { PlusOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { IBaseProps } from '.';
 import DropContainer from '../components/drop-continer';
-import { checkDisabledHalfDay, getWeekStartEnd, openBookingModal, getOperationNum, getResidue } from '../util';
+import { checkDisabledHalfDay, getWeekStartEnd, open_booking, getOperationNum, getResidue } from '../util';
 import dayjs from 'dayjs';
 import { get, map as _map } from 'lodash';
 import { TMorningOrAfternoon } from '../type';
@@ -112,7 +112,7 @@ export default function DateSelect(props: IProps) {
                               <div
                                 className="hover-shadow"
                                 onClick={() =>
-                                  openBookingModal(targetStartMoment, morningOrAfternoon, data, () => {
+                                  open_booking(targetStartMoment, morningOrAfternoon, data, () => {
                                     dd.initData();
                                     dd.getStatistic();
                                     dd.getBetweenList();
@@ -157,7 +157,7 @@ export default function DateSelect(props: IProps) {
                                   bottom: 0,
                                 }}
                                 onClick={() =>
-                                  openBookingModal(targetStartMoment, morningOrAfternoon, {}, () => {
+                                  open_booking(targetStartMoment, morningOrAfternoon, {}, () => {
                                     dd.initData();
                                     dd.getStatistic();
                                     dd.getBetweenList();
@@ -185,7 +185,7 @@ export default function DateSelect(props: IProps) {
                                 !get(residueObj, 'isOpen')
                                   ? () => {}
                                   : () =>
-                                      openBookingModal(targetStartMoment, morningOrAfternoon, {}, () => {
+                                      open_booking(targetStartMoment, morningOrAfternoon, {}, () => {
                                         dd.initData();
                                         dd.getStatistic();
                                         dd.getBetweenList();

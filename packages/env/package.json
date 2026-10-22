@@ -24,7 +24,7 @@
     "license": "MIT",
     "dependencies": {
         "@lm_fe/utils": "workspace:^",
-        "dayjs": "^1.11.21"
+        "dayjs": "^1.11.23"
     },
     "devDependencies": {
         "rollup": "^2.80.0"

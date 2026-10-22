@@ -13,3 +13,4 @@ export async function validate_form<T = AnyObject>(f: FormInstance) {
     return null
   }
 }
+(window as any).validate_form = validate_form

@@ -149,6 +149,7 @@ import { form_control } from './form_control'
 import { formatFormConfig, render_form_label } from './utils'
 import my_styles from './RenderFormSectionComponent.module.less'
 import { SizeType } from 'antd/es/config-provider/SizeContext';
+import { mchcEvent } from '@lm_fe/env'
 interface IProps {
     formDescription: IMchc_FormDescriptions_Field_Nullable
     renderEditItem: (key: IMchc_FormDescriptions_Field_Nullable, ReactNode: React.ReactNode, others?: any) => any
@@ -1656,7 +1657,9 @@ function RenderFormSectionComponent(props: IProps) {
                         C={C}
                         formName={formName}
                         config={config}
+                        event_name={get(config, 'event_name') || config.name}
                         form={form}
+                        form_event={mchcEvent}
                     />
                 )
                 return config?.plainForm
