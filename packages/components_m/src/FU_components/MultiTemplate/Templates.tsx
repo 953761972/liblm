@@ -7,8 +7,11 @@ import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
 import { MyFormSectionForm } from '../FormSection/FormSectionForm';
 import styles from './index.module.less';
-import { IMultiTemplateProps, IMultiTemplateType, IRemoteTemplates, IRemoteTemplates_item } from './types';
-interface IExtraProps extends IMultiTemplateProps { on_select(item?: IRemoteTemplates_item): void, maintain_mode?: boolean }
+import { IMultiTemplateProps, IMultiTemplate_type, IMultiTemplate_remote, IMultiTemplate_item } from './types';
+interface IExtraProps extends IMultiTemplateProps {
+    on_select(item?: IMultiTemplate_item): void,
+    maintain_mode?: boolean
+}
 
 export function MultiTemplateTemplateGroup(props: IExtraProps) {
     const { MultiTemplate_type = [] } = props
@@ -17,26 +20,28 @@ export function MultiTemplateTemplateGroup(props: IExtraProps) {
     return <div className={styles.container}>
         <Tabs
             className={styles.tabs}
-            items={MultiTemplate_type.map(_ => ({
-                label: _.label,
-                key: _.label,
-                children: <ActiveTemplates parent_props={props} item={_} />
-            }))}
+            items={
+                MultiTemplate_type.map(_ => ({
+                    label: _.label,
+                    key: _.label,
+                    children: <ActiveTemplates parent_props={props} item={_} />
+                }))
+            }
         />
     </div>
 }
 
-function ActiveTemplates(props: { item: IMultiTemplateType, parent_props: IExtraProps }) {
+function ActiveTemplates(props: { item: IMultiTemplate_type, parent_props: IExtraProps }) {
     const { item, parent_props } = props
     const { url = '/api/multiTemplate', maintain_mode, fds = [], on_select } = parent_props
     const { sys_theme } = use_provoke()
-    const [templates, set_templates] = useState<IRemoteTemplates>()
-    const [active, set_active] = useState<IRemoteTemplates_item>()
+    const [templates, set_templates] = useState<IMultiTemplate_remote>()
+    const [active, set_active] = useState<IMultiTemplate_item>()
     const [title_to_add, set_title_to_add] = useState('')
     // const [maintain_mode, set_maintain_mode] = useState(false)
     const [form] = Form.useForm()
     const el = useRef<HTMLDivElement>(null)
-
+    const operable = maintain_mode && item.canOperate
     useEffect(() => {
         fetch_data()
     }, [item])
@@ -51,7 +56,7 @@ function ActiveTemplates(props: { item: IMultiTemplateType, parent_props: IExtra
         if (item) {
             request
                 // .get<IRemoteTemplates[]>(url, { params: { 'type.equals': item?.params?.type } })
-                .get<IRemoteTemplates[]>(url, { params: item?.params })
+                .get<IMultiTemplate_remote[]>(url, { params: item?.params })
                 .then(res => {
                     const res_data = res.data[0]
                     set_templates(res_data)
@@ -62,7 +67,7 @@ function ActiveTemplates(props: { item: IMultiTemplateType, parent_props: IExtra
 
     function op_init() {
         request
-            .post<IRemoteTemplates>(url, { ...item.params, data: [] }, { successText: '操作成功' })
+            .post<IMultiTemplate_remote>(url, { ...item.params, data: [] }, { successText: '操作成功' })
             .then(res => set_templates(res.data))
     }
 
@@ -73,7 +78,7 @@ function ActiveTemplates(props: { item: IMultiTemplateType, parent_props: IExtra
             return
         }
         request
-            .put<IRemoteTemplates>(url, { ...templates, data: [...templates.data, { title: title_to_add }] }, { successText: '操作成功' })
+            .put<IMultiTemplate_remote>(url, { ...templates, data: [...templates.data, { title: title_to_add }] }, { successText: '操作成功' })
             .then(res => {
                 set_templates(res.data)
                 set_title_to_add('')
@@ -86,17 +91,17 @@ function ActiveTemplates(props: { item: IMultiTemplateType, parent_props: IExtra
         const old = templates.data.find(_ => _.title === active.title) ?? {}
         Object.assign(old, form_data)
         request
-            .put<IRemoteTemplates>(url, templates, { successText: '操作成功' })
+            .put<IMultiTemplate_remote>(url, templates, { successText: '操作成功' })
             .then(res => {
                 set_templates(res.data)
             })
     }
-    function op_remove(item: IRemoteTemplates_item) {
+    function op_remove(item: IMultiTemplate_item) {
         if (!templates) return
         const idx = templates.data.findIndex(_ => _.title === item.title)
         templates.data.splice(idx, 1)
         request
-            .put<IRemoteTemplates>(url, templates, { successText: '操作成功' })
+            .put<IMultiTemplate_remote>(url, templates, { successText: '操作成功' })
             .then(res => {
                 set_templates(res.data)
             })
@@ -125,10 +130,11 @@ function ActiveTemplates(props: { item: IMultiTemplateType, parent_props: IExtra
                             onClick={() => {
                                 window.mchc_modal?.open('box', {
                                     title: '模板维护',
-                                    width: 1400,
+                                    width: '80vw',
                                     getContainer: () => el.current!,
                                     onClose: fetch_data,
                                     modal_data: { content: <MultiTemplateTemplateGroup maintain_mode {...parent_props} /> },
+                                    footer: null,
 
                                 })
                             }}
@@ -161,7 +167,7 @@ function ActiveTemplates(props: { item: IMultiTemplateType, parent_props: IExtra
                                 style={is_active ? { background: sys_theme.colorPrimary } : undefined}
                             />
                             <span className={styles['list-item-title']}>{t.title}</span>
-                            {maintain_mode && (
+                            {operable && (
                                 <MyIcon
                                     value='DeleteOutlined'
                                     className={styles['list-item-delete']}
@@ -178,7 +184,7 @@ function ActiveTemplates(props: { item: IMultiTemplateType, parent_props: IExtra
                 }
             </div>
 
-            {maintain_mode && (
+            {operable && (
                 <Space.Compact className={styles['add-bar']}>
                     <Input
                         onChange={e => set_title_to_add(e.target.value)}
@@ -207,7 +213,7 @@ function ActiveTemplates(props: { item: IMultiTemplateType, parent_props: IExtra
                 }
             </div>
 
-            {maintain_mode && (
+            {operable && (
                 <div className={styles['content-footer']}>
                     <Button
                         disabled={!active}

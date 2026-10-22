@@ -10,5 +10,4 @@ export interface IDiagnosesTemplate {
     del_diagnose_item_inner?: (item: IMchc_Doctor_Diagnoses) => Promise<void>
 
     setDiagnosesList(v: IMchc_Doctor_Diagnoses[]): void
-    saveHeaderInfo(h: IMchc_Doctor_OutpatientHeaderInfo): void
 }

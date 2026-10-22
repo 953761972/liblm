@@ -4,6 +4,7 @@ import { get, set } from 'lodash';
 import { FormInstance } from 'antd/lib/form';
 import dayjs from 'dayjs';
 import { SLocal_Calculator } from '@lm_fe/service';
+import { calGestationalWeekByLmp } from '@lm_fe/utils';
 export default class AdmissionForm extends BaseEditPanelForm {
   renderBtns = () => {
     return (
@@ -46,7 +47,7 @@ export default class AdmissionForm extends BaseEditPanelForm {
     /** 根据末次月经计算预产期—B超 和 孕周 */
     if (get(changedValues, 'earlyPregnancyCheckMedicalHistory.lmd')) {
       const dueDate = calEddByLmp(get(changedValues, 'earlyPregnancyCheckMedicalHistory.lmd'));
-      const gestationalWeek = SLocal_Calculator.calGestationalWeekByLmp(get(changedValues, 'earlyPregnancyCheckMedicalHistory.lmd'));
+      const gestationalWeek = calGestationalWeekByLmp(get(changedValues, 'earlyPregnancyCheckMedicalHistory.lmd'));
       form && form.setFieldsValue({ earlyPregnancyCheckMedicalHistory: { dueDate, gestationalWeek } });
     }
 

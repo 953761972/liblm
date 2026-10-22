@@ -1,5 +1,6 @@
 import Screening from './Screening';
 import PathologicalBiopsy from './PathologicalBiopsy';
+import Emmeniopathy from './Emmeniopathy';
 import DrugAbortion from './DrugAbortion';
 import Common from './Common';
 
@@ -9,7 +10,8 @@ export const NurseTypesMapping = {
     name: '常规接诊',
     icon: '',
     api: '/api/labour-records',
-    component: Common,
+    // component: Common,
+    conf: () => import('./Common/form_config')
   },
   // Puberty: {
   //   key: 'Puberty',
@@ -24,6 +26,8 @@ export const NurseTypesMapping = {
     icon: '',
     api: '/api/labour-records',
     component: Screening,
+    conf: () => import('./Screening/form_config')
+
   },
   PathologicalBiopsy: {
     key: 'PathologicalBiopsy',
@@ -31,6 +35,8 @@ export const NurseTypesMapping = {
     icon: '',
     api: '/api/labour-records',
     component: PathologicalBiopsy,
+    conf: () => import('./PathologicalBiopsy/form_config')
+
   },
   // Menopause: {
   //   key: 'Menopause',
@@ -46,4 +52,13 @@ export const NurseTypesMapping = {
   //   api: '/api/labour-records',
   //   component: DrugAbortion,
   // },
+  Emmeniopathy: {
+    key: 'Emmeniopathy',
+    name: '月经病',
+    icon: '',
+    api: '/api/labour-records',
+    component: Emmeniopathy,
+    conf: () => import('./Emmeniopathy/form_config')
+
+  },
 };

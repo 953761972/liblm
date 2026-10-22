@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { use_provoke } from '@lm_fe/provoke';
 
 
-export function use_doctor_sign(type: 'prenatalVisit' | 'prenatalFVisit' | 'prenatalVisitCH', data_with_sign_status?: { prenatalVisitId?: any, caSignStatus?: boolean }) {
+export function use_doctor_sign(type: 'prenatalVisit' | 'prenatalFVisit' | 'prenatalVisitCH' | 'caseTemplete', data_with_sign_status?: { prenatalVisitId?: any, caSignStatus?: boolean }) {
 
     const { 签名形式, 本地http签名地址, 本地http签名格式, 本地http签名净化, 签名方式 } = use_provoke(c => c.config)
     const is_signed = data_with_sign_status?.caSignStatus

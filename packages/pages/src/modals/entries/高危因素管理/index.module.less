@@ -1,161 +1,83 @@
 @lableWidth: 120px;
 
 .highrisk-pop {
-  :global(.ant-modal-title) {
-    font-size: 18px;
-  }
-
-
-  :global(.ant-tabs-nav) {
-    margin-left: 20px;
-    margin-bottom: 6px;
-  }
-
-  :global(.ant-col) {
-    margin-bottom: 8px;
-  }
-
-  :global(.ant-tabs-content-holder) {
-    padding: 0 20px;
-  }
-
-  .highrisk-sign {
-    &-header {}
-
-    &-content {
-      height: 400px;
-      overflow: auto;
+    :global(.ant-modal-title) {
+        font-size: 18px;
     }
 
-    :global(.ant-row) {
-      margin-bottom: 0;
+    :global(.ant-tabs-nav) {
+        margin-left: 20px;
+        margin-bottom: 6px;
     }
 
-    :global(.ant-form-item) {
-      margin-bottom: 4px;
-      margin-right: 16px;
+    :global(.ant-col) {
+        margin-bottom: 8px;
     }
 
-    :global(.ant-input),
-    :global(.ant-tree) {
-      font-size: 16px;
+    :global(.ant-tabs-content-holder) {
+        padding: 0 20px;
     }
 
-    :global(.ant-select-selection-overflow) {
-      max-width: 99%;
+    .highrisk-sign {
+        &-header {
+        }
+
+        &-content {
+            height: 400px;
+            overflow: auto;
+        }
+
+        :global(.ant-row) {
+            margin-bottom: 0;
+        }
+
+        :global(.ant-form-item) {
+            margin-bottom: 4px;
+            margin-right: 16px;
+        }
+
+        :global(.ant-input),
+        :global(.ant-tree) {
+            font-size: 16px;
+        }
+
+        :global(.ant-select-selection-overflow) {
+            max-width: 99%;
+        }
+
+        .highrisk-infec {
+            width: 100%;
+        }
+
+        .highrisk-factor {
+            // width: 456px;
+
+            :global(.ant-select-selector) {
+                height: 88px;
+                overflow-y: auto;
+            }
+        }
+
+        .highrisk-options {
+            height: 350px;
+            overflow: auto;
+        }
     }
 
-    .highrisk-infec {
-      width: 100%;
-    }
-
-    .highrisk-factor {
-      // width: 456px;
-
-      :global(.ant-select-selector) {
-        height: 88px;
-        overflow-y: auto;
-      }
-    }
-
-    .highrisk-options {
-      height: 350px;
-      overflow: auto;
-    }
-  }
-
-  .highrisk-timeline {
-    height: 520px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    padding-top: 8px;
-    color: #fff;
-
-    :global(.ant-timeline-item-label) {
-      width: @lableWidth;
-    }
-
-    :global(.ant-timeline-item-tail) {
-      left: @lableWidth + 12px;
-    }
-
-    :global(.ant-timeline-item-head) {
-      left: @lableWidth + 8px;
-    }
-
-    :global(.ant-timeline-item-left .ant-timeline-item-content) {
-      left: @lableWidth + 4px;
-      width: calc(100% - @lableWidth - 20px);
-    }
-
-    :global(.ant-timeline-item) {
-      padding-bottom: 0;
-      margin-bottom: -30px;
-    }
-
-    .record-left {
-      position: relative;
-      left: -140px;
-      top: 0;
-
-      .record-grade {
-        position: relative;
-        width: 108px;
-        height: 30px;
-        line-height: 30px;
-        border-radius: 4px;
-        text-align: center;
-      }
-
-      .record-week {
-        width: 108px;
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-        color: #150f55;
-      }
-    }
-
-    .record-right {
-      position: relative;
-      top: -60px;
-      color: #535881;
-
-      .record-item {
-        margin: 4px 0;
-        padding-right: 6px;
+    .row-content {
         display: flex;
-      }
-
-      .item-label {
-        width: 72px;
-        text-align: right;
-        margin-right: 3px;
-        border-radius: 4px;
-      }
-
-      .item-note {
-        flex: 1;
-      }
-
-
+        justify-content: space-between;
     }
-  }
 
-  .row-content {
-    display: flex;
-    justify-content: space-between;
-  }
+    .col-content {
+        height: 340px;
+        overflow: auto;
+        padding-left: 10px;
+    }
 
-  .col-content {
-    height: 340px;
-    overflow: auto;
-    padding-left: 10px;
-  }
-
-  .tree-title {
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 40px;
-  }
+    .tree-title {
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 40px;
+    }
 }

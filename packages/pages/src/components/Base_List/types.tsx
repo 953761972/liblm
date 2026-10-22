@@ -31,7 +31,7 @@ type TMyBaseList_ColumnArr_nullable<T> = (IMyBaseList_ColumnType<T> | null)[]
 export interface ModalFromProps extends ModalProps { editable: boolean, id?: TIdTypeCompatible, extraModalData?: AnyObject, onCancel: () => void, onSearch: () => void }
 export interface IMyBaseList_ActionCtx<T> {
   handleSearch(): Promise<void>,
-  getSearchParams(isFuck?: boolean): any,
+  getSearchParams(values?: AnyObject, isFuck?: boolean): any,
   getCheckRows(): T[]
 }
 export interface RenderColProps<T = any> {
@@ -65,7 +65,7 @@ export interface MyBaseListProps<T extends { id?: any } = any> extends TableProp
   // 是否需要分页
   needPagination?: boolean;
   // 需要 多选
-  needChecked?: boolean;
+  needChecked?: boolean | 1 | 2;
   // 表格是否可编辑
   needEditInTable?: boolean;
   // 展示添加按钮

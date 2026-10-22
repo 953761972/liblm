@@ -68,9 +68,12 @@ export default function BreastCancerDataReport(prop: any) {
                             // disabled={isEmpty(rowData.riskRecords)}
                             onClick={
                                 () => {
-                                    mchcModal__.open('高危因素管理', {
-                                        modal_data: { pregnancyId: rowData.id, hide高危标记: true }
+                                    mchcModal__.open('高危时间轴', {
+                                        modal_data: { pregnancyId: rowData.id, }
                                     })
+                                    // mchcModal__.open('高危因素管理', {
+                                    //     modal_data: { pregnancyId: rowData.id, hide高危标记: true }
+                                    // })
                                 }
                             }>
                             记录

@@ -95,7 +95,7 @@ const EditModal = ({ dataSource, ...props }) => {
     }
 
     return (
-        <Row gutter={24} style={{ minHeight: 550 }}>
+        <Row gutter={24} style={{ minHeight: 550, flexFlow: 'nowrap' }}>
             <Col flex="200px" style={{ borderRight: '1px solid #ddd' }}>
                 <div style={{ fontWeight: 'bold' }}>
                     <div style={{ fontSize: '16px' }}>{dataSource.name}</div>
@@ -123,10 +123,6 @@ const EditModal = ({ dataSource, ...props }) => {
                 <p>
                     <span>诊断：</span>
                     <span>{dataSource?.highriskNote}</span>
-                </p>
-                <p>
-                    <span>妊娠监督：</span>
-                    <span>{dataSource?.cardNo}</span>
                 </p>
                 <p>
                     <span>末次产检时间：</span>
@@ -206,6 +202,7 @@ const ItemForm = ({ flag, values, onSubmit }: any) => {
             wrapperCol={{ span: 19 }}
             form={form}
             onFinish={handleSubmit}
+            initialValues={{ phoneStatus: 1 }}
         >
             <Form.Item noStyle name="id">
                 <Input style={{ height: 0, padding: 0, border: 'none' }} />
@@ -223,6 +220,7 @@ const ItemForm = ({ flag, values, onSubmit }: any) => {
                     <Radio value={2}>转院</Radio>
                     <Radio value={3}>已分娩</Radio>
                     <Radio value={4}>终止妊娠</Radio>
+                    <Radio value={6}>失访</Radio>
                     <Radio value={5}>其他原因</Radio>
                 </Radio.Group>
             </Form.Item>
@@ -266,7 +264,20 @@ const ItemForm = ({ flag, values, onSubmit }: any) => {
                                     <Input placeholder="" style={{ width: 256 }} />
                                 </Form.Item>
                                 <Form.Item name="deliveryType" label="分娩方式">
-                                    <Select placeholder="" style={{ width: 256 }} />
+                                    {/*'自然产,剖宫产,钳产,吸引产,臀助产,臀牵引,其他' */}
+                                    <Select
+                                        placeholder=""
+                                        style={{ width: 256 }}
+                                        options={[
+                                            { value: '自然产' },
+                                            { value: '剖宫产' },
+                                            { value: '钳产' },
+                                            { value: '吸引产' },
+                                            { value: '臀助产' },
+                                            { value: '臀牵引' },
+                                            { value: '其他' },
+                                        ]}
+                                    />
                                 </Form.Item>
                             </>
                         )
@@ -311,6 +322,10 @@ const ItemForm = ({ flag, values, onSubmit }: any) => {
             </Form.Item>
 
             <Form.Item name="followUpDate" label="随访时间">
+                <MyDatePicker valueType="YYYY-MM-DD" placeholder="" />
+            </Form.Item>
+
+            <Form.Item name="appointmentDate" label="下次复诊日期">
                 <MyDatePicker valueType="YYYY-MM-DD" placeholder="" />
             </Form.Item>
 

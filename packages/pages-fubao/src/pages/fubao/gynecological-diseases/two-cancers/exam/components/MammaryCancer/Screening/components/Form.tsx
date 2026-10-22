@@ -2,6 +2,8 @@ import { BaseEditPanelForm, getBMI } from '@lm_fe/components_m'
 import { Space, message, Modal } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { get, set } from 'lodash';
+import React from 'react';
+
 export const formItemLayout = {
   // layout: 'horizontal',
   labelCol: {

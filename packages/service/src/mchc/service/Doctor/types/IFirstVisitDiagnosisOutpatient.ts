@@ -74,6 +74,7 @@ export interface IMchc_Doctor_FirstVisitDiagnosisOutpatient<T extends MchcTypes 
     // new
     prenatalVisitId?: number
     caSignStatus?: boolean
+    isBanned?: boolean
 }
 
 

@@ -1,7 +1,7 @@
 import { mchcEnv, mchcEvent, mchcLogger } from '@lm_fe/env';
 import { base64_to_image, safe_json_parse } from '@lm_fe/utils';
 import { MyColor, MyIcon } from '@noah-libjs/components';
-import { Button, Layout, Popover, Slider, Switch } from 'antd';
+import { Button, Layout, Popover, Slider } from 'antd';
 import classnames from 'classnames';
 import { get, isString } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
@@ -13,7 +13,7 @@ const { Sider, Content } = Layout;
 
 function MyImageEditor_Inner(props: IMyImageEditorProps) {
 
-  const { value, onChange, canvasOptions, legends = default_legends } = props;
+  const { value, onChange, canvasOptions, legends = default_legends, on_save } = props;
 
 
   const gyImageEditorRef = useRef<HTMLDivElement>(null);
@@ -46,24 +46,16 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
   const [colors, set_colors] = useState('#fe547b')
   const [strokeWidth, set_strokeWidth] = useState(1)
   const [fontSize, set_fontSize] = useState(18)
-  const [__checked, set_checked] = useState(!!value)
-  const [loaded, set_loaded] = useState(false)
+
+
   useEffect(() => {
-    mchcEnv
-      .ds([s => s.lm_libs.fabric_5_2_0['fabric.min.js']])
-      .then(() => set_loaded(true))
+    initCanvas()
+  }, [value])
+
+  useEffect(() => {
+    init_delete_control()
+    createContainner()
   }, [])
-
-  useEffect(() => {
-    loaded && initCanvas()
-  }, [value, loaded])
-
-  useEffect(() => {
-    if (loaded) {
-      init_delete_control()
-      createContainner()
-    }
-  }, [loaded])
 
 
 
@@ -73,6 +65,8 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
 
 
   function broadcast_event<T extends keyof typeof MyImageEditorEvents>(type: (typeof MyImageEditorEvents)[T]) {
+    on_save?.(containner.current)
+
     mchcEvent.emit('custom_msg', {
       type,
       data: { ins: containner.current }
@@ -588,6 +582,7 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
 
   //保存图片到后台
   function handleImgSave() {
+    mchcEnv.success('保存成功')
     const value = JSON.stringify(containner.current);
     containner.current?.requestRenderAll();
 
@@ -597,9 +592,7 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
     // canvas.current?.loadFromJSON(value)
   };
 
-  function handleSwitch(checked: any) {
-    set_checked(checked)
-  };
+
 
   function renderSetUp() {
 
@@ -634,17 +627,13 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
   };
 
 
-  if (!loaded) return '加载中...'
 
   return (
     <div>
-      <div className={styles["switch"]} style={{ margin: '13px 0 16px 58px' }}>
-        <span>电子画板：</span>
-        <Switch checkedChildren="开启" unCheckedChildren="关闭" checked={__checked} onChange={handleSwitch} />
-      </div>
+
 
       <div className={styles["gy-image-editor"]} ref={gyImageEditorRef}>
-        <Layout hidden={!__checked} >
+        <Layout  >
           {
             legends.length ?
               <Sider style={{ borderTop: '1px solid #d7dce7' }}>

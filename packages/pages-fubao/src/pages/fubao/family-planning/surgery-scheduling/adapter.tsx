@@ -1,28 +1,34 @@
-import { map, get, isEmpty, set, pick, filter } from 'lodash';
-import { NurseTypesMapping } from "../file-management/doctor-desk/components/SurgicalRecordv2/config";
-const toApi = (oldData: any, newData: any, date: any) => {
+import { cloneDeep, filter, get, includes, isEmpty, map, pick, set } from 'lodash';
+import { IModel_EarlyPregnancySurgicalTemplate } from '../../.stupid_model';
+import { mchcLogger } from '@lm_fe/env';
+import { AnyObject } from '@lm_fe/utils';
+const ff_toApi = (oldData: any, newData: any, date: any, tempaltes: IModel_EarlyPregnancySurgicalTemplate[]) => {
   //0为休息，1为上午，2为下午，3为全天 attendanceSet
-  map(oldData, (value, key) => {
+  map(oldData, (value, key: string) => {
     if (key.indexOf(`${date}-attendanceSet`) > -1) {
       set(newData, 'attendanceSet', value);
     }
     if (key.indexOf(`${date}-surgery`) > -1) {
-      const checkedValues = get(oldData, `${date}-surgery.checkedValues`) || [];
+      const checked_values: string[] = get(oldData, `${date}-surgery.checkedValues`) || [];
       const withInputValues = get(oldData, `${date}-surgery.withInputValues`);
 
+
+
       //过滤出未选择的值
-      const notCheckedValues = filter(NurseTypesMapping, (item) => {
-        return checkedValues.indexOf(`${get(item, 'key')}`) === -1;
+      const not_checked_values: IModel_EarlyPregnancySurgicalTemplate[] = filter(tempaltes, (item) => {
+        return checked_values.indexOf(item.schedulingField) === -1;
       });
       //选择的值传1和号源数
-      map(checkedValues, (item, index) => {
+      map(checked_values, (item, index) => {
         set(newData, item, 1);
-        set(newData, `${item}Num`, get(withInputValues, [`${item}`, 'value', '0']) || 0);
+        const fuck_num = get(withInputValues, [`${item}`, 'value', '0']) || 0
+        const fuck_key = `${item}Num`
+        set(newData, fuck_key, fuck_num);
       });
       //未选择的值传0
-      if (!isEmpty(notCheckedValues)) {
-        map(notCheckedValues, (item, index) => {
-          const surgeryKey = get(item, `key`);
+      if (!isEmpty(not_checked_values)) {
+        map(not_checked_values, (item, index) => {
+          const surgeryKey = get(item, 'schedulingField');
           set(newData, surgeryKey, 0);
         });
       }
@@ -30,25 +36,24 @@ const toApi = (oldData: any, newData: any, date: any) => {
   });
   return newData;
 };
-const formApi = (oldData: any, newData: any, date: any) => {
+const ff_formApi = (oldData: AnyObject, newData: any, date: string, tempaltes: IModel_EarlyPregnancySurgicalTemplate[]) => {
   let checkedValues: any = [];
   let withInputValues = {};
-
-  map(oldData, (item, itemIndex) => {
-    if (itemIndex === 'attendanceSet') {
+  map(oldData, (item, the_key) => {
+    if (the_key === 'attendanceSet') {
       set(newData, `${date}-attendanceSet`, item);
     }
+    if (tempaltes.every(_ => _.schedulingField !== the_key)) return
     //0未开放，1开放,2未开放有预约，3已满
     if (
-      itemIndex === get(NurseTypesMapping, `${itemIndex}.key`) &&
-      get(oldData, `${itemIndex}`) !== 0 &&
-      get(oldData, `${itemIndex}`) !== 2
+      get(oldData, `${the_key}`) !== 0 &&
+      get(oldData, `${the_key}`) !== 2
     ) {
-      checkedValues.push(itemIndex);
-      set(withInputValues, `withInputValues.${itemIndex}`, {
-        key: itemIndex,
+      checkedValues.push(the_key);
+      set(withInputValues, `withInputValues.${the_key}`, {
+        key: the_key,
         value: {
-          0: get(oldData, `${itemIndex}Num`),
+          0: get(oldData, `${the_key}Num`),
         },
       });
     }
@@ -60,7 +65,7 @@ const formApi = (oldData: any, newData: any, date: any) => {
 };
 
 //数据转换
-export const valueToApi = (values: any, oldData: any) => {
+export const fuck_scheduling_valueToApi = (values: any, oldData: any, tempaltes: IModel_EarlyPregnancySurgicalTemplate[]) => {
   //星期一
   let MONDAY = {};
   let MONDAYData = {
@@ -97,7 +102,7 @@ export const valueToApi = (values: any, oldData: any) => {
     whatDay: 'SUNDAY',
   };
 
-  map(values, (value, key) => {
+  map(values, (value, key: string) => {
     if (key.indexOf('MONDAY') > -1) {
       set(MONDAY, key, value);
     }
@@ -121,13 +126,13 @@ export const valueToApi = (values: any, oldData: any) => {
     }
   });
 
-  MONDAYData = toApi(MONDAY, MONDAYData, 'MONDAY');
-  TUESDAYData = toApi(TUESDAY, TUESDAYData, 'TUESDAY');
-  WEDNESDAYData = toApi(WEDNESDAY, WEDNESDAYData, 'WEDNESDAY');
-  THURSDAYData = toApi(THURSDAY, THURSDAYData, 'THURSDAY');
-  FRIDAYData = toApi(FRIDAY, FRIDAYData, 'FRIDAY');
-  SATURDAYData = toApi(SATURDAY, SATURDAYData, 'SATURDAY');
-  SUNDAYData = toApi(SUNDAY, SUNDAYData, 'SUNDAY');
+  MONDAYData = ff_toApi(MONDAY, MONDAYData, 'MONDAY', tempaltes);
+  TUESDAYData = ff_toApi(TUESDAY, TUESDAYData, 'TUESDAY', tempaltes);
+  WEDNESDAYData = ff_toApi(WEDNESDAY, WEDNESDAYData, 'WEDNESDAY', tempaltes);
+  THURSDAYData = ff_toApi(THURSDAY, THURSDAYData, 'THURSDAY', tempaltes);
+  FRIDAYData = ff_toApi(FRIDAY, FRIDAYData, 'FRIDAY', tempaltes);
+  SATURDAYData = ff_toApi(SATURDAY, SATURDAYData, 'SATURDAY', tempaltes);
+  SUNDAYData = ff_toApi(SUNDAY, SUNDAYData, 'SUNDAY', tempaltes);
 
   //拿到旧数据和新数据合并提交（各个id）
   const familyPlanningDefaultSettingDetails = get(oldData, 'familyPlanningDefaultSettingDetails') || [];
@@ -173,7 +178,7 @@ export const valueToApi = (values: any, oldData: any) => {
   let result = { familyPlanningDefaultSettingDetails: resultArr, ...resultStr };
   return result;
 };
-export const valueToForm = (values: any) => {
+export const fuck_scheduling_valueToForm = (values: any, tempaltes: IModel_EarlyPregnancySurgicalTemplate[]) => {
   //星期一
   let MONDAY = {};
   let MONDAYData = {};
@@ -220,13 +225,13 @@ export const valueToForm = (values: any) => {
     }
   });
 
-  MONDAYData = formApi(MONDAY, MONDAYData, 'MONDAY');
-  TUESDAYData = formApi(TUESDAY, TUESDAYData, 'TUESDAY');
-  WEDNESDAYData = formApi(WEDNESDAY, WEDNESDAYData, 'WEDNESDAY');
-  THURSDAYData = formApi(THURSDAY, THURSDAYData, 'THURSDAY');
-  FRIDAYData = formApi(FRIDAY, FRIDAYData, 'FRIDAY');
-  SATURDAYData = formApi(SATURDAY, SATURDAYData, 'SATURDAY');
-  SUNDAYData = formApi(SUNDAY, SUNDAYData, 'SUNDAY');
+  MONDAYData = ff_formApi(MONDAY, MONDAYData, 'MONDAY', tempaltes);
+  TUESDAYData = ff_formApi(TUESDAY, TUESDAYData, 'TUESDAY', tempaltes);
+  WEDNESDAYData = ff_formApi(WEDNESDAY, WEDNESDAYData, 'WEDNESDAY', tempaltes);
+  THURSDAYData = ff_formApi(THURSDAY, THURSDAYData, 'THURSDAY', tempaltes);
+  FRIDAYData = ff_formApi(FRIDAY, FRIDAYData, 'FRIDAY', tempaltes);
+  SATURDAYData = ff_formApi(SATURDAY, SATURDAYData, 'SATURDAY', tempaltes);
+  SUNDAYData = ff_formApi(SUNDAY, SUNDAYData, 'SUNDAY', tempaltes);
 
   let result = {
     ...MONDAYData,

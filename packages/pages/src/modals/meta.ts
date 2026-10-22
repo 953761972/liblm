@@ -25,5 +25,6 @@ export const routesData = {
     "诊断历史":lazy(() => import("./entries/诊断历史/index")),
     "预警提醒_高危快讯":lazy(() => import("./entries/预警提醒_高危快讯/index")),
     "高危因素管理":lazy(() => import("./entries/高危因素管理/index")),
+    "高危时间轴":lazy(() => import("./entries/高危时间轴/index")),
     "高危随访":lazy(() => import("./entries/高危随访/index")),
 }

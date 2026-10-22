@@ -1,5 +1,5 @@
 import React, { lazy } from 'react';
-import { useMarshal } from '../../utils/useMarshal';
+import { use_arr_marshal } from '../../utils/useMarshal';
 import { TCommonComponent } from '../types';
 import { IMyEditTableProps } from './types';
 
@@ -20,7 +20,7 @@ MyEditTable.DisplayFC = (props) => {
   } = props
 
 
-  const { safe_value = [], } = useMarshal<any[]>(marshal, value ?? [], onChange)
+  const { safe_value = [], } = use_arr_marshal<any>(marshal, value ?? [], onChange)
 
   return <div>
     {safe_value.length}项

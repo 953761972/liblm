@@ -3,7 +3,7 @@ import { Button, FormInstance, message } from 'antd';
 import { event } from '@lm_fe/utils'
 import { isArray, isObject, set } from 'lodash';
 import { mchcLogger } from '@lm_fe/env';
-import { IMchc_FormDescriptions_Field_Nullable } from '@lm_fe/service';
+import { IMchc_FormDescriptions_Field_Nullable, SMchc_FormDescriptions } from '@lm_fe/service';
 import { get_check_invert_values } from '@lm_fe/components';
 const CheckAndCancelButton: FC<any> = function CheckAndCancelButton(props: { [x: string]: any, form?: FormInstance, check_invert_values?: { [x: string]: [any, any] }, config?: IMchc_FormDescriptions_Field_Nullable }) {
   const {
@@ -22,7 +22,10 @@ const CheckAndCancelButton: FC<any> = function CheckAndCancelButton(props: { [x:
 
   const handleClick = () => {
     setIsCheck(!isCheck);
-    onChange?.(isCheck)
+    const k = SMchc_FormDescriptions.format_itemName_str(config!)
+    if (k) {
+      onChange?.(isCheck)
+    }
 
 
     onClick?.(name, isCheck);

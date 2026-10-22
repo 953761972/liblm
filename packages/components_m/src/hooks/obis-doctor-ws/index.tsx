@@ -61,7 +61,10 @@ export function useObisDoctorWs(pid: number) {
         let address = '';
         if (mchcEnv.isDev) {
             try {
-                address = HOST_URL?.substr(HOST_URL.lastIndexOf('/') + 1);
+                address = HOST_URL?.substr(HOST_URL.lastIndexOf('/') + 1)
+                if (!address) {
+                    address = window.location.host
+                }
             } catch (error) {
                 console.error('address 截取错误');
             }

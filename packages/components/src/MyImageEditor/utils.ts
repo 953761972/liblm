@@ -19,6 +19,7 @@ export type RealListenCbs = {
 
 import { Canvas, ICanvasOptions, IEvent } from 'fabric/fabric-impl';
 import { mchcEnv } from '@lm_fe/env';
+import { FormInstance } from 'antd';
 
 
 export const real_fabric = () => (window.fabric) as unknown as RealType
@@ -59,8 +60,10 @@ export const default_legends = [
 export interface IMyImageEditorProps {
     legends?: typeof default_legends
     value?: string,
+    form?: FormInstance
     canvasOptions?: Partial<ICanvasOptions>
     onChange?(v: string): void
+    on_save?(c?: Canvas): void
 }
 
 export const MyImageEditorEvents = {

@@ -292,7 +292,7 @@ export default function TemplateModal(props: IGlobalModalProps<IProps>) {
         <Tree.TreeNode
           title={
             <div className={styles["template-list-item"]}>
-              <div>&nbsp;{get(template, 'val')}&nbsp;</div>
+              <div style={{ maxWidth: '32vw', whiteSpace: 'pre-wrap' }}>&nbsp;{get(template, 'val')}&nbsp;</div>
               {canOperate && (
                 <div className={styles["template-list-item__actions"]}>
                   {/* <PlusCircleOutlined className={styles["template-list-item__actions-icon"]} onClick={handleAddTemplate} /> */}
@@ -377,8 +377,8 @@ export default function TemplateModal(props: IGlobalModalProps<IProps>) {
       {...others}
 
       className={styles["textarea-with-template__modal"]}
-      title="模板导入"
-      width={1100}
+      title="模板的导入"
+      width={'80vw'}
       onOk={handleOk}
     >
       {renderModal()}

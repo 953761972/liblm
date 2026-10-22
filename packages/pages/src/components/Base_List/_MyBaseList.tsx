@@ -1,21 +1,20 @@
 import { mchcConfig, mchcEnv, mchcEvent, mchcLogger, mchcStorage } from '@lm_fe/env';
 import { ModelService, TIdTypeCompatible } from '@lm_fe/service';
-import { AnyObject, assign, Browser, cloneDeep, downloadFile, formatDateTime, safe_async_call, shake, sleep } from '@lm_fe/utils';
+import { AnyObject, assign, cloneDeep, downloadFile, formatDateTime, safe_async_call, shake, sleep } from '@lm_fe/utils';
 import { Divider, Form, message, Space, TablePaginationConfig } from 'antd';
 import { get, isFunction, isNil, isString, omit } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
-import { MyBaseListRenderFormSection } from './Helper';
+import { MyBaseList_FormSection } from './Helper';
 import './index.module.less';
 import { IMyBaseList_ActionCtx, IMyBaseList_ColumnType, MyBaseListProps } from './types';
-import { formatProps, get_dataIndex, get_title, tranform_query_data, use_my_baselist } from './utils';
+import { formatProps, get_title, use_my_baselist } from './utils';
 
-import { MyIcon, Table_L, useMyEffectSafe } from '@lm_fe/components';
+import { format_dataIndex, MyIcon, Table_L, tranform_query_data, useMyEffectSafe } from '@lm_fe/components';
 import { getDefaultRequiredRules, InterceptDisplayFC, MyBaseListComponents, OkButton } from '@lm_fe/components_m';
 import { use_provoke } from '@lm_fe/provoke';
 import { TableRowSelection } from 'antd/es/table/interface';
 import { mchcModal__ } from '../../modals';
 import { BF_Wrap2 } from '../BF_Form';
-const browserClient = Browser.client || {};
 
 
 
@@ -134,19 +133,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
         actCellWidth += editText.length * 14
     }
     const searchForm = props.searchForm ?? _searchForm
-    useEffect(() => {
-        myBaseListService.current = customModelService || new ModelService<T>({
-            n: name,
-            useListSourceCount,
-            needTransferParams: false,
-            apiPrefix,
-            fuckPage,
-            get_fuck_page,
-            ignore_env,
-            ignore_usr
-        })
 
-    }, [name, customModelService])
     const [total, setTotal] = useState(0)
     const [dataSource, setDataSource] = useState<any[]>([])
     const [visible, setVisible] = useState(false)
@@ -202,7 +189,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
     }
     function search_node() {
         try {
-            return searchConfig ? <MyBaseListRenderFormSection config={searchConfig} disabled={loading} /> : null
+            return searchConfig ? <MyBaseList_FormSection config={searchConfig} disabled={loading} /> : null
         } catch (error) {
             return null
         }
@@ -210,64 +197,28 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
     const cache_key = `${location.pathname}@${name}`
     mchcLogger.log('tablelist cache_key', cache_key)
 
+
+    function relayout() {
+        const h = document.body.clientHeight
+        const formHeight = formWrapper.current?.clientHeight ?? 0
+        const queryHeight = queryRef.current?.clientHeight ?? 0
+        const tableHeaderHeight = wrapRef.current?.querySelector('.ant-table-header')?.clientHeight ?? 0
+        const result = h - queryHeight - tableHeaderHeight - 120 - 86
+        setTableHeight(result)
+        mchcLogger.log(`tablelist tableHeight:${result} queryHeight:${queryHeight} tableHeaderHeight:${tableHeaderHeight}`)
+        if (formHeight > 40) {
+            setLongSearchForm(true)
+        }
+    }
     useEffect(() => {
-        // let obj = mchcStorage.get(cache_key)
-        // mchcLogger.log('tablelist cache_key', cache_key, obj)
-        // if (name && !isNil(obj)) {
-        //     searchForm.setFieldsValue(obj)
-        // }
-    }, [name])
-    useEffect(() => {
-
-        setTimeout(() => {
-
-            const h = document.body.clientHeight
-            const formHeight = formWrapper.current?.clientHeight ?? 0
-            const queryHeight = queryRef.current?.clientHeight ?? 0
-            const tableHeaderHeight = wrapRef.current?.querySelector('.ant-table-header')?.clientHeight ?? 0
-            const result = h - queryHeight - tableHeaderHeight - 120 - 86
-            setTableHeight(result)
-            mchcLogger.log(`tablelist tableHeight:${result} queryHeight:${queryHeight} tableHeaderHeight:${tableHeaderHeight}`)
-            if (formHeight > 40) {
-                setLongSearchForm(true)
-            }
-
-            if (dbg_dataSource) {
-
-                setDataSource(dbg_dataSource)
-            } else {
-                init_or_click_search()
-            }
-            inited.current = true
-
-
-        }, 600);
+        init()
 
 
 
         return () => { }
 
-    }, [dbg_dataSource])
+    }, [name])
 
-
-    useEffect(() => {
-
-        setTimeout(() => {
-            const h = browserClient.clientHeight
-            const formHeight = formWrapper.current?.clientHeight ?? 0
-            const queryHeight = queryRef.current?.clientHeight ?? 0
-            const tableHeaderHeight = wrapRef.current?.querySelector('.ant-table-header')?.clientHeight ?? 0
-            mchcLogger.log('tablelist formHeight', { queryHeight, formHeight, h, tableHeaderHeight })
-
-            // setTableHeight(browserClient.clientHeight - queryHeight - 200)
-
-        }, 1000);
-
-
-        return () => {
-        }
-
-    }, [])
 
 
     if (effect_ctx) {
@@ -279,7 +230,40 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
             }
         }, [])
     }
+    async function init() {
+        if (!inited.current) {
 
+            if (dbg_dataSource) {
+                setDataSource(dbg_dataSource)
+                inited.current = true
+            } else {
+                myBaseListService.current = customModelService ||
+                    (
+                        name
+                            ? new ModelService<T>({
+                                n: name,
+                                useListSourceCount,
+                                needTransferParams: false,
+                                apiPrefix,
+                                fuckPage,
+                                get_fuck_page,
+                                ignore_env,
+                                ignore_usr
+                            })
+                            : undefined
+                    )
+                if (myBaseListService.current) {
+                    // // 等初始化表单赋值
+                    // await sleep(240)
+                    init_or_click_search(initialSearchValue)
+                    relayout()
+                    inited.current = true
+                }
+            }
+
+        }
+
+    }
     const actionCtx: IMyBaseList_ActionCtx<T> = {
         handleSearch: table_fetch,
         getSearchParams,
@@ -429,7 +413,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
             modal_data: {
                 requestData: {
                     // url: name + rowPrintUrlSuffix,
-                    url: name + 'rowprint',
+                    url: name + '/rowprint',
                     id: rowData?.id,
                     ...getSearchParams()
                 }
@@ -559,10 +543,9 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
 
 
 
-    function getSearchParams(isFuck = false): AnyObject {
+    function getSearchParams(_values?: AnyObject, isFuck = false): AnyObject {
         const { searchConfig } = propsCache.current
-
-        const values = searchForm.getFieldsValue()
+        const values = isNil(_values) ? searchForm.getFieldsValue() : _values
         const data = tranform_query_data(values, searchConfig, isFuck)
         const v = beforeSearch?.(data as any) ?? data
 
@@ -640,7 +623,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
                 const isOperativeCell = isString(dataIndex) && ['__operation', 'operation'].includes(dataIndex)
                 const format_data = {
                     title: get_title(col!),
-                    dataIndex: get_dataIndex(col!)
+                    dataIndex: format_dataIndex(col!)
                 }
                 const a: IMyBaseList_ColumnType<T> = {
                     width: (width ?? 120),
@@ -699,27 +682,29 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
     };
 
 
-    async function init_or_click_search() {
+    async function init_or_click_search(init_search_obj?: AnyObject) {
         mchcLogger.log('ggxx init', cloneDeep(searchParams_cache.current))
 
         // setDataSource([])
         safe_set_check_rows([])
         setCurrent(1)
 
-        const q = getSearchParams()
+        const q = getSearchParams(init_search_obj)
         defaultQuery.current = q
-        table_fetch(q)
+        return table_fetch(q)
 
     }
 
 
 
     const mergedColumns = format_columns(cal_columns);
-    const rowSelection: TableRowSelection<T> = {
-        // type: 'checkbox',
-        onChange: handleRowSelected,
-        selectedRowKeys: checkRows.map(_ => _.id as any)
-    }
+    const row_selection: TableRowSelection<T> | undefined = needChecked
+        ? {
+            type: needChecked === 2 ? 'radio' : 'checkbox',
+            onChange: handleRowSelected,
+            selectedRowKeys: checkRows.map(_ => _.id as any)
+        }
+        : undefined
     const __pagination: TablePaginationConfig | boolean = needPagination ? {
         position: ['bottomCenter'],
         total,
@@ -773,7 +758,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
             >
                 {
                     cal_columns.filter(_ => _.form_hidden).map(_ => {
-                        return <Form.Item hidden name={get_dataIndex(_)} />
+                        return <Form.Item hidden name={format_dataIndex(_)} />
                     })
                 }
 
@@ -817,7 +802,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
                                             mchcModal__.open('print_modal', {
                                                 modal_data: {
                                                     requestData: {
-                                                        url: name + 'print',
+                                                        url: name + '/print',
                                                         ...getSearchParams(),
                                                         ...printDefaultConfig
                                                     }
@@ -900,7 +885,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
                         columns={mergedColumns}
 
                         rowSelection={
-                            needChecked ? rowSelection : undefined
+                            row_selection
                         }
 
                         onRow={(record: T) => {

@@ -9,7 +9,7 @@ export const DoctorEnd_HeaderInfoLayout: FC<PropsWithChildren<IHeaderInfoProps>>
     <div style={{ height: '100%' }}>
       <DoctorEnd_HeaderInfo {...props} />
       <div
-        style={{ height: `calc(100% - 84px)` }}
+        style={{ height: `calc(100% - 74px)` }}
       >
         {props.children}
       </div>

@@ -30,10 +30,12 @@ import SelectTagWithOptions from '../selects/SelectTagWithOptions';
 import SelectWithNo from '../selects/SelectWithNo';
 import SelectWithOptionsFromApi from '../selects/SelectWithOptionsFromApi';
 import SelectWithOptionsOrInput from '../selects/SelectWithOptionsOrInput';
+import { MixPanel } from '../FU_components/MixPanel';
 
 const Radio_Group = Radio.Group
 export const componentMap = {
   FormTabs,
+  MixPanel,
   'text_area': TemplateTextarea,
   TextArea: TemplateTextarea,
   // InputNumber: MyInputNumber,

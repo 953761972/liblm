@@ -5,6 +5,7 @@ export * from './EventEmitter';
 export * from './form';
 export * from './getInputStyle';
 export * from './InterceptComponent';
+export * from './adapter';
 
 
 

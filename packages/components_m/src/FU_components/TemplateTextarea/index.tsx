@@ -43,7 +43,7 @@ export function TemplateTextarea(props: ITemplateTextareaProps) {
                     }
                 })
             }}
-            size='small' style={{ position: 'absolute', bottom: 1, right: 1, zIndex: 2, borderRadius: 0, borderRight: 0, borderBottom: 0 }} >模板</Button>
+            size='small' style={{ position: 'absolute', bottom: 1, right: 1, zIndex: 2, borderRadius: 0, borderRight: 0, borderBottom: 0 }} >模</Button>
     </div>
 }
 

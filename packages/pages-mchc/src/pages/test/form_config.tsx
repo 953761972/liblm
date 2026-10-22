@@ -8,6 +8,7 @@ export default defineFormConfig([
 
   {
     label: '根据门诊号选择孕妇联动',
+    containerType: 'segs',
     children: [
       {
         label: '就诊卡号',
@@ -66,6 +67,7 @@ export default defineFormConfig([
   },
   {
     label: 'bmi联动',
+    containerType: 'segs',
     children: [
       {
         label: 'weight',
@@ -103,6 +105,7 @@ export default defineFormConfig([
   },
   {
     label: '证件联动',
+    containerType: 'segs',
     children: [
       {
 
@@ -197,6 +200,7 @@ export default defineFormConfig([
   },
   {
     label: '接口联动(通过接口计算预产期)',
+    containerType: 'segs',
     children: [
 
       {
@@ -243,10 +247,11 @@ export default defineFormConfig([
   {
     label: '其他联动',
     children: [
+
       { title: '隐藏显示联动(联合)', inputType: 'title' },
       {
         label: '吃饭了吗',
-        layout: '1/2',
+        layout: '1/1',
         inputProps: { size: 'small' },
 
         inputType: 'straw',
@@ -255,7 +260,6 @@ export default defineFormConfig([
             name: 'show0',
             inputType: 'MC',
             inputProps: {
-              vertical: true,
               options: [{ value: 0, label: '还没' }, { value: 1, label: '拉了' },],
               marshal: 0,
             },
@@ -277,34 +281,7 @@ export default defineFormConfig([
           },
         ]
       },
-      {
-        label: '联动',
-        layout: '1/2',
 
-
-        inputType: 'straw',
-        children: [
-          {
-            name: 'show0',
-            inputType: 'MSW',
-            inputProps: {
-              checked_value: 1,
-              unchecked_value: 0,
-            },
-          },
-          {
-            name: 'show0Note',
-            inputType: 'MA',
-            inputProps: { placeholder: '请输入备注', width: 120 },
-            layout: '1/1',
-
-            showDeps: {
-              show0(v) { return v === 1 }
-            }
-
-          },
-        ]
-      },
       { title: '隐藏显示联动(普通)', inputType: 'title' },
       {
         name: 'show0',
@@ -487,6 +464,20 @@ export default defineFormConfig([
               ]
             }
           },
+          {
+            label: '自定义下拉宽度',
+            name: 'ms9',
+            layout: layout,
+            inputType: 'MS',
+            inputProps: {
+              popupMatchSelectWidth: 240,
+              options: [
+                { label: '选项1', value: 'aaa', },
+                { label: '选项2', value: 'bbb', },
+                { label: '选项3', value: 'ccc', },
+              ]
+            }
+          },
           { title: 'frugal 对象存储, 只能单选, marshal只能1或2', inputType: 'title' },
           {
             label: 'frugal',
@@ -629,11 +620,21 @@ export default defineFormConfig([
         containerType: 'tabs',
 
         children: [
+
+          {
+            label: '带文字',
+            name: 'switch00',
+            inputType: 'MSW',
+            layout: '1/2',
+            inputProps: {
+              checkedChildren: '选了',
+            }
+          },
           {
             label: '形式1',
             name: 'switch0',
             inputType: 'MSW',
-            layout: '1/3',
+            layout: '1/2',
             inputProps: {
               checked_value: '选中值,默认true',
               unchecked_value: '反选中值,默认false',
@@ -641,7 +642,7 @@ export default defineFormConfig([
           },
           {
             label: '形式2',
-            layout: '1/3',
+            layout: '1/2',
 
             name: 'switch0',
             inputType: 'MSW',
@@ -654,7 +655,7 @@ export default defineFormConfig([
           {
             inputType: 'MA',
             name: 'switch0',
-            layout: '1/3',
+            layout: '1/2',
 
           }
         ]
@@ -1141,6 +1142,38 @@ export default defineFormConfig([
           status: 'error'
         }
       },
+      { title: '自定义警告', inputType: 'title' },
+      {
+        label: '血压大于120报警',
+        layout: '1/1',
+
+
+        inputType: 'straw',
+        children: [
+          {
+            name: 'show9',
+            inputType: 'input_number',
+            inputProps: {
+              checked_value: 1,
+              unchecked_value: 0,
+            },
+          },
+          {
+            name: 'show9',
+            inputType: 'component',
+            inputProps: {
+              component(v) {
+                const is_big = v.value > 120
+                return ctx.ui.render_btn(is_big ? '大于120' : '小于120', () => { }, { danger: is_big })
+              }
+            },
+            layout: '1/1',
+
+
+
+          },
+        ]
+      },
     ]
   },
   {
@@ -1173,7 +1206,17 @@ export default defineFormConfig([
           check_invert_values: {
             yj1: [2, 3],
             yj2: [2, 3],
+            yjinput: ['你够了吗？', '我够了！']
           }
+        }
+      },
+      {
+        inputType: "MA",
+        label: '输入框',
+        name: 'yjinput',
+        layout: "1/3",
+        inputProps: {
+          options: '11,22,33'
         }
       },
       {

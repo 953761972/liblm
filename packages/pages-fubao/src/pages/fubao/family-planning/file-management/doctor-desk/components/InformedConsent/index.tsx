@@ -76,6 +76,7 @@ export class InformedConsent extends Component {
       pregnancy: pregnancyData,
       createDate: dayjs().utc().format(),
       documentTemplate: get(informedConsent, 'documentTemplate'),
+      ititle: get(informedConsent, 'documentTemplate.title'),
     };
     if (informedConsent.id) {
       informedConsent = await updateInformedConsent(data);
@@ -159,17 +160,19 @@ export class InformedConsent extends Component {
   };
 
   handleConsentChange = async (value) => {
-    const { informedConsent } = this.state;
+    const { informedConsent } = this.state
     const documentTemplate = await getTemplateById(value);
     const oldContent = get(documentTemplate, 'content');
+    const title = get(documentTemplate, 'title');
     const newContent = this.transferContent(oldContent);
     this.setState({
-      informedConsent: {
-        ...informedConsent,
-        content: newContent,
-        documentTemplate,
-      },
-    });
+        informedConsent: {
+            ...informedConsent,
+            content: newContent,
+            documentTemplate,
+            ititle: title,
+        },
+    })
   };
 
   handleSignStateChange = (signStates: any) => {
@@ -244,7 +247,7 @@ export class InformedConsent extends Component {
                           className="patient-informed-consent-list__item-title"
                           onClick={this.handleClickListItem(item)}
                         >
-                          {get(item, 'documentTemplate.title')}
+                          {get(item, 'ititle')}
                         </span>
                         <Popconfirm
                           title="确定要删除这个文书吗?"

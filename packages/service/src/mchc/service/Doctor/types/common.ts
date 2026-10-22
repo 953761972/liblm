@@ -18,7 +18,7 @@ export interface IMchc_Doctor_Diagnoses<T extends MchcTypes = 'mchc'> {
     diagnosisCode: string
     doctor: null
     gestationalWeek: string
-    highrisk: false
+    highrisk: boolean
     icdCode: null
     id: number
     lastModifiedBy: string
@@ -40,5 +40,6 @@ export interface IMchc_Doctor_Diagnoses<T extends MchcTypes = 'mchc'> {
     depCode: null
     // new
     prenatalVisitId?: number
+    pregnancyId?: number
 
 }

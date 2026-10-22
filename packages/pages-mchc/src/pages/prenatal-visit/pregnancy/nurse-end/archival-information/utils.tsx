@@ -2,7 +2,7 @@ import { GetAgeByBirthDay, getBMI } from "@lm_fe/components_m";
 import { mchcLogger, mchcUtils } from "@lm_fe/env";
 import { conceive_fuck_edd, mchcModal__ } from "@lm_fe/pages";
 import { SLocal_Calculator, SLocal_History, SLocal_State, SMchc_Common } from "@lm_fe/service";
-import { formatDate, set } from "@lm_fe/utils";
+import { calGestationalWeekBySureEdd, formatDate, set } from "@lm_fe/utils";
 import { FormInstance, message } from "antd";
 import { get, includes, keys, size, values } from "lodash";
 
@@ -120,7 +120,7 @@ export async function archivalInformation_onValuesChange(changedValues: any, all
     }
     if (is预产期) {
         const edd = formatDate(get(changedValues, 'pregnancyInfo.edd'))!;
-        const value = SLocal_Calculator.calGestationalWeekBySureEdd(edd);
+        const value = calGestationalWeekBySureEdd(edd);
 
         form.setFieldsValue({
             pregnancyInfo: {

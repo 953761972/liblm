@@ -7,6 +7,7 @@ import { mchcModal__ } from 'src/modals'
 import { map, filter, includes, isEmpty, find } from 'lodash'
 import classNames from 'classnames'
 import styles from './index.module.less'
+import { mchcEnv } from '@lm_fe/env'
 
 // 获取门诊病历头部个人信息栏标签
 async function getTagLabels(key?: string) {
@@ -33,7 +34,7 @@ function CustomTag({ id, dataSource, ...props }: CustomTagProps) {
         // 初始化左侧框数据
         getTags()
 
-        return () => {}
+        return () => { }
     }, [])
 
     // 获取标签库所有标签
@@ -191,7 +192,7 @@ function CustomTag({ id, dataSource, ...props }: CustomTagProps) {
                 </div>
             </Flex>
             <div>
-                <Button icon={<MyIcon value="EditOutlined" />} onClick={open标签库管理}>
+                <Button disabled={!mchcEnv.isAdmin} icon={<MyIcon value="EditOutlined" />} onClick={open标签库管理}>
                     标签库维护
                 </Button>
             </div>
@@ -206,7 +207,7 @@ function CustomTagLib({ reload }) {
     useEffect(() => {
         getTagLib()
 
-        return () => {}
+        return () => { }
     }, [])
 
     // 获取标签库所有标签

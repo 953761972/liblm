@@ -2,6 +2,7 @@ import { BaseEditPanelForm } from '@lm_fe/components_m'
 import { Space } from 'antd';
 import { get, set } from 'lodash';
 import { FormInstance } from 'antd/lib/form';
+import React from 'react';
 export const formItemLayout = {
   // layout: 'horizontal',
   labelCol: {

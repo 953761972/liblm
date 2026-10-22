@@ -2,15 +2,7 @@ export interface IMchc_LabExamImportTree_Item {
     id: number
     pid: number
     title: string
-    items: {
-        id: number
-        pid: number
-        title: string
-        items: []
-        labExamTypeEnum: string
-        unusual: null
-        unusualDesc: null
-    }[]
+    items: IMchc_LabExamImportTree_Item[]
     labExamTypeEnum: null
     unusual: null
     unusualDesc: null

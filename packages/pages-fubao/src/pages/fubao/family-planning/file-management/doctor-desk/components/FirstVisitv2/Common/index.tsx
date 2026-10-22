@@ -7,7 +7,7 @@ import { message } from 'antd';
 import dayjs from 'dayjs';
 import { SMchc_FormDescriptions } from '@lm_fe/service';
 import { fubaoRequest as request } from '@lm_fe/utils';
-import { form_config } from './form_config';
+import form_config from './form_config';
 export default class AdmissionPanel extends BaseEditPanel {
   static defaultProps = {
     baseUrl: '/api/family/planning/addFamilyPlanningEarlyPregnancyCheck', request,
@@ -126,12 +126,12 @@ export default class AdmissionPanel extends BaseEditPanel {
       // 修改
       const _res = await request.put('/api/family/planning/updateFamilyPlanningEarlyPregnancyCheck', params);
       const res = _res.data
-      
+
     } else {
       //新增
       const _res = await request.post(baseUrl, params)
       const res = _res.data
-      
+
     }
     onRefresh && onRefresh();
   };

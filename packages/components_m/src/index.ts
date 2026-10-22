@@ -16,7 +16,8 @@ export * from './ConfigComponents/DictionarySelect'
 export { GeneralComponents_DictionarySelect, GeneralComponents_DictionarySelect_Display } from './GeneralComponents/DictionarySelect'
 export { GeneralComponents_InputWithLabel, } from './GeneralComponents/InputWithLabel'
 export { default as CheckAndCancelButton } from './GeneralComponents/CheckAndCancelButton'
-
+export { default as ParentPermissionSelect } from './selects/ParentPermissionSelect'
+export * from './FU_components/MultiTemplate'
 // export { default as LaborProcess2 } from './BusinessComponents/LaborProcess2';
 export { FormSection, DynamicForm } from './BaseModalForm'
 export * from './FU_components/FormSection'
@@ -42,7 +43,6 @@ export * from './utils/levelOptions'
 export * from './utils'
 
 export * from './hooks'
-export * from './utils/adapter'
 export * from './utils/utils'
 export * from './utils/format'
 export * from './utils/defaultMethod'

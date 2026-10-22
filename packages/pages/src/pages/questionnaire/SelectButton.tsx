@@ -5,6 +5,7 @@ import { Questionnaire } from './Qn';
 import { IQnBtnProps, TSelectCb } from './types';
 import { mchcModal__ } from '../../modals';
 import { mchcLogger } from '@lm_fe/env';
+import { isEmpty } from '@lm_fe/utils';
 
 
 function Inner({ onChange }: { onChange: (qs: IMchc_Questionnaire[]) => void }) {
@@ -48,11 +49,12 @@ export function QuestionnaireButton(props: IQnBtnProps & IMyButtonProps) {
         onClick={() => {
             mchcModal__.open('box', {
                 title,
+                okText: '发送问卷',
                 modal_data: { content: <Inner onChange={data => arr.current = data} /> },
                 width: '80vw',
                 styles: { body: { height: '80vh' }, },
                 onClose(status) {
-                    if (status) props.onOk?.(arr.current)
+                    if (status && !isEmpty(arr.current)) props.onOk?.(arr.current)
                 },
             })
         }}

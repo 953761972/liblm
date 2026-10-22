@@ -1,15 +1,17 @@
 
-import { useEffect } from 'react';
+import { mchcEnv, mchcLogger, mchcUtils } from '@lm_fe/env';
+import { use_provoke } from '@lm_fe/provoke';
+import { useEffect, useRef } from 'react';
+import { useHistory } from 'react-router-dom';
 import { checkLogin } from './checkLogin';
 import { checkVersion } from './checkVersion';
-import { mchcEnv, mchcLogger, mchcUtils } from '@lm_fe/env';
-import { useHistory } from 'react-router-dom';
-import { use_provoke } from '@lm_fe/provoke';
+const minute = 60 * 1000
+
 export function use_task(disabled = false) {
 
     const { fetch_user, fetch_sys_config, sys_theme } = use_provoke()
     const history = useHistory()
-
+    const interval_ids = useRef<number[]>([])
     useEffect(() => {
         mchcUtils.setGlobalHistory(() => history)
         fetch_user_info()
@@ -28,15 +30,15 @@ export function use_task(disabled = false) {
                         mchcEnv.reload('/')
                 })
                 .catch(e => {
+                    interval_ids.current.forEach(id => clearInterval(id))
                 })
     }
     useEffect(() => {
 
         if (!disabled) {
-            const minute = 60 * 1000
-            setInterval(fetch_user_info, 5 * minute);
-            setInterval(checkVersion, 2 * minute);
-            setInterval(checkLogin, .5 * minute);
+            interval_ids.current.push(setInterval(fetch_user_info, 5 * minute))
+            interval_ids.current.push(setInterval(checkVersion, 2 * minute))
+            interval_ids.current.push(setInterval(checkLogin, 5 * minute))
 
         }
         return () => {

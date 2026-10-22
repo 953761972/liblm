@@ -35,11 +35,11 @@ export default function EditModal(props: any) {
       centered
       getContainer={getContainer}
       open={visible}
-      className="textarea-with-template__modal-edit"
       onCancel={onCancel}
       onOk={handleSubmit}
       closable={false}
-      width={500}
+      width={'30vw'}
+      styles={{ body: { height: '50vh' } }}
 
     >
       <div ref={el}>
@@ -56,13 +56,13 @@ export default function EditModal(props: any) {
             </Select>
           </Form.Item>
           <Form.Item label="depid" name="depid" >
-            <Input disabled/>
+            <Input disabled />
           </Form.Item>
           <Form.Item label="上级模板" name="pid">
             <TemplateSelect getPopupContainer={() => el.current!} templateType={templateType} />
           </Form.Item>
           <Form.Item rules={[{ required: true, message: '模板内容是必填项' }]} label="模板内容" name="val">
-            <Input />
+            <Input.TextArea rows={16} />
           </Form.Item>
         </Form>
       </div>

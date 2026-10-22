@@ -3,6 +3,7 @@ export enum OverlayType {
     LegalMoveHover,
     PossibleMove
 }
+import React from "react";
 export const Overlay = ({ type }: { type: OverlayType }) => {
     const color = getOverlayColor(type);
     return (<div className="overlay" style={{

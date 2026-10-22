@@ -1,16 +1,14 @@
 
-import React, { useEffect, useState } from 'react';
-import { MyIcon, getBMI, } from '@lm_fe/components_m'
-import { IMchc_Doctor_RvisitInfoOfOutpatient, } from '@lm_fe/service';
-import { BF_Wrap2, mchcModal__ } from '@lm_fe/pages';
-import { expect_array, } from '@lm_fe/utils';
+import { MyIcon, getBMI, } from '@lm_fe/components_m';
 import { mchcLogger } from '@lm_fe/env';
-import { filter, get } from 'lodash';
+import { IMchc_Doctor_RvisitInfoOfOutpatient, } from '@lm_fe/service';
+import { get } from 'lodash';
+import React from 'react';
 interface IProps {
   visitsData?: IMchc_Doctor_RvisitInfoOfOutpatient,
 }
 
-const WeightExceptionChecking = (weightGain: number, gestationalWeek: string, height: number, weight: number) => {
+function WeightExceptionChecking(weightGain: number, gestationalWeek: string, height: number, weight: number) {
 
   // ①当前孕周≤14时
   // 体重增长值＜0时，提示体重增长偏低；体重增长值＞2时，提示体重增长偏高
@@ -91,35 +89,19 @@ export default function WeightGainWarningTips(props: IProps) {
   const { visitsData, } = props;
   const filtered_rvisits = (visitsData?.rvisits ?? []).filter(_ => _.id)
   const rvisit = filtered_rvisits[0] || {}
-  const { config, Wrap } = BF_Wrap2(
-    { default_conf: { title: '复诊-产检信息', } },
-  )
-  const tableColumns = expect_array(config?.tableColumns)
 
-  console.log('tableColumns', tableColumns)
-  const weightGainColumns = filter(tableColumns, (data: any) => {
-    return data.label == '体重增加' || data.title == '体重增加'
-  })
-  const weightGainName: string[] = get(weightGainColumns, '0.name') || get(weightGainColumns, '0.key') || []
-  const weightGain: number = get(rvisit, weightGainName) || 0
 
-  const gestationalWeekColumns = filter(tableColumns, (data: any) => {
-    return data.label == '孕\u3000周' || data.label == '孕周'
-  })
-  const gestationalWeekName: string[] = get(gestationalWeekColumns, '0.name') || get(gestationalWeekColumns, '0.key') || []
-  const gestationalWeek: string = get(rvisit, gestationalWeekName) || ''
 
-  const heightColumns = filter(tableColumns, (data: any) => {
-    return data.label == '身\u3000高' || data.label == '身高'
-  })
-  const heightName: string[] = get(heightColumns, '0.name') || get(heightColumns, '0.key') || []
-  const height: number = get(rvisit, heightName) || ''
+  const weightGain: number = get(rvisit, 'routineExam.weightGain') || 0
 
-  const weightColumns = filter(tableColumns, (data: any) => {
-    return data.label == '体\u3000重' || data.label == '体重'
-  })
-  const weightName: string[] = get(weightColumns, '0.name') || get(weightColumns, '0.key') || []
-  const weight: number = get(rvisit, weightName) || ''
+
+  const gestationalWeek: string = get(rvisit, 'gestationalWeek') || ''
+
+
+  const height: number = get(rvisit, 'routineExam.height') || 0
+
+
+  const weight: number = get(rvisit, 'routineExam.weight') || 0
 
   const WeightTips = WeightExceptionChecking(weightGain, gestationalWeek, height, weight)
   return (

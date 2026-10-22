@@ -108,11 +108,11 @@ export function 既往史_pack(isPure = false, needOther = false) {
         // nurse_既往史_甲亢(isPure),
         // nurse_既往史_性病(isPure),
 
-        not_yes_input(f_k('tuberculosis'), '结核', { isActive: mchcEnv.in(['广三']), }),
-        not_yes_input(f_k('hepaticDisease'), '肝炎', { isActive: mchcEnv.in(['广三']), }),
-        not_yes_input(f_k('nephropathy'), '肾病', { isActive: mchcEnv.in(['广三']), }),
-        not_yes_input(f_k('thyroidDisease'), '甲亢', { isActive: mchcEnv.in(['广三']), }),
-        not_yes_input(f_k('std'), '性病', { isActive: mchcEnv.in(['广三']), }),
+        // not_yes_input(f_k('tuberculosis'), '结核', { isActive: mchcEnv.in(['广三']), }),
+        // not_yes_input(f_k('hepaticDisease'), '肝炎', { isActive: mchcEnv.in(['广三']), }),
+        // not_yes_input(f_k('nephropathy'), '肾病', { isActive: mchcEnv.in(['广三']), }),
+        // not_yes_input(f_k('thyroidDisease'), '甲亢', { isActive: mchcEnv.in(['广三']), }),
+        // not_yes_input(f_k('std'), '性病', { isActive: mchcEnv.in(['广三']), }),
 
 
         // {
@@ -127,7 +127,7 @@ export function 既往史_pack(isPure = false, needOther = false) {
 
         //     layout: '1/3',
         // },
-        not_yes_input(f_k('infection'), '传染病', { isActive: mchcEnv.in(['广三']), }),
+        // not_yes_input(f_k('infection'), '传染病', { isActive: mchcEnv.in(['广三']), }),
 
 
         // {

@@ -73,17 +73,7 @@ const allFirstVisitInfo = SMchc_Doctor.getFirstVisitInfoOfOutpatient;
 const updateAllfirstVisitInfo = SMchc_Doctor.updateFirstVisitInfoOfOutpatient;
 
 
-/**每一个tab对应的请求方法 */
-export const getTabMethods = {
-  'tab-0': 'getFirstVisitPresentmh',
-  'tab-1': 'pastmhOutpatient',
-  'tab-2': 'othermhOutpatient',
-  'tab-3': 'pregnacymhOutpatient',
-  'tab-4': 'physicalExamOfOutpatient',
-  'tab-5': 'gynecologicalExamOfOutpatient',
-  'tab-6': 'labExamOfOutpatient',
-  'tab-7': 'diagnosisOutpatient',
-};
+
 /**更新tab的方法 */
 export const updateTabMethods = {
   'tab-0': 'updateFirstVisitPresentmh',
@@ -108,21 +98,21 @@ export const updateSurveyList = {
 //#endregion
 export default {
   getFirstVisitPresentmh,
-  updateFirstVisitPresentmh,
-  pastmhOutpatient,
-  updatePastmhOutpatient,
-  othermhOutpatient,
-  updateOthermhOutpatient,
-  pregnacymhOutpatient,
-  updatePregnacymhOutpatient,
-  physicalExamOfOutpatient,
-  updatePhysicalExamOfOutpatient,
-  gynecologicalExamOfOutpatient,
-  updateGynecologicalExamOfOutpatient,
-  labExamOfOutpatient,
-  updateLabExamOfOutpatient,
-  diagnosisOutpatient,
-  updateDiagnosisOutpatient,
-  allFirstVisitInfo,
-  updateAllfirstVisitInfo,
+  // updateFirstVisitPresentmh,
+  // pastmhOutpatient,
+  // updatePastmhOutpatient,
+  // othermhOutpatient,
+  // updateOthermhOutpatient,
+  // pregnacymhOutpatient,
+  // updatePregnacymhOutpatient,
+  // physicalExamOfOutpatient,
+  // updatePhysicalExamOfOutpatient,
+  // gynecologicalExamOfOutpatient,
+  // updateGynecologicalExamOfOutpatient,
+  // labExamOfOutpatient,
+  // updateLabExamOfOutpatient,
+  // diagnosisOutpatient,
+  // updateDiagnosisOutpatient,
+  // allFirstVisitInfo,
+  // updateAllfirstVisitInfo,
 };

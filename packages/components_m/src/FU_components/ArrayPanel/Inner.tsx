@@ -5,7 +5,7 @@ import React, { useEffect, useRef } from 'react';
 // import FormSection, { IFormSectionProps } from '../../BaseModalForm/FormSection';
 // import { RenderEditItemStandalone, formatFormConfig } from '../../BaseModalForm/utils';
 import { MyIcon } from '@lm_fe/components';
-import { useMarshal } from '../../utils/useMarshal';
+import { use_arr_marshal } from '../../utils/useMarshal';
 import { MyFormSection } from '../FormSection';
 import { IFormSectionProps } from '../FormSection/types';
 import { formatFormConfig, RenderEditItemStandalone } from '../FormSection/utils';
@@ -42,7 +42,7 @@ const ArrayPanel: TCommonComponent<IProps, string | any[]> = (props) => {
 
     const defaultValue = useRef<any[]>([])
 
-    const { safe_value = [], set_safe_value, onChangeSafeValue } = useMarshal<any[]>(marshal, value ?? defaultValue.current, onChange, 'ArrayPanel')
+    const { safe_value = [], set_safe_value, onChangeSafeValue } = use_arr_marshal<any>(marshal, value ?? defaultValue.current, onChange, 'ArrayPanel')
     useEffect(() => {
 
 

@@ -3,6 +3,7 @@ import { Button, message, Space, Popconfirm } from 'antd';
 import { PrinterOutlined } from '@ant-design/icons';
 import { get, isEqual } from 'lodash';
 import { FormInstance } from 'antd/lib/form';
+import React from 'react';
 export default class AdmissionForm extends BaseEditPanelForm {
   state = {
     importModalVisible: false,

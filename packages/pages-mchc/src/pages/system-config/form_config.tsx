@@ -17,41 +17,6 @@ const my_colors = [
     '#b42f7d',
 ]
 const React = rt_ctx.React
-// c: "devlopment" | "test" | "production"
-// systemTheme: string
-// expireTime: number
-// openWebsocket: boolean
-// websocketAddress: "ws://127.0.0.1:8087/Laputa",
-// auditRestriction: boolean
-// openIntro: boolean
-// fetalMonitor: string
-// openHighriskSign: boolean
-// highriskVersion: number
-// curveVersion: "nichd",
-// prenatalDiagnosis: boolean
-// CaseReport: boolean
-// FetalMonitor: boolean
-// InformedConsent: boolean
-// pregnancyInitial: 'tab' | 'vertical'
-// isOpenDiabetes: boolean
-// diagnosisStyle: "tab",
-// diagnosisFollowUpRecord: boolean
-// diagnosisLaboratoryReport: boolean
-// diagnosisPrenatalVisit: boolean
-// tablePrintBtn: boolean
-// homeStatistics: boolean
-// highriskStatistics: boolean
-// customerService: true
-// highriskType: string
-// 禁止编辑高危等级: boolean
-// 系统环境: any
-// 护士端_禁止编辑高危因素_传染病: boolean
-// 医生端_模块隐藏: string[]
-// doctorOpenWebsocket: boolean
-// VTE预防用药筛查表: string
-// nurseHide: string[],
-// medicalHide: string[]
-// PDF预览组件版本?: string
 const switchOptions = mchcEnv.get_options('yesOrNoMapping')
 
 export default defineFormConfig(
@@ -266,12 +231,7 @@ export default defineFormConfig(
                             layout: '1/3',
                         },
 
-                        {
-                            label: '病人标签多选',
-                            name: '病人标签多选',
-                            inputType: 'Switch',
-                            layout: '1/3',
-                        },
+
                     ]
                 },
                 {
@@ -297,6 +257,12 @@ export default defineFormConfig(
                             layout: '1/3',
                         },
                         {
+                            label: '禁用首诊纠正预产期',
+                            name: '医生端_禁用首诊纠正预产期',
+                            inputType: 'MSW',
+                            layout: '1/3',
+                        },
+                        {
                             label: '复诊按钮浮动',
                             name: '医生端_复诊按钮浮动',
                             inputType: 'MS',
@@ -311,18 +277,20 @@ export default defineFormConfig(
                             layout: '1/3',
                         },
                         {
+                            label: '又一个预警提醒',
+                            name: '医生端_又一个预警提醒',
+                            inputType: 'MySwitch',
+                            inputProps: {},
+                            layout: '1/3',
+                        },
+                        {
                             label: '复诊编辑控制',
                             name: '医生端_复诊编辑控制',
                             inputType: 'MS',
                             inputProps: { options: switchOptions, marshal: 0 },
                             layout: '1/3',
                         },
-                        {
-                            label: '标签管理',
-                            name: '标签管理',
-                            inputType: 'MSW',
-                            layout: '1/3',
-                        },
+
 
                         {
                             label: '看诊审核限制',
@@ -347,12 +315,8 @@ export default defineFormConfig(
                             name: 'fetalMonitor',
                             inputType: 'Input',
                             inputProps: { options: switchOptions, marshal: 0 },
-
                             layout: '1/3',
                         },
-
-
-
                         {
                             label: 'VTE预防用药筛查表',
                             name: 'VTE预防用药筛查表',
@@ -397,16 +361,9 @@ export default defineFormConfig(
 
 
                         {
-                            label: '首检信息病历风格',
-                            name: 'pregnancyInitial',
-                            inputType: 'MS',
-                            inputProps: {
-                                options: [
-                                    { value: 'tab', label: 'TAB风格' },
-                                    { value: 'vertical', label: '垂直风格' },
-                                ],
-                                marshal: 0,
-                            },
+                            label: '首检病历垂直风格',
+                            name: '医生端_首检病历垂直风格',
+                            inputType: 'MSW',
                             layout: '1/3',
                         },
 
@@ -441,6 +398,13 @@ export default defineFormConfig(
                             name: '医生端_开启_危险_复诊同步记录',
                             inputType: 'MSW',
                             inputProps: {},
+                            layout: '1/3',
+                        },
+                        {
+                            label: 'OB_WIN_AGENT_APP_SOCKET_测试',
+                            name: 'OB_WIN_AGENT_SOCKET',
+                            inputType: 'Input',
+                            inputProps: { marshal: 0 },
                             layout: '1/3',
                         },
                         {
@@ -535,6 +499,12 @@ export default defineFormConfig(
                             inputType: 'MSW',
                             layout: '1/3',
                         },
+                        {
+                            label: '保存并审核',
+                            name: '护士端_保存并审核',
+                            inputType: 'MSW',
+                            layout: '1/3',
+                        },
                     ],
                 },
 
@@ -561,7 +531,12 @@ export default defineFormConfig(
                     label: '允许手输高危',
                     name: '高危管理_允许手输高危',
                     inputType: 'MSW',
-                    inputProps: { options: switchOptions, marshal: 0 },
+                    layout: '1/3',
+                },
+                {
+                    label: '隐藏高危筛查',
+                    name: '高危管理_隐藏高危筛查',
+                    inputType: 'MSW',
                     layout: '1/3',
                 },
                 {

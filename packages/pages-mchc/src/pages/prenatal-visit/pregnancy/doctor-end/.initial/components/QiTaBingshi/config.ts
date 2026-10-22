@@ -5,13 +5,7 @@ import { defineFormConfig } from '@lm_fe/service';
 import { form_config_家族史 } from 'src/pages/prenatal-visit/pregnancy/common';
 import { 个人史_pack } from 'src/pages/prenatal-visit/pregnancy/nurse-end/archival-information/form/个人史';
 
-function get_无有option(suffix?: string) {
-  const options: ICommonOption[] = [
-    { value: false, label: '无' },
-    { value: true, label: '有', warning: true, inputType: 'Input', suffix },
-  ]
-  return options
-}
+
 
 export default defineFormConfig(
   [

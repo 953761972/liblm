@@ -2,13 +2,7 @@ import { ICommonOption, mchcEnv, rt_ctx } from '@lm_fe/env';
 import { not_yes_input, pressure_fd } from '@lm_fe/pages';
 import { defineFormConfig } from '@lm_fe/service';
 const ctx = rt_ctx
-function get_无option(suffix?: string) {
-  const options: ICommonOption[] = [
-    { value: 1, label: '无' },
-    { value: 2, label: '有', warning: true, inputType: 'Input', suffix },
-  ]
-  return options
-}
+
 function get_无option2(suffix?: string) {
   const options: ICommonOption[] = [
     { value: 1, label: '无' },
@@ -16,13 +10,7 @@ function get_无option2(suffix?: string) {
   ]
   return options
 }
-function get_正常option(suffix?: string) {
-  const options: ICommonOption[] = [
-    { value: 1, label: '正常' },
-    { value: 2, label: '其他', warning: true, inputType: 'Input', suffix },
-  ]
-  return options
-}
+
 function get_正常option2(suffix?: string) {
   const options: ICommonOption[] = [
     { value: 1, label: '正常' },
@@ -30,13 +18,7 @@ function get_正常option2(suffix?: string) {
   ]
   return options
 }
-function get_触及option(suffix?: string) {
-  const options: ICommonOption[] = [
-    { value: 1, label: '未触及' },
-    { value: 2, label: '触及', warning: true, inputType: 'Input', suffix },
-  ]
-  return options
-}
+
 function get_触及option2(suffix?: string) {
   const options: ICommonOption[] = [
     { value: 1, label: '未触及' },

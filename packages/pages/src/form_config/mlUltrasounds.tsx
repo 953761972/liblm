@@ -1,11 +1,11 @@
 
 import { defineFormConfig, IMchc_FormDescriptions_Field } from "@lm_fe/service"
-export const mlUltrasounds_fd = (conf: IMchc_FormDescriptions_Field = {}) => {
+export const mlUltrasounds_fd = (conf: IMchc_FormDescriptions_Field = {}, name = 'mlUltrasounds') => {
     return defineFormConfig([
         {
             ...conf,
             label: '中晚孕超声',
-            name: 'mlUltrasounds',
+            name,
             inputType: 'MyEditTable',
             inputProps: {
                 marshal: 0,

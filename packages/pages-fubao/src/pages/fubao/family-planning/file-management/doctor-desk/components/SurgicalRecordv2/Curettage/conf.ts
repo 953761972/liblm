@@ -1,0 +1,1 @@
+export const conf_刮宫术 = () => import('./form_config')

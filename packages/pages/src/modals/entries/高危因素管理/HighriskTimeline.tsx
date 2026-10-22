@@ -90,6 +90,10 @@ export function HighriskTimeline_高危因素管理(props: IProps) {
               <div className={styles["record-week"]}>{item.gestationalWeek ? `孕${item.gestationalWeek}周` : ''}</div>
             </div>
             <div className={styles["record-right"]}>
+              <div className={styles["record-item"]}>
+                <div className={styles["item-label"]}>评定日期：</div>
+                <div className={styles["item-note"]}>{formatDate(item.eventDate)}</div>
+              </div>
               <div className={classNames(styles['record-item'],)}>
                 <div className={styles["item-label"]} style={{ background: !!item.infectionNote ? contagionColor : '' }}>
                   传染病：
@@ -100,10 +104,7 @@ export function HighriskTimeline_高危因素管理(props: IProps) {
                 <div className={styles["item-label"]}>高危因素：</div>
                 <div className={styles["item-note"]}>{item.highriskNote || '无'}</div>
               </div>
-              <div className={styles["record-item"]}>
-                <div className={styles["item-label"]}>评定日期：</div>
-                <div className={styles["item-note"]}>{formatDate(item.eventDate)}</div>
-              </div>
+
               <div className={styles["record-item"]}>
                 <div className={styles["item-label"]}>评定医生：</div>
                 <div className={styles["item-note"]}>{item.doctor}</div>

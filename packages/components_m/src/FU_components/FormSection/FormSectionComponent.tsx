@@ -145,6 +145,7 @@ import CascaderAddress from '../../selects/CascaderAddress';
 import TextareaWithBtn from '../../MyForm/components/business/TextareaWithBtn';
 import { LoadFlag } from '../LoadFlag';
 import { MultiTemplate } from '../MultiTemplate';
+import { MixPanel } from '../MixPanel';
 
 
 export const FormSectionComponent = {
@@ -213,6 +214,7 @@ export const FormSectionComponent = {
     NursingFetusv3,
     // NursingFetusv4,
     FormTabs,
+    MixPanel,
     PostpartumFetal,
     PregnancyHistoryV2,
     PressureInput,

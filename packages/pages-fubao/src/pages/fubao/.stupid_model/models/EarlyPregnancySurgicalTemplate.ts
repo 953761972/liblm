@@ -26,6 +26,11 @@ export interface IModel_EarlyPregnancySurgicalTemplate {
 
 
     fontColor: string
+
+
+
+    schedulingField: string,
+
 }
 
 export const SModel_EarlyPregnancySurgicalTemplate = new ModelService<IModel_EarlyPregnancySurgicalTemplate>({

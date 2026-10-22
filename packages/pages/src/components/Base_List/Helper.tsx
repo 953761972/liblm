@@ -8,7 +8,7 @@ import React from "react";
 // import { HospitalTreeSelect } from "../../demain-components/HospitalTreeSelect";
 
 
-export function MyBaseListRenderFormSection({ config, disabled, form }: { config: IMchc_FormDescriptions_Field_Nullable[], disabled?: boolean, form?: FormInstance }) {
+export function MyBaseList_FormSection({ config, disabled, form }: { config: IMchc_FormDescriptions_Field_Nullable[], disabled?: boolean, form?: FormInstance }) {
 
     return (
         <MyFormSection form={form} defaultOptions={{}} inline formDescriptions={config.map(_ => {

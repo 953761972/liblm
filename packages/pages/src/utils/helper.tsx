@@ -6,7 +6,7 @@ import { calc_edd_by_IVF, calc_edd_by_ntExam, debounce, diff_between, expect_arr
 import { mchcModal__ } from "src/modals";
 import React from "react";
 type TNt = IMchc_Doctor_FirstVisitPresentmhOutpatient['ntExams']
-const __conceive_fuck_edd = debounce({ delay: 1000 },
+const __conceive_fuck_edd = debounce({ delay: 300 },
     function (conceive: string, res: (v: string) => void, rej: () => void) {
         const item = safe_json_parse_arr<ICommonOption>(conceive)[0]
         if (item.value !== 1) return
@@ -28,7 +28,7 @@ const __conceive_fuck_edd = debounce({ delay: 1000 },
     }
 )
 
-const __nt_fuck_edd = debounce({ delay: 1000 },
+const __nt_fuck_edd = debounce({ delay: 300 },
     function (item: TNt, sureEdd: string, res: (v: string) => void, rej: () => void) {
         const target = expect_array(item)
             .map(_ => {

@@ -1,10 +1,12 @@
-import React from 'react';
-import dayjs from 'dayjs';
-import './index.less';
-import { LeftOutlined, RightOutlined, SettingOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, LeftOutlined, RightOutlined, SettingOutlined } from '@ant-design/icons';
+import { mchcLogger } from '@lm_fe/env';
 import { Button, Tooltip } from 'antd';
-import { isEqual, map as _map, isEmpty, isNil, find, get } from 'lodash';
-import { NurseTypesMapping } from "../../../file-management/doctor-desk/components/SurgicalRecordv2/config";
+import dayjs from 'dayjs';
+import { map as _map, find, get, isEmpty, isEqual, isNil } from 'lodash';
+import React from 'react';
+import { IModel_EarlyPregnancySurgicalTemplate, SModel_EarlyPregnancySurgicalTemplate } from 'src/pages/fubao/.stupid_model/models/EarlyPregnancySurgicalTemplate';
+import './index.less';
+import { formatDate } from '@lm_fe/utils';
 const week = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 export default class Calendar extends React.Component<any, any> {
   state = {
@@ -13,6 +15,7 @@ export default class Calendar extends React.Component<any, any> {
     dateObj: {}, // 通过date作为key 存储日期的schedulingDetailsVMList
     reservationStatusObj: {},
     attendanceSetObj: {},
+    templates: [] as IModel_EarlyPregnancySurgicalTemplate[]
   };
   componentDidUpdate(prevProps: any) {
     if (!isEqual(prevProps.reservationPanel, this.props.reservationPanel)) {
@@ -27,17 +30,26 @@ export default class Calendar extends React.Component<any, any> {
         return dateObj;
       });
       this.setState({ dateObj, reservationStatusObj, attendanceSetObj });
+
+
+      SModel_EarlyPregnancySurgicalTemplate.getList().then(templates => {
+        this.setState({
+          templates: templates
+        })
+      })
     }
   }
 
   renderDateDetail = (dateDetail: any) => {
     let dateDetailArr: any = [];
+    mchcLogger.log('dateDetail', dateDetail)
     if (!isEmpty(dateDetail)) {
       _map(dateDetail, (item, key) => {
+        const target = this.state.templates.find(_ => _.schedulingField === key)
         //0未开放，1开放,2未开放有预约，3已满
-        if (key === get(NurseTypesMapping, `${key}.key`) && item) {
+        if (item && target) {
           dateDetailArr.push({
-            name: get(NurseTypesMapping, `${key}.name`),
+            name: target.operationName,
             key: key,
             [`${key}`]: item,
             [`${key}Num`]: get(dateDetail, `${key}Num`),
@@ -87,18 +99,18 @@ export default class Calendar extends React.Component<any, any> {
   lastMonth() {
     const { dateObj, attendanceSetObj } = this.state;
     const { curMonth } = this.props;
-    const date = dayjs(curMonth).date(1); // 当前月的1号
+    let date = dayjs(curMonth).date(1); // 当前月的1号
     const count = date.day(); //1号是星期几
-    date.subtract(count, 'day'); //比如本月1号是星期3，那么上个月的数据就应该显示3个
+    date = date.subtract(count, 'day'); //比如本月1号是星期3，那么上个月的数据就应该显示3个
     let ui = [];
     for (let i = 0; i < count; i++) {
       const todayMoment = dayjs(date);
       const isBefore = todayMoment.isBefore(dayjs(), 'day'); //判断是否今天前的日子
       const isSame = this.state.activeDay && todayMoment.isSame(this.state.activeDay, 'day'); //判断哪一天是选中日期
-      let formatDate = dayjs(date).format('YYYY-MM-DD');
-      let dateDetail = dateObj[formatDate] || {};
+      let f_date = dayjs(date).format('YYYY-MM-DD');
+      let dateDetail = dateObj[f_date] || {};
 
-      let attendanceSet = attendanceSetObj[formatDate];
+      let attendanceSet = attendanceSetObj[f_date];
 
       let dayRange = '';
       switch (attendanceSet) {
@@ -135,10 +147,10 @@ export default class Calendar extends React.Component<any, any> {
                           dayRange === '上午'
                             ? { backgroundColor: '#81FA9F' }
                             : dayRange === '下午'
-                            ? { backgroundColor: '#81D4FA' }
-                            : dayRange === '全天'
-                            ? { backgroundColor: '#FADC81' }
-                            : {}
+                              ? { backgroundColor: '#81D4FA' }
+                              : dayRange === '全天'
+                                ? { backgroundColor: '#FADC81' }
+                                : {}
                         }
                       >
                         {dayRange}
@@ -158,7 +170,7 @@ export default class Calendar extends React.Component<any, any> {
           </div>
         </div>,
       );
-      date.add(1, 'day');
+      date = date.add(1, 'day');
     }
     return ui;
   }
@@ -172,7 +184,7 @@ export default class Calendar extends React.Component<any, any> {
     const { dateObj, attendanceSetObj } = this.state;
     const { curMonth } = this.props;
     //选中的时间改为1号,并且加上1个月
-    const date = dayjs(curMonth).date(1).add(1, 'months');
+    let date = dayjs(curMonth).date(1).add(1, 'months');
     const count = 7 - date.day(); //7-星期几，就可知道要渲染几个下月数据
     if (count === 7) {
       return null;
@@ -202,7 +214,7 @@ export default class Calendar extends React.Component<any, any> {
 
       //判断不可约情况下是否之前有预约的
       const flag = find(dateDetail, (value, key) => {
-        return get(NurseTypesMapping, `${key}`) && value === 2;
+        return value === 2;
       });
 
       ui.push(
@@ -223,10 +235,10 @@ export default class Calendar extends React.Component<any, any> {
                         dayRange === '上午'
                           ? { backgroundColor: '#81FA9F' }
                           : dayRange === '下午'
-                          ? { backgroundColor: '#81D4FA' }
-                          : dayRange === '全天'
-                          ? { backgroundColor: '#FADC81' }
-                          : {}
+                            ? { backgroundColor: '#81D4FA' }
+                            : dayRange === '全天'
+                              ? { backgroundColor: '#FADC81' }
+                              : {}
                       }
                     >
                       {dayRange}
@@ -252,7 +264,7 @@ export default class Calendar extends React.Component<any, any> {
           </div>
         </div>,
       );
-      date.add(1, 'day');
+      date = date.add(1, 'day');
     }
     return ui;
   }
@@ -265,7 +277,7 @@ export default class Calendar extends React.Component<any, any> {
   thisMonth() {
     const { dateObj, attendanceSetObj } = this.state;
     const { curMonth } = this.props;
-    const date = dayjs(curMonth).date(1); //获取本月1号数据
+    let date = dayjs(curMonth).date(1); //获取本月1号数据
     const count = date.daysInMonth(); //当前选中月份的总条数
     const hour = this.state.activeDay.hour(); // 当天时刻
 
@@ -299,7 +311,7 @@ export default class Calendar extends React.Component<any, any> {
 
       //判断不可约情况下是否之前有预约的
       const flag = find(dateDetail, (value, key) => {
-        return get(NurseTypesMapping, `${key}`) && value === 2;
+        return value === 2;
       });
 
       if (isBefore) {
@@ -318,9 +330,8 @@ export default class Calendar extends React.Component<any, any> {
         ui.push(
           <div
             key={'thisMonth_' + i}
-            className={`this-month-day day-container ${isSame ? 'now' : ''} ${
-              dayRange === '不可约' ? 'disabled' : ''
-            } ${isNil(attendanceSet) ? 'not-open' : ''}`}
+            className={`this-month-day day-container ${isSame ? 'now' : ''} ${dayRange === '不可约' ? 'disabled' : ''
+              } ${isNil(attendanceSet) ? 'not-open' : ''}`}
             // onClick={() => {
             //   this.setState({
             //     activeDay: todayMoment,
@@ -341,10 +352,10 @@ export default class Calendar extends React.Component<any, any> {
                           dayRange === '上午'
                             ? { backgroundColor: '#81FA9F' }
                             : dayRange === '下午'
-                            ? { backgroundColor: '#81D4FA' }
-                            : dayRange === '全天'
-                            ? { backgroundColor: '#FADC81' }
-                            : {}
+                              ? { backgroundColor: '#81D4FA' }
+                              : dayRange === '全天'
+                                ? { backgroundColor: '#FADC81' }
+                                : {}
                         }
                       >
                         {dayRange}
@@ -389,7 +400,7 @@ export default class Calendar extends React.Component<any, any> {
           </div>,
         );
       }
-      date.add(1, 'day');
+      date = date.add(1, 'day');
     }
     return ui;
   }

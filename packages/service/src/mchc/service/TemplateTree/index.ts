@@ -77,3 +77,10 @@ class TemplateTreeService extends ModelService<IMchc_TemplateTree_Item> {
 }
 
 export const SMchc_TemplateTrees = new TemplateTreeService()
+
+// 当配置 签名方式 为 callChain 的时候调用
+// post /api/ca/callChain/init
+
+// 返回 { withSignData:boolean  nextType:'http', next:'http://abcd.com'  params:next 的参数，动态数据类型  nextCallback: '/api/aaa' }
+// nextCallback 接收next接口的返回 { CalleeReturn } nextCallback 返回也应该是 {next nextCallback} 当 next 为空不再链式调用
+//  withSignData为 true的时候，传参附带上 type:'prenatalVisit' data 签名数据

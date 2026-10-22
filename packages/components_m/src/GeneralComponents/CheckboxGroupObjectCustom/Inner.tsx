@@ -5,9 +5,7 @@ import { get, isArray, map, set, size } from 'lodash';
 import { pickBy } from 'lodash';
 import { useEffect, useState } from 'react';
 import styles from './index.less';
-import { LazyAntd } from '@lm_fe/components';
 import React from 'react';
-const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 interface optionProps {
   key: string;
   label: string;

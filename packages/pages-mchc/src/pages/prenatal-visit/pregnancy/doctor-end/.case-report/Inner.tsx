@@ -183,7 +183,7 @@ class CaseReport extends Component<ICaseReport, any> {
                   IC={this.state.IC}
                   pregnancyId={this.getpregnancyId()}
                   selectKey={selectKey}
-                  cardType={this.props.caseType}
+                  caseType={this.props.caseType}
                   on_save={(data: IIC) => {
                     this.newInitData()
                     this.handleClickListItem(data);

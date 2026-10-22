@@ -1,17 +1,19 @@
-import { map, get, isEmpty, set, filter } from 'lodash';
-import { NurseTypesMapping } from "../../../file-management/doctor-desk/components/SurgicalRecordv2/config";
+import { AnyObject } from '@lm_fe/utils';
+import { filter, get, isEmpty, map, set } from 'lodash';
+import { IModel_EarlyPregnancySurgicalTemplate } from 'src/pages/fubao/.stupid_model';
 
 
 //数据转换
-export const valueToApi = (values: any, reservationNumObj: any) => {
+export const fucking_valueToApi = (values: any, reservationNumObj: any, templates: IModel_EarlyPregnancySurgicalTemplate[]) => {
   let newValues = {};
   let reservationArr: any = [];
+  debugger
   const checkedValues = get(values, `checkedValues`) || [];
   const withInputValues = get(values, `withInputValues`);
 
   //过滤出未选择的值
-  const notCheckedValues = filter(NurseTypesMapping, (item) => {
-    return checkedValues.indexOf(`${get(item, 'key')}`) === -1;
+  const notCheckedValues = filter(templates, (item) => {
+    return checkedValues.indexOf(item.schedulingField) === -1;
   });
 
   //选择了的传1 没选择的传0
@@ -21,8 +23,8 @@ export const valueToApi = (values: any, reservationNumObj: any) => {
   });
 
   if (!isEmpty(notCheckedValues)) {
-    map(notCheckedValues, (item, index) => {
-      const surgeryKey = get(item, `key`);
+    map(notCheckedValues, (fuck_item, index) => {
+      const surgeryKey = get(fuck_item, 'schedulingField');
       set(newValues, surgeryKey, 0);
 
       //过滤出有预约的手术
@@ -33,15 +35,16 @@ export const valueToApi = (values: any, reservationNumObj: any) => {
   }
   return { newValues: newValues, reservationArr: reservationArr };
 };
-export const valueToForm = (values: any) => {
+export const fucking_valueToForm = (values: AnyObject, templates: IModel_EarlyPregnancySurgicalTemplate[]) => {
   let checkedValues: any = [];
   let withInputValues = {};
   const m = new Map();
 
   map(values, (item, itemIndex) => {
+    debugger
+    if (templates.every(_ => _.schedulingField !== itemIndex)) return
     //0未开放，1开放,2未开放有预约，3已满
     if (
-      itemIndex === get(NurseTypesMapping, `${itemIndex}.key`) &&
       get(values, `${itemIndex}`) !== 0 &&
       get(values, `${itemIndex}`) !== 2
     ) {

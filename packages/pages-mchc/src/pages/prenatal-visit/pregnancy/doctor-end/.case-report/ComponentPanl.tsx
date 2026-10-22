@@ -12,14 +12,14 @@ interface IProps {
     caseType?: 'pregnancyId' | 'admissionId'
     on_save(item: IIC): void
 }
-export function ComponentPanl({ template, pregnancyId, IC, on_save }: IProps) {
+export function ComponentPanl({ template, pregnancyId, caseType, IC, on_save }: IProps) {
     const [form] = Form.useForm()
     const { config, Wrap } = BF_Wrap2({ default_conf: { title: `门诊-个案登记卡-${template.code}`, tableColumns: template.conf } })
     useEffect(() => {
         form.resetFields()
         console.log('IC', IC)
         if (!IC) {
-            form.setFieldsValue({ pregnancyId, ...template })
+            form.setFieldsValue({ [caseType]: pregnancyId, ...template })
         } else {
             request.get('/api/ic/getDetail', { params: { id: IC.id } })
                 .then(r => {

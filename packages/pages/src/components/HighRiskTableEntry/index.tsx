@@ -24,84 +24,82 @@ function _HighRiskTableEntry(props: IHighRiskTableEntryProps) {
     const show_瘢痕子宫 = isShowPopupRemind('瘢痕子宫', headerInfo, data)
     const show_子痫 = isShowPopupRemind('子痫', headerInfo, data)
     const show_VTE = isShowPopupRemind('VTE', headerInfo, data)
-    return <div style={props.style}>
-        <Space style={{ flexWrap: 'wrap' }}>
-            {
-                <OkButton
-                    hidden={hiden_old_arr.includes('瘢痕子宫')}
-                    style={{ borderColor: show_瘢痕子宫 ? wraning_color : undefined }}
-                    className={classnames(styles['his-btn'], { [styles['btn-risk']]: show_瘢痕子宫 })}
-                    type="dashed"
-                    icon={<MyIcon value='TableOutlined' />}
-                    onClick={() => {
-                        mchcEvent.emit('outpatient', { type: '弹窗', modal_name: '瘢痕子宫阴道试产表' })
-
-                    }}
-                >
-                    瘢痕子宫阴道试产表
-                    <ShowRisk show={show_瘢痕子宫} />
-                </OkButton>
-            }
+    return <Space style={{ flexWrap: 'wrap', marginRight: 8 }}>
+        {
             <OkButton
-                hidden={hiden_old_arr.includes('子痫')}
-
-                className={classnames(styles['his-btn'], { [styles['btn-risk']]: show_子痫 })}
-                style={{ borderColor: show_子痫 ? wraning_color : undefined }}
-
-                type="dashed"
-                icon={
-                    <MyIcon value='TableOutlined' />
-                }
-                onClick={() => {
-                    mchcEvent.emit('outpatient', { type: '弹窗', modal_name: '子痫前期风险评估表' })
-
-                }}
-            >
-                子痫前期风险评估表
-                <ShowRisk show={show_子痫} />
-
-            </OkButton>
-            <OkButton
-                hidden={hiden_old_arr.includes('VTE')}
-
-                className={classnames(styles['his-btn'], { [styles['btn-risk']]: show_VTE })}
-                style={{ borderColor: show_VTE ? wraning_color : undefined }}
-
+                hidden={hiden_old_arr.includes('瘢痕子宫')}
+                style={{ borderColor: show_瘢痕子宫 ? wraning_color : undefined }}
+                className={classnames(styles['his-btn'], { [styles['btn-risk']]: show_瘢痕子宫 })}
                 type="dashed"
                 icon={<MyIcon value='TableOutlined' />}
                 onClick={() => {
-                    mchcEvent.emit('outpatient', { type: '弹窗', modal_name: '深静脉血栓高危因素孕期用药筛查表' })
+                    mchcEvent.emit('outpatient', { type: '弹窗', modal_name: '瘢痕子宫阴道试产表' })
+
                 }}
             >
-                VTE预防用药筛查表
-                <ShowRisk show={show_VTE} />
-
+                瘢痕子宫阴道试产表
+                <ShowRisk show={show_瘢痕子宫} />
             </OkButton>
+        }
+        <OkButton
+            hidden={hiden_old_arr.includes('子痫')}
 
-            {
-                ext_arr.map(ext => {
-                    if (ext.disabled || !ext.value) return null
-                    const show = isShowPopupRemind(ext, headerInfo, data)
-                    return <OkButton
-                        className={classnames(styles['his-btn'], { [styles['btn-risk']]: show })}
-                        style={{ borderColor: show ? wraning_color : undefined }}
+            className={classnames(styles['his-btn'], { [styles['btn-risk']]: show_子痫 })}
+            style={{ borderColor: show_子痫 ? wraning_color : undefined }}
 
-                        type="dashed"
-                        icon={<MyIcon value='ExceptionOutlined' />}
-                        onClick={() => {
-                            mchcModal__.open('拓展量表', {
-                                modal_data: { headerInfo, ext }
-                            })
-                        }}
-                    >
-                        {ext.label}
-                        <ShowRisk show={show} />
-
-                    </OkButton>
-                })
+            type="dashed"
+            icon={
+                <MyIcon value='TableOutlined' />
             }
-        </Space>
-    </div>
+            onClick={() => {
+                mchcEvent.emit('outpatient', { type: '弹窗', modal_name: '子痫前期风险评估表' })
+
+            }}
+        >
+            子痫前期风险评估表
+            <ShowRisk show={show_子痫} />
+
+        </OkButton>
+        <OkButton
+            hidden={hiden_old_arr.includes('VTE')}
+
+            className={classnames(styles['his-btn'], { [styles['btn-risk']]: show_VTE })}
+            style={{ borderColor: show_VTE ? wraning_color : undefined }}
+
+            type="dashed"
+            icon={<MyIcon value='TableOutlined' />}
+            onClick={() => {
+                mchcEvent.emit('outpatient', { type: '弹窗', modal_name: '深静脉血栓高危因素孕期用药筛查表' })
+            }}
+        >
+            VTE预防用药筛查表
+            <ShowRisk show={show_VTE} />
+
+        </OkButton>
+
+        {
+            ext_arr.map(ext => {
+                if (ext.disabled || !ext.value) return null
+                const show = isShowPopupRemind(ext, headerInfo, data)
+                return <OkButton
+                    className={classnames(styles['his-btn'], { [styles['btn-risk']]: show })}
+                    style={{ borderColor: show ? wraning_color : undefined }}
+
+                    type="dashed"
+                    icon={<MyIcon value='ExceptionOutlined' />}
+                    onClick={() => {
+                        mchcModal__.open('拓展量表', {
+                            modal_data: { headerInfo, ext }
+                        })
+                    }}
+                >
+                    {ext.label}
+                    <ShowRisk show={show} />
+
+                </OkButton>
+            })
+        }
+    </Space>
 }
 function ShowRisk({ show }: { show: boolean }) {
     return show ? (

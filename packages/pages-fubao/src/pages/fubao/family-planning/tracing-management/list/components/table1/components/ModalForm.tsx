@@ -12,7 +12,7 @@ import { historyTableColumns } from '../config/table';
 import { DatePicker_L, LazyAntd } from '@lm_fe/components';
 import { SLocal_State } from '@lm_fe/service';
 import { fubaoRequest as request } from '@lm_fe/utils';
-const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+const { Table } = LazyAntd
 
 const noticeTypeOptions = [
   { label: '电话', value: '电话' },

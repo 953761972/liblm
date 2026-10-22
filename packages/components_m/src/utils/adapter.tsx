@@ -5,8 +5,8 @@
 import { map, get, reduce, concat, keyBy, set, isObject, isEmpty, isNil } from 'lodash';
 import dayjs from 'dayjs';
 import { formatDate, safe_json_parse } from '@lm_fe/utils';
-import { IMchc_FormDescriptions, IMchc_FormDescriptions_Field, IMchc_FormDescriptions_Field_Nullable, IMchc_FormDescriptions_Field_Nullable_Arr } from '@lm_fe/service';
-export const formDescriptionsFromApi = (data: IMchc_FormDescriptions<true>[]) => {
+import { IMchc_FormDescriptions, IMchc_FormDescriptions_Field, IMchc_FormDescriptions_Field_Nullable_Arr } from '@lm_fe/service';
+export const formDescriptionsFromApi = (data: any[]) => {
   return map(data, (item) => {
     return {
       ...item,
@@ -65,7 +65,7 @@ export const formDescriptionsFromApi = (data: IMchc_FormDescriptions<true>[]) =>
  * @param formDescriptions api原始表单信息
  * @returns object[]
  */
-export function formDescriptionsWithoutSectionApi<RAW = false>(formDescriptions: IMchc_FormDescriptions_Field_Nullable_Arr<RAW>) {
+export function formDescriptionsWithoutSectionApi<RAW = false>(formDescriptions: any) {
   return keyBy(
     reduce(
       formDescriptions,
@@ -73,12 +73,12 @@ export function formDescriptionsWithoutSectionApi<RAW = false>(formDescriptions:
         const arr = get(formDescription, 'fields') ?? get(formDescription, 'children') ?? []
         return concat(sum, arr);
       },
-      [] as IMchc_FormDescriptions_Field_Nullable_Arr<RAW>,
+      [] as any,
     ),
     'key',
   );
 };
-export const transferDataToFormByRules = (data: any, nativeFormDescription: IMchc_FormDescriptions_Field[]) => {
+export const transferDataToFormByRules = (data: any, nativeFormDescription: any[]) => {
   const result = {};
   map(nativeFormDescription, (desctiption, key) => {
     const { tranfer_rules: tranferRules } = desctiption;
@@ -106,7 +106,7 @@ export const transferDataToFormByRules = (data: any, nativeFormDescription: IMch
   });
   return result;
 };
-export const fromApi = (data: any, nativeFormDescriptions: { [x: string]: IMchc_FormDescriptions_Field }) => {
+export const fromApi = (data: any, nativeFormDescriptions: { [x: string]: any }) => {
   const result = { ...data };
   map(nativeFormDescriptions, (desctiption, key) => {
     const { tranfer_rules: tranferRules, inputType } = desctiption;
@@ -157,7 +157,7 @@ export const fromApi = (data: any, nativeFormDescriptions: { [x: string]: IMchc_
     id: get(data, 'id'),
   };
 };
-export const toApi = (data: any, nativeFormDescriptions: { [x: string]: IMchc_FormDescriptions_Field }) => {
+export const toApi = (data: any, nativeFormDescriptions: { [x: string]: any }) => {
   // 先过滤 object 类型
   const isObjectKeyArray: any[] = [];
   const isNotObjectKeyArray: any[] = [];

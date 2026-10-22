@@ -1,5 +1,5 @@
 import { mchcEvent } from '@lm_fe/env';
-import { Button, Form, FormInstance, message, Space } from 'antd';
+import { ButtonProps, Form, FormInstance, message, Space } from 'antd';
 import classnames from 'classnames';
 import { debounce, get, isFunction, map } from 'lodash';
 import { useEffect, useState } from 'react';
@@ -11,6 +11,7 @@ import { AnyObject } from '@lm_fe/utils';
 import React from 'react';
 import { MyFormSection } from 'src/FU_components/FormSection';
 import styles from './less/base-edit-panel-form.module.less';
+import { OkButton } from 'src/FU_components';
 export const formItemLayout = {
   // layout: 'horizontal',
   labelCol: {
@@ -33,6 +34,7 @@ interface IProps {
   targetLabelCol?: number
   getEvents?(): any
   onPrint?(): void
+  print_btn_props?: ButtonProps
   onSync?(): void
   onImport?(): void
   onValuesChange?(changedValues: any, allValues: any): void;
@@ -42,7 +44,7 @@ interface IProps {
 }
 export default function BaseEditPanelFormFC<T = any>(props: IProps) {
   const bg_color = use_provoke(s => s.sys_theme.bg_color)
-  const { onFinish, onValuesChange, data, formDescriptions, formDescriptions_old, onPrint, onSync, onImport, getEvents, targetLabelCol } = props;
+  const { onFinish, print_btn_props, onValuesChange, data, formDescriptions, formDescriptions_old, onPrint, onSync, onImport, getEvents, targetLabelCol } = props;
 
   const [_form] = Form.useForm()
   const [loading, setLoading] = useState(false)
@@ -65,8 +67,12 @@ export default function BaseEditPanelFormFC<T = any>(props: IProps) {
     setLoading(true)
     const values = await validate_form(form)
     if (values) {
-      await onFinish?.(values);
-      message.success('操作成功！')
+      try {
+        await onFinish?.(values);
+        message.success('操作成功！')
+      } catch (error) {
+
+      }
     }
     setLoading(false)
 
@@ -121,15 +127,15 @@ export default function BaseEditPanelFormFC<T = any>(props: IProps) {
 
   const renderResetBtn = () => {
     return (
-      <Button size="large" htmlType="reset" icon={<MyIcon value='RedoOutlined' />} onClick={handleReset}>
+      <OkButton size="large" htmlType="reset" icon={<MyIcon value='RedoOutlined' />} onClick={handleReset}>
         重置
-      </Button>
+      </OkButton>
     );
   };
 
   const renderSubmitBtn = () => {
     return (
-      <Button
+      <OkButton
         size="large"
         type="primary"
         icon={<MyIcon value='SaveOutlined' />}
@@ -137,14 +143,15 @@ export default function BaseEditPanelFormFC<T = any>(props: IProps) {
         onClick={debounce(handleFinish)}
       >
         保存
-      </Button>
+      </OkButton>
     );
   };
 
   const renderPrintBtn = () => {
 
     return (
-      <Button
+      <OkButton
+        {...print_btn_props}
         hidden={!onPrint}
         type="primary"
         size="large"
@@ -152,7 +159,7 @@ export default function BaseEditPanelFormFC<T = any>(props: IProps) {
         onClick={onPrint}
       >
         打印
-      </Button>
+      </OkButton>
     );
   };
 
@@ -165,7 +172,7 @@ export default function BaseEditPanelFormFC<T = any>(props: IProps) {
         {props.renderExtraBtns && props.renderExtraBtns(form)}
         {renderResetBtn()}
         {
-          onSync ? <Button
+          onSync ? <OkButton
             hidden={!onSync}
             type="primary"
             size="large"
@@ -173,7 +180,7 @@ export default function BaseEditPanelFormFC<T = any>(props: IProps) {
             onClick={onSync}
           >
             同步
-          </Button> : null
+          </OkButton> : null
         }
 
         {renderSubmitBtn()}
@@ -194,14 +201,14 @@ export default function BaseEditPanelFormFC<T = any>(props: IProps) {
   const renderImportBtn = () => {
     if (!onImport) return null
     return (
-      <Button
+      <OkButton
         type="primary"
         htmlType="button"
         icon={<MyIcon value='SolutionOutlined' />}
         onClick={onImport}
       >
         导入信息
-      </Button>
+      </OkButton>
     );
   };
 

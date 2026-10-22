@@ -1,28 +1,28 @@
-import { MyIcon, MyLazyComponent, OkButton, getBMI, handle_form_error, useMyEffectSafe } from '@lm_fe/components_m'
+import { MyIcon, MyLazyComponent, OkButton, fuck_the_form, handle_form_error, useMyEffectSafe } from '@lm_fe/components_m'
 import {
     IMchc_Doctor_Diagnoses,
     IMchc_Doctor_OutpatientHeaderInfo,
     IMchc_Doctor_RvisitInfoOfOutpatient,
     IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit,
     SLocal_Calculator,
+    SMchc_Doctor,
     TIdTypeCompatible,
     process_OutpatientDocument_physicalExam_local,
     process_OutpatientDocument_physicalExam_remote
 } from '@lm_fe/service'
-import { copyText, getFutureDate, request } from '@lm_fe/utils'
+import { copyText, getFutureDate, getSearchParamsAll, request } from '@lm_fe/utils'
 import { Button, Card, Form, FormInstance, Space, message } from 'antd'
-import { size } from 'lodash'
 import React, { useEffect, useState } from 'react'
-import DiabetesAppointment from '../../../.components/DiabetesAppointment'
 
 import { mchcConfig, mchcEnv, mchcEvent, mchcUtils } from '@lm_fe/env'
 import { HighRiskTableEntry, mchcModal__ } from '@lm_fe/pages'
 import { use_provoke } from '@lm_fe/provoke'
 import { expect_array } from '@lm_fe/utils'
 import classNames from 'classnames'
-import FormBlock from './form_config/Form'
 import { use_doctor_sign } from '../../../.utils/use_doctor_sign'
+import FormBlock from './form_config/Form'
 import styles from './index.module.less'
+import moment from 'moment'
 // 弹窗枚举
 interface IProps {
     addon_btns?: (data?: Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>) => React.ReactNode
@@ -35,6 +35,7 @@ interface IProps {
     visitsData?: IMchc_Doctor_RvisitInfoOfOutpatient
     formData?: Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>
     diagnosesList: IMchc_Doctor_Diagnoses[]
+    setDiagnosesList?(list: IMchc_Doctor_Diagnoses[]): void
     isAllPregnancies: boolean
 
     onAddBtnClick(): void
@@ -48,6 +49,7 @@ interface IProps {
 }
 function FurtherForm(props: IProps) {
     const [save_disabled, set_save_disabled] = useState(false)
+    const [sync_loading, set_sync_loading] = useState(false)
     const { 医生端_开启_危险_复诊同步记录 } = use_provoke(_ => _.config)
     const { getLastRecord } = props
     const { formChange } = props
@@ -56,6 +58,7 @@ function FurtherForm(props: IProps) {
         before_submit,
         after_save,
         diagnosesList,
+        setDiagnosesList,
         formData,
         visitsData,
         getVisitsData,
@@ -69,6 +72,7 @@ function FurtherForm(props: IProps) {
     const [form] = Form.useForm()
 
     const form_id = formData?.id
+    const visitDate = formData?.visitDate
     const preg_id = mchcUtils.single_id(headerInfo)
 
     // useEffect(() => {
@@ -101,7 +105,7 @@ function FurtherForm(props: IProps) {
     }, [formData])
 
     useMyEffectSafe(props)(() => {
-        const rm = mchcEvent.on_rm('my_form', async (e) => {
+        const rm_form = mchcEvent.on_rm('my_form', async (e) => {
             // mchcEnv.logger.log('event receive', { e, })
             if (e.type === 'onChange') {
                 formChange(true)
@@ -153,24 +157,23 @@ function FurtherForm(props: IProps) {
             //     }
             // }
         })
-        return rm
+        const rm_runone = mchcEvent.on_rm('outpatient', e => {
+            if (e.type === '复诊表单走一个') {
+                fuck_the_form(e.action, form, e.data, e.keys)
+            }
+        })
+        return () => {
+            rm_form();
+            rm_runone();
+        }
     }, [])
 
-    function setItemValue(val: string, key: string) { }
 
     async function get_form_data() {
 
 
         try {
             const values = await form.validateFields()
-
-            // if (mchcEnv.is('扬州妇幼')) {
-            //     const yes = window.confirm('温馨提醒：是否需要更新高危评估？')
-            //     if (yes) {
-            //         mchcEnv.success('请点击高危色卡，更新高危评估后再重新操作！')
-            //         return null
-            //     }
-            // }
 
             values.physicalExam = process_OutpatientDocument_physicalExam_local(values.physicalExam)
             return values as Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>
@@ -179,17 +182,6 @@ function FurtherForm(props: IProps) {
             if (first?.text) mchcEnv.warning(first.text)
             return null
         }
-        // return form
-        //     .validateFields()
-        //     .then((values) => {
-        //         values.physicalExam = process_OutpatientDocument_physicalExam_local(values.physicalExam)
-        //         return values as Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>
-        //     })
-        //     .catch((error) => {
-        //         const first = handle_form_error(error)
-        //         if (first?.text) mchcEnv.warning(first.text)
-        //         return null
-        //     })
     }
     async function on_submit() {
         if (!sign_confirm())
@@ -254,6 +246,83 @@ function FurtherForm(props: IProps) {
         }
     }
 
+    async function syncDiagAndAdvice() {
+        if (!headerInfo?.id) {
+            message.warning('请先选择就诊人')
+            return
+        }
+        if (!visitDate) {
+            message.warning('请先保存病历')
+            return
+        }
+        if (visitDate != moment().format('YYYY-MM-DD')) {
+            message.warning('只能对当天的病历进行同步操作')
+            return
+        }
+        set_sync_loading(true)
+        try {
+            // 同步诊断
+            try {
+                const searchParams = getSearchParamsAll()
+                const res = await request.get<any[]>('/api/doctor/Diagnosis', {
+                    params: { ...getSearchParamsAll(), id: headerInfo?.id, serialNO: searchParams.serialNo },
+                })
+                const fetchedDiagnoses = res.data ?? []
+                if (fetchedDiagnoses.length === 0) {
+                    message.info('未获取到诊断数据')
+                } else {
+                    const existingDiagnosisSet = new Set(diagnosesList.filter(d => d.prenatalVisitId === form_id).map((d) => d.diagnosis))
+                    const duplicateDiagnoses = fetchedDiagnoses.filter((d) => existingDiagnosisSet.has(d.diagnosis))
+                    const newDiagnoses = fetchedDiagnoses.filter((d) => !existingDiagnosisSet.has(d.diagnosis))
+                    if (duplicateDiagnoses.length > 0) {
+                        const filteredNames = duplicateDiagnoses.map((d) => d.diagnosis).join('、')
+                        message.warning('已过滤' + duplicateDiagnoses.length + '个重复诊断：' + filteredNames)
+                    }
+                    if (fetchedDiagnoses.length > 0) {
+                        const diagnosesToSave = newDiagnoses.map((d) => ({
+                            ...d,
+                            ...(form_id ? { prenatalVisitId: form_id } : {}),
+                            ...(formData?.serialNo ? { serialNo: formData.serialNo } : {}),
+                            outEmrId: headerInfo.id,
+                        }))
+                        const savedDiagnoses = await SMchc_Doctor.new_diagnosis_list(diagnosesToSave)
+                        setDiagnosesList?.([...diagnosesList, ...(savedDiagnoses ?? diagnosesToSave)])
+                        mchcEnv.success('同步诊断成功，共添加' + newDiagnoses.length + '条诊断')
+                        mchcEvent.emit('outpatient', { type: '刷新头部' })
+                    } else if (duplicateDiagnoses.length > 0) {
+                        message.info('所有诊断均已存在，无需同步')
+                    }
+                }
+            } catch (error) {
+                console.error('同步诊断失败', error)
+            }
+
+            // 同步医嘱
+            try {
+                const searchParams = getSearchParamsAll()
+                const params = {
+                    serialNO: searchParams.serialNO ?? searchParams.serialNo ?? formData?.serialNo,
+                    patientNO: searchParams.patientNO,
+                    outpatientNO: headerInfo?.outpatientNO ?? searchParams.outpatientNO,
+                }
+                const res = await request.get<string[]>('/api/doctor/getAdvice', { params })
+                const advice = expect_array(res.data) as string[]
+                if (advice.length > 0) {
+                    const routineExam = form.getFieldValue('routineExam') ?? {}
+                    form.setFieldsValue({ routineExam: { ...routineExam, prescription: advice.join(',') } })
+                    formChange(true)
+                    mchcEnv.success('同步医嘱成功')
+                } else {
+                    message.info('未获取到医嘱数据')
+                }
+            } catch (error) {
+                console.error('同步医嘱失败', error)
+            }
+        } finally {
+            set_sync_loading(false)
+        }
+    }
+
     async function del_visit(id?: TIdTypeCompatible) {
         if (!id) return
         const ok = confirm('确定删除吗？')
@@ -308,8 +377,9 @@ function FurtherForm(props: IProps) {
                     diagnosesList={diagnosesList ?? []}
                     headerInfo={headerInfo}
                 />
-
-                <HighRiskTableEntry headerInfo={headerInfo} data={visitsData} style={{ margin: '0 128px 64px 0' }} />
+                <div style={{ margin: '0 128px 64px 0' }}>
+                    <HighRiskTableEntry headerInfo={headerInfo} data={visitsData} />
+                </div>
                 {!isAllPregnancies && (
                     <Space.Compact
                         className={classNames(
@@ -318,7 +388,16 @@ function FurtherForm(props: IProps) {
                         )}
                     >
                         {addon_btns?.(formData)}
-                        <OkButton primary danger hidden={!form_id} onClick={() => del_visit(form_id)} disabled={save_disabled}>
+                        <OkButton hidden={!mchcEnv.is('中大惠亚')} loading={sync_loading} onClick={syncDiagAndAdvice}>
+                            同步诊断和医嘱
+                        </OkButton>
+                        <OkButton
+                            primary
+                            danger
+                            hidden={!form_id}
+                            onClick={() => del_visit(form_id)}
+                            disabled={save_disabled}
+                        >
                             删除
                         </OkButton>
                         <OkButton hidden={!mchcEnv.is('广州市八')} onClick={initial_preview}>
@@ -330,7 +409,12 @@ function FurtherForm(props: IProps) {
                         <OkButton hidden={!mchcEnv.is('南医附属') || !form_id} onClick={copy}>
                             复制
                         </OkButton>
-                        <OkButton hidden={sign_btn_hidden} primary disabled={save_disabled || sign_btn_disabled} onClick={sign}>
+                        <OkButton
+                            hidden={sign_btn_hidden}
+                            primary
+                            disabled={save_disabled || sign_btn_disabled}
+                            onClick={sign}
+                        >
                             {sign_btn_text}
                         </OkButton>
 

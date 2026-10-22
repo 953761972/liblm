@@ -26,11 +26,12 @@ export default function EditModal(props) {
 
   return (
     <Modal
-    open={visible}
-      className="textarea-with-template__modal-edit"
+      open={visible}
       onCancel={onCancel}
       onOk={handleSubmit}
       closable={false}
+      width={'50vw'}
+      styles={{ body: { height: '50vh' } }}
     >
       <Form autoComplete="off" form={form}>
         <Form.Item label="所属模块" name="type">

@@ -54,13 +54,12 @@ export default function MyForm_Business_PregnancyHistory(props: MyTableProps) {
     }
   })
   const conf = get(config, 'tableColumns', [])[0]
-  console.log('conf', { conf, config })
   const { value, onChange, dispatch, disabled } = props;
 
   const __ignoreKeys = getPropsValue('ignoreKeys', conf, __config) ?? []
   const __tableColumns = getPropsValue('tableColumns', conf, __config,) ?? []
   const __needNotThisTime = getPropsValue('needNotThisTime', conf, __config,)
-  const __closeAdd = getPropsValue('closeAdd', conf, __config,)
+  const __closeAdd = getPropsValue('closeAdd', conf, __config,) || get(props, ['input_props', 'closeAdd'], false)
   const __pregnancyId = getPropsValue('pregnancyId', conf, __config,)
 
   const ignoreKeys = __ignoreKeys.map((_) => _.startsWith('children') ? _.replace('children', '_children') : _)

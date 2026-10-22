@@ -18,7 +18,7 @@ export default function TextareaWithTemplate(props: ITextareaWithTemplateProp) {
   const { value, onClick, disabled, minRows = 2, maxRows = 5 } = props;
   function handleClickBtn() {
     onClick?.();
-    mchcEvent.emit('my_form', { type: 'onClick', btnName: SMchc_FormDescriptions.get_form_item_name_str(props.config!) })
+    mchcEvent.emit('my_form', { type: 'onClick', btnName: SMchc_FormDescriptions.format_itemName_str(props.config!) })
   };
 
   function handleTextareaChange(e: any) {

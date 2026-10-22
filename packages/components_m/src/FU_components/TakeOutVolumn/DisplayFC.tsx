@@ -1,6 +1,6 @@
 import { EMPTY_PLACEHOLDER, safe_json_parse_arr } from "@lm_fe/utils"
 import React from "react"
-import { useMarshal } from "src/utils/useMarshal"
+import { use_arr_marshal } from "src/utils/useMarshal"
 import { TCommonComponent } from "../types"
 interface TakeOutVolumnProps {
     marshal?: boolean
@@ -9,7 +9,7 @@ interface TakeOutVolumnProps {
 
 export const TakeOutVolumn_DisplayFC: TCommonComponent<TakeOutVolumnProps, any> = (props) => {
     const { value, onChange, marshal = false } = props
-    const { safe_value } = useMarshal<any[]>(marshal, value, onChange)
+    const { safe_value } = use_arr_marshal<any>(marshal, value, onChange)
     const arr = safe_json_parse_arr(safe_value)
     return <span style={{ fontSize: 12, wordBreak: 'break-all' }}>
         {

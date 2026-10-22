@@ -1,13 +1,14 @@
 import { ArrayInput, IGlobalModalProps, Tree_L } from '@lm_fe/components';
 import { mchcEnv, mchcLogger } from '@lm_fe/env';
-import { AnyObject, isObject, request } from '@lm_fe/utils';
+import { AnyObject, get, isArray, isObject, request } from '@lm_fe/utils';
 import { Button, message, Modal, Space, Tabs } from 'antd';
 
-import { forEach, get, isEmpty, isString } from 'lodash';
+import { forEach, isEmpty, isString } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.less'
 import { OkButton } from '@lm_fe/components_m';
 import { FormInstance } from 'antd/lib';
+import { IMchc_LabExamImportTree_Item } from '@lm_fe/service';
 interface IProps {
     form?: FormInstance,
     gen_obj?: (form?: FormInstance) => AnyObject
@@ -68,12 +69,12 @@ export default function ResultImport(props: IGlobalModalProps<IProps>) {
         const url = target.url
 
         const params = gen_obj?.(form) ?? {}
-        let result = (await request.ins({ method, url, data: params, params: params })).data;
+        let res = (await request.ins({ method, url, data: params, params: params })).data;
 
 
         set_activeTabKey(target.title)
-        set_defaultExpandedKey(make_key(result?.[0]))
-        const format_data = transferTemplateData(result, abnormal_key.current, key_map.current,)
+        set_defaultExpandedKey(make_key(res?.[0]))
+        const format_data = transferTemplateData(res, abnormal_key.current, key_map.current,)
         setArr(format_data)
 
     };
@@ -84,7 +85,17 @@ export default function ResultImport(props: IGlobalModalProps<IProps>) {
             const state = ins.state
             const keys = state.checkedKeys
             const checkedItems = keys.map(_ => key_map.current[_])
+
             const half_keys = state.halfCheckedKeys
+            const half_keys_items = half_keys.map(_ => key_map.current[_])
+
+            const all_keys = [...keys, ...half_keys]
+            const all_keys_items = all_keys.map(_ => key_map.current[_])
+            const parents = all_keys_items.filter(_ => _.pid === 0)
+            const labels: string[] = []
+            parents.forEach(p => {
+                fuck_join_label(p, labels, all_keys)
+            })
 
             let content = checkedItems
                 .sort((a, b) => (a.pid === 0) ? -1 : 1) // 使祖先节点最前
@@ -92,12 +103,12 @@ export default function ResultImport(props: IGlobalModalProps<IProps>) {
             if (!isEmpty(half_keys)) {
 
                 const half_title = half_keys.map(get_title_form_key).reverse().join(' / ')
-                console.log('el half_title', half_title, half_keys)
+                mchcLogger.log('el half_title', half_title, half_keys, half_keys_items)
                 content = `${half_title} / ${content}`
             }
             const leaf = checkedItems.filter(_ => _.isLeaf && !_.children?.length)
 
-            on_tpl_check?.({ result: checkedItems, leaf, content })
+            on_tpl_check?.({ result: checkedItems, leaf, content: labels.join(' / ') })
         }
 
         close?.(true, e)
@@ -183,4 +194,17 @@ export default function ResultImport(props: IGlobalModalProps<IProps>) {
             </Tabs>
         </Modal>
     );
+}
+
+function fuck_join_label(data: IMchc_LabExamImportTree_Item, last_result: string[], filter_keys: any[]) {
+    if (!filter_keys.includes(get(data, 'key')))
+        return
+
+    last_result.push(get(data, 'raw_title'))
+    if (isArray(data.items)) {
+        data.items.forEach(d => {
+            fuck_join_label(d, last_result, filter_keys)
+        })
+    }
+    return last_result
 }

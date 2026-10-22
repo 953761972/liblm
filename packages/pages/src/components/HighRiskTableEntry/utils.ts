@@ -46,7 +46,7 @@ export function highRiskTablePopup(res: IData, headerInfo?: IMchc_Doctor_Outpati
     mchcEvent.emit('outpatient', { type: '弹窗', modal_name: '深静脉血栓高危因素孕期用药筛查表' })
   }
   const 量表拓展 = peek_provoke('config')?.量表拓展 ?? []
-  const keys = Object.keys(res)
+  Object.keys(res)
     .filter(k => k.startsWith('isOpen'))
     .forEach(k => {
 

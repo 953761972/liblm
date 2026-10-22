@@ -15,16 +15,16 @@ import {
 } from 'antd';
 import React from 'react';
 // import DynamicForm from '@/components/BaseModalForm/DynamicForm';
-import { fubaoRequest as request } from '@lm_fe/utils';
-import { FormInstance } from 'antd/lib/form/Form';
-import { filter, get, isEmpty, map } from 'lodash';
-import dayjs from 'dayjs';
-import { NurseTypesMapping } from "../../file-management/doctor-desk/components/SurgicalRecordv2/config";
-import { modalFormDescriptions as formDescriptions, modifyValueToForm, valueToApi, valueToForm } from './adapter';
 import { DatePicker_L, DynamicForm, LazyAntd } from '@lm_fe/components_m';
-import { formatDate } from '@lm_fe/utils';
+import { formatDate, fubaoRequest as request } from '@lm_fe/utils';
+import { FormInstance } from 'antd/lib/form/Form';
+import dayjs from 'dayjs';
+import { filter, get, isEmpty } from 'lodash';
+import { IModel_EarlyPregnancySurgicalTemplate } from 'src/pages/fubao/.stupid_model/models/EarlyPregnancySurgicalTemplate';
 import { getReservationPanelByDate } from '../../surgery-scheduling/apis/api';
+import { modalFormDescriptions as formDescriptions, modifyValueToForm, valueToApi, valueToForm } from './adapter';
 import './appointModel.less';
+
 import { mchcEnv } from '@lm_fe/env';
 const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 
@@ -56,7 +56,7 @@ export default class Index extends DynamicForm<any> {
     popconfirmVisibleId: undefined, //取消预约弹窗id
     openSchedulingDateByOperationNameData: {}, //预约数据
     reservationPanel: [], //排班面板
-    templateData: [], //手术配置数据
+    templateData: [] as IModel_EarlyPregnancySurgicalTemplate[], //手术配置数据
     isUpdate: false, //修改预约时手术名称表单不可修改
   };
 
@@ -337,15 +337,8 @@ export default class Index extends DynamicForm<any> {
   };
 
   getOperationKey = (operationName: any) => {
-    let operationKey = '';
-    if (operationName) {
-      map(NurseTypesMapping, (item, key) => {
-        if (get(item, 'name') === operationName) {
-          operationKey = get(item, 'key');
-        }
-      });
-    }
-    return operationKey;
+    const item = this.state.templateData.find(_ => _.operationName === operationName)
+    return item?.schedulingField;
   };
 
   renderSource = (data: any, operationName: any) => {

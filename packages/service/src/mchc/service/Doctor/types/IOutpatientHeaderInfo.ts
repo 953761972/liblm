@@ -3,7 +3,9 @@ import { MCHC_TYPE_MAP, MchcTypes } from '@lm_fe/env'
 export interface IMchc_Doctor_OutpatientHeaderInfo<T extends MchcTypes = MCHC_TYPE_MAP['mchc']> {
     age: number
     tags: string | null
+    labelEnabled: boolean
     labels: {
+        case: boolean
         id: number
         module: number
         type: number

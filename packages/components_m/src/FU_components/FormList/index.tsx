@@ -1,6 +1,6 @@
 import { Button, Form } from 'antd';
 import React, { useEffect } from 'react';
-import { useMarshal } from '../../utils/useMarshal';
+import { use_arr_marshal } from '../../utils/useMarshal';
 // import FormSection, { IFormSectionProps } from '../../BaseModalForm/FormSection';
 import { IMchc_FormDescriptions_Field, SMchc_FormDescriptions } from '@lm_fe/service';
 import { cloneDeep } from 'lodash';
@@ -38,11 +38,11 @@ export const MyFormList_必须搭配Form使用: TCommonComponent<IProps, string 
                             const configs = cloneDeep(formDescriptions)
                             const arr = configs.map(f => {
                                 if (!f) return f!
-                                const nArr = SMchc_FormDescriptions.parse_form_item_name(f)
+                                const nArr = SMchc_FormDescriptions.format_itemName_arr(f)
                                 const k1 = nArr[0]
                                 if (!isNaN(Number.parseInt(k1)))
                                     return f
-                                nArr.unshift(name)
+                                nArr.unshift(name.toString())
                                 SMchc_FormDescriptions.set_form_item_name(f, nArr)
                                 return f
 
@@ -87,7 +87,7 @@ MyFormList_必须搭配Form使用.DisplayFC = (props) => {
     } = props
 
 
-    const { safe_value = [], set_safe_value, onChangeSafeValue } = useMarshal<any[]>(marshal, value ?? [], onChange)
+    const { safe_value = [], set_safe_value, onChangeSafeValue } = use_arr_marshal<any>(marshal, value ?? [], onChange)
 
     return <div>
 
