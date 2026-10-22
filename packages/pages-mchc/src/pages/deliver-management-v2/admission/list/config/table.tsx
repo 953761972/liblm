@@ -1,6 +1,10 @@
 
 import { APP_CONFIG, formatTimeToDate, idNOFuzzy, MyBaseTableProps } from '@lm_fe/components_m';
-export const tableColumns: MyBaseTableProps['columns'] = [
+import { rt_ctx } from '@lm_fe/env';
+import { defineFormConfig } from '@lm_fe/service';
+const ctx = rt_ctx
+const React = ctx.React
+export default defineFormConfig([
   {
     title: '住院号',
     dataIndex: 'inpatientNO',
@@ -72,6 +76,8 @@ export const tableColumns: MyBaseTableProps['columns'] = [
     dataIndex: 'adminDate',
     align: 'center',
     width: APP_CONFIG.CELL_WIDTH_SMALL,
-    render: (value: string) => formatTimeToDate(value),
+    render: (value: any, rowData: any) => {
+      return ctx.utils.formatDate(value);
+    },
   },
-];
+])
