@@ -168,26 +168,7 @@ export default function DateSelect(props: IProps) {
                                       {(statusLabel === '待签到' || statusLabel === '超时') && (
                                         <>
 
-                                          <OkButton
-                                            shape='circle'
-                                            type='text'
-                                            icon={<MyIcon title='预约' value='EditOutlined' />}
 
-                                            style={{ color: fontColor }}
-                                            onClick={(e) => {
-                                              e.stopPropagation();
-                                              open_booking(
-                                                selectedDate,
-                                                morningOrAfternoon,
-                                                data,
-                                                () => {
-                                                  dd.initData();
-                                                  dd.getStatistic();
-                                                  dd.getBetweenList();
-                                                },
-                                              );
-                                            }}
-                                          />
 
                                           {sign_btn}
 
