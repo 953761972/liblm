@@ -1,6 +1,6 @@
 {
     "name": "@lm_fe/pages-fubao",
-    "version": "0.2.14",
+    "version": "0.2.15",
     "description": "",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
