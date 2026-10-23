@@ -622,17 +622,7 @@ export default defineFormConfig(
                     },
                     layout: '2/3',
                 },
-                {
-                    label: '护理文书隐藏表单(可以手输)',
-                    name: 'nurseHide',
-                    inputType: 'MS',
-                    inputProps: {
-                        options: getSameOptions('首次护理记录,待产记录'),
-                        marshal: 3,
-                        type: 'tags',
-                    },
-                    layout: '1/1',
-                },
+
                 {
                     label: '病历文书隐藏表单(可以手输)',
                     name: 'medicalHide',

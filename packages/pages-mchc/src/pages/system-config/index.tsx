@@ -31,10 +31,7 @@ function ConfigSystem(props: any) {
       if (isObject(_) && isString(get(_, 'value'))) return get(_, 'value')
       return ''
     }).filter(identity)
-    data.nurseHide = expect_array(data.nurseHide).map(_ => {
-      if (isString(_)) return { value: _, label: _ }
-      return _
-    })
+
     data.medicalHide = expect_array(data.medicalHide).map(_ => {
       if (isString(_)) return { value: _, label: _ }
       return _
