@@ -88,7 +88,7 @@ importers:
         specifier: ^5.3.11
         version: 5.3.11
       '@types/lodash':
-        specifier: ^4.17.26
+        specifier: ^4.17.27
         version: 4.17.27
       '@types/react':
         specifier: 18.3.1
@@ -133,7 +133,7 @@ importers:
         specifier: ^4.9.1
         version: 4.9.1
       postcss:
-        specifier: ~8.5.30
+        specifier: ~8.5.31
         version: 8.5.31
       postcss-url:
         specifier: ^10.1.4
@@ -215,7 +215,7 @@ importers:
         version: 4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@19.3.1))(react@19.3.1)
       '@noah-libjs/components':
         specifier: latest
-        version: 0.0.68(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@19.3.1))(react@19.3.1))(axios@1.20.0)(classnames@2.5.1)(dayjs@1.11.23)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)
+        version: 0.0.69(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@19.3.1))(react@19.3.1))(axios@1.20.0)(classnames@2.5.1)(dayjs@1.11.23)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)
       axios:
         specifier: '>=0.26.0'
         version: 1.20.0
@@ -748,7 +748,7 @@ importers:
         specifier: ^2.80.0
         version: 2.80.0
       zustand:
-        specifier: ^5.0.15
+        specifier: ^5.0.16
         version: 5.0.16(@types/react@18.3.1)(immer@9.0.21)(react@19.3.1)
 
   packages/service:
@@ -761,7 +761,7 @@ importers:
         version: link:../utils
       '@noah-libjs/components':
         specifier: latest
-        version: 0.0.68(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@19.3.1))(react@19.3.1))(axios@0.34.0)(classnames@2.5.1)(dayjs@1.11.23)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)
+        version: 0.0.69(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@19.3.1))(react@19.3.1))(axios@0.34.0)(classnames@2.5.1)(dayjs@1.11.23)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)
       axios:
         specifier: 0.x
         version: 0.34.0
@@ -783,10 +783,10 @@ importers:
         version: 0.2.18
       '@noah-libjs/request':
         specifier: latest
-        version: 0.0.68(dayjs@1.11.23)
+        version: 0.0.69(dayjs@1.11.23)
       '@noah-libjs/utils':
         specifier: latest
-        version: 0.0.68(dayjs@1.11.23)
+        version: 0.0.69(dayjs@1.11.23)
       axios:
         specifier: 0.26.1
         version: 0.26.1
@@ -1809,8 +1809,8 @@ packages:
   '@napi-rs/wasm-runtime@0.2.4':
     resolution: {integrity: sha512-9zESzOO5aDByvhIAsOy9TbpZ0Ur2AJbUI7UT73kcUTS2mxAMHOBaa1st/jAymNoCtvrit99kkzT1FZuXVcgfIQ==}
 
-  '@noah-libjs/components@0.0.68':
-    resolution: {integrity: sha512-DLHNUmRd6ofHzIpg9jUB1p2/DXQ39wpfQZrpdLIneVvDVg4KzUb7umVtYZnV9RZGSBOeG/vE4DWUfF7keanXUA==}
+  '@noah-libjs/components@0.0.69':
+    resolution: {integrity: sha512-ujwneaW0dq5t/IVKI5FbWNdOJ4FiFHsoPw6IoqhZGTSOKo1TuFLSEs734mtAXLuJXnaeHTQQVloSfu+59w1EcA==}
     peerDependencies:
       '@monaco-editor/react': ^4.5.1
       axios: '>=0.26.0'
@@ -1820,11 +1820,11 @@ packages:
       react: '*'
       react-container-dimensions: 1.4.1
 
-  '@noah-libjs/request@0.0.68':
-    resolution: {integrity: sha512-RIJF3EAuGEc7kuRFpmB07pwoO7oOIp3uf88z+MTTAS3uM1mxxlNQNB17krRq6gnAqCxVhpRW+w572YC+jnMI5A==}
+  '@noah-libjs/request@0.0.69':
+    resolution: {integrity: sha512-5Zvk8Q7Ux8qEeo6cbAxS27znjpOTcsiI+lkTOFtaFLGfvfy317Dmm1z9EyKveSfR7X9tbcs8lpOJN3WAuXF9OQ==}
 
-  '@noah-libjs/utils@0.0.68':
-    resolution: {integrity: sha512-THu+kTan0HO9qm8l16FbBwfELMiigc8me+B4Gy3egjX9OgtABfQU7toyKxGhNey3KygWXMKv2dVpBtuY6j3rdw==}
+  '@noah-libjs/utils@0.0.69':
+    resolution: {integrity: sha512-GfJM4hbxrou2cw09GVO0zgGEdWp/S7IA9KcR1lAjg3flNUsHKwJEhC+NKqJ4SlFxYKWZlWcT+Nhl2EsEjPmBQA==}
     peerDependencies:
       dayjs: ^1.11.13
 
@@ -10153,7 +10153,7 @@ snapshots:
   '@lm_fe/scripts@0.2.18(react-refresh@0.18.0)':
     dependencies:
       '@lm_fe/static': 0.2.18
-      '@noah-libjs/utils': 0.0.68(dayjs@1.11.23)
+      '@noah-libjs/utils': 0.0.69(dayjs@1.11.23)
       '@rspack/plugin-react-refresh': 1.6.0(react-refresh@0.18.0)
       chalk: 4.1.2
       dayjs: 1.11.23
@@ -10241,11 +10241,11 @@ snapshots:
       '@emnapi/runtime': 1.4.5
       '@tybys/wasm-util': 0.9.0
 
-  '@noah-libjs/components@0.0.68(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@19.3.1))(react@19.3.1))(axios@0.34.0)(classnames@2.5.1)(dayjs@1.11.23)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)':
+  '@noah-libjs/components@0.0.69(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@19.3.1))(react@19.3.1))(axios@0.34.0)(classnames@2.5.1)(dayjs@1.11.23)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@monaco-editor/react': 4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@19.3.1))(react@19.3.1)
-      '@noah-libjs/request': 0.0.68(dayjs@1.11.23)
-      '@noah-libjs/utils': 0.0.68(dayjs@1.11.23)
+      '@noah-libjs/request': 0.0.69(dayjs@1.11.23)
+      '@noah-libjs/utils': 0.0.69(dayjs@1.11.23)
       axios: 0.34.0
       classnames: 2.5.1
       dayjs: 1.11.23
@@ -10255,11 +10255,11 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@noah-libjs/components@0.0.68(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@19.3.1))(react@19.3.1))(axios@1.20.0)(classnames@2.5.1)(dayjs@1.11.23)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)':
+  '@noah-libjs/components@0.0.69(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@19.3.1))(react@19.3.1))(axios@1.20.0)(classnames@2.5.1)(dayjs@1.11.23)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@monaco-editor/react': 4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@19.3.1))(react@19.3.1)
-      '@noah-libjs/request': 0.0.68(dayjs@1.11.23)
-      '@noah-libjs/utils': 0.0.68(dayjs@1.11.23)
+      '@noah-libjs/request': 0.0.69(dayjs@1.11.23)
+      '@noah-libjs/utils': 0.0.69(dayjs@1.11.23)
       axios: 1.20.0
       classnames: 2.5.1
       dayjs: 1.11.23
@@ -10269,16 +10269,16 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@noah-libjs/request@0.0.68(dayjs@1.11.23)':
+  '@noah-libjs/request@0.0.69(dayjs@1.11.23)':
     dependencies:
-      '@noah-libjs/utils': 0.0.68(dayjs@1.11.23)
+      '@noah-libjs/utils': 0.0.69(dayjs@1.11.23)
       axios: 0.26.1
       store: 2.0.12
     transitivePeerDependencies:
       - dayjs
       - debug
 
-  '@noah-libjs/utils@0.0.68(dayjs@1.11.23)':
+  '@noah-libjs/utils@0.0.69(dayjs@1.11.23)':
     dependencies:
       dayjs: 1.11.23
       radash: 12.1.1
