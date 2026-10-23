@@ -1,5 +1,5 @@
 import { APP_CONFIG } from "@lm_fe/components_m";
-import { idNOFuzzy } from '@lm_fe/components_m'
+import { idNOFuzzy } from '@lm_fe/utils'
 export const tableColumns = [
   {
     title: '接诊卡号',
