@@ -54,6 +54,9 @@ export interface IMchc_QuestionWrite {
     id: number
     outpatientNo: string
     isAnswer: number
+    /** 当前问卷的最大总分（历史原因命名，业务含义为「总分」） */
+    score?: number
+    /** 本次答题实际得分（历史原因命名，业务含义为「得分」） */
     totalScore: number
     createTime: string
     questionnaire: IMchc_Questionnaire
