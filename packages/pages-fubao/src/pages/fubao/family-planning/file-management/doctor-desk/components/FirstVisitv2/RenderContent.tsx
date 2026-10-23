@@ -72,7 +72,7 @@ export function RenderContent(props: IRenderContentProps) {
             modal_data: {
                 request,
                 requestData: {
-                    url: '/api/family/planning/casePdfPreview',
+                    url: '/api/family/planning/medicalRecordPdfPreview',
                     resource: active_key,
                     template: '',
                     version: '',
