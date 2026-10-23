@@ -100,13 +100,7 @@ export default defineFormConfig([
                     >
                         随访
                     </ctx.ui.Button>
-                    <ctx.ui.Button
-                        size="small"
-                        type="link"
-                        onClick={() => ctx.props.handleShowModal2(record, ctx.props.handleSearch)}
-                    >
-                        TEST
-                    </ctx.ui.Button>
+
                 </ctx.ui.Space>
             )
         },

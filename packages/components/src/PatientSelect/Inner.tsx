@@ -1,12 +1,11 @@
 import { mchcEvent, mchcLogger } from '@lm_fe/env';
 import { TIdTypeCompatible } from '@lm_fe/service';
 import { expect_array, flat, group, isArray, isEmpty, listify, mapValues, request } from '@lm_fe/utils';
-import { AutoComplete_L } from '@noah-libjs/components';
+import { AutoComplete_L, getInputStyle, form_item_read } from '@noah-libjs/components';
 import { AutoCompleteProps, Col, Divider, FormInstance, Row } from 'antd';
 import { DefaultOptionType } from 'antd/es/select';
 import { debounce, get, map } from 'lodash';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { getInputStyle } from '@noah-libjs/components';
 
 const mode_reg = /^.*(\[[0-9]\])$/
 type KeyType = [DefaultOptionType, DefaultOptionType, DefaultOptionType, DefaultOptionType]
@@ -34,10 +33,12 @@ export default function PatientSelect(props: IProps) {
     PatientSelect_displayKey = default_keys,
     style,
     popupMatchSelectWidth,
-    is_read,
     ...inputProps
   } = props;
-  if (is_read) return value
+
+  const [is_r, n] = form_item_read(props, value)
+  if (is_r)
+    return n
   const url = useRef(is_err ? default_url : PatientSelect_url)
   const keys__ = useRef(is_err ? default_keys : PatientSelect_displayKey)
   const _style = getInputStyle(props)

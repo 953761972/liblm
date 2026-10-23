@@ -13,7 +13,7 @@ export interface IRenderContentProps {
 }
 export function RenderContent(props: IRenderContentProps) {
     const { config, activeItem, active_key, onRefresh } = props
-    const [data_cache, set_data_cache] = useState<AnyObject>({})
+    const [data_cache, set_data_cache] = useState<AnyObject>()
 
 
     const [form] = Form.useForm()
@@ -76,7 +76,7 @@ export function RenderContent(props: IRenderContentProps) {
                     template: '',
                     version: '',
                     note: '',
-                    id: data_cache.id,
+                    id: data_cache?.id,
                 }
             }
         })
@@ -84,7 +84,7 @@ export function RenderContent(props: IRenderContentProps) {
     return <BaseEditPanelFormFC
         // renderBtns={config?.}
         targetLabelCol={5}
-        print_btn_props={{ disabled: !data_cache.id }}
+        print_btn_props={{ disabled: !data_cache?.id }}
         onPrint={handlePrint}
         form={form}
         formDescriptions={config?.tableColumns}
