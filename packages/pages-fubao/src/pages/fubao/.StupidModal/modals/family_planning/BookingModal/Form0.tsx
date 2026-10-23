@@ -213,8 +213,8 @@ const Form0: IStepFormComponentType<TCommonData, any> = function Form0({ form, s
       >
         <Divider>患者信息 </Divider>
         <Row>
-          <Col xs={8} hidden>
-            <Item label="" name="operatingRoom" rules={[{ required: false }]}>
+          <Col xs={8} >
+            <Item label="" name="operatingRoom" rules={[{ required: false }]} hidden>
               <Input />
             </Item>
           </Col>

@@ -18,21 +18,26 @@ export type IStepFormComponentType<T, FORM_T = any> = ComponentType<{
   commonData?: T;
   setCommonData: React.Dispatch<React.SetStateAction<T | undefined>>;
 }>;
+
 interface Lengthwise { }
+
 const StepFrom = function <T extends Lengthwise, FORM_T = any>(props: IProps<T, FORM_T>) {
   const { data, step, initData } = props;
   const [currentStep, setCurrentStep] = useState(step || 0);
+
   const forms = Array(data.length)
     .fill(0)
     .map((_) => Form.useForm()[0]);
   const [commonData, setCommonData] = useState<T | undefined>();
+
   useEffect(() => {
     if (initData) {
       setCommonData(initData);
     }
   }, [initData]);
+
   return (
-    <div>
+    <>
       <Steps current={currentStep} style={{ marginBottom: 24 }}>
         {data.map(({ title, subTitle, description }, idx) => {
           return <Steps.Step key={idx} title={title} subTitle={subTitle} description={description} />;
@@ -45,13 +50,11 @@ const StepFrom = function <T extends Lengthwise, FORM_T = any>(props: IProps<T, 
           </div>
         );
       })}
-      <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 12 }}>
-
+      <Space style={{ width: '100%', paddingTop: 12, justifyContent: 'center' }}>
         <Button
           type="primary"
           hidden={currentStep === 0}
           onClick={() => setCurrentStep(currentStep - 1)}
-          style={{ marginLeft: 16 }}
         >
           上一页
         </Button>
@@ -70,15 +73,14 @@ const StepFrom = function <T extends Lengthwise, FORM_T = any>(props: IProps<T, 
           type="primary"
           hidden={get(initData, 'data.progressStatus') === 3 || get(initData, 'data.progressStatus') === 4}
           onClick={() => (forms[currentStep] as any)?._save()}
-          style={{ marginLeft: 16 }}
         >
           {(get(initData, 'data.progressStatus') === 0 || get(initData, 'data.progressStatus') === 2) &&
             currentStep === 1
             ? '保存并签到'
             : '保存'}
         </Button>
-      </div>
-    </div>
+      </Space>
+    </>
   );
 };
 export default StepFrom;
