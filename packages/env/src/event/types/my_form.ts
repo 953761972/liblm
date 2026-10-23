@@ -44,6 +44,12 @@ interface I_onTabChange extends IBaseType<'onTabChange'> {
     oldKey: string
 }
 
-export type IMyForm_Event = [I_onChange | I_onSearch | I_onClick | I_onTabChange | I_onBlur | I_onFocus |
+interface I_item extends IBaseType<'item'> {
+    name: string
+    action?: 'set_options'
+    data: any
+}
+
+export type IMyForm_Event = [I_item | I_onChange | I_onSearch | I_onClick | I_onTabChange | I_onBlur | I_onFocus |
     I_onLoad
 ]

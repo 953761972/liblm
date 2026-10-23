@@ -22,7 +22,7 @@
     },
     "devDependencies": {
         "rollup": "^2.80.0",
-        "zustand": "^5.0.14"
+        "zustand": "^5.0.15"
     },
     "dependencies": {
         "@lm_fe/env": "workspace:^",

@@ -39,6 +39,7 @@ export function RenderContent(props: IRenderContentProps) {
             )
         }
         let data = (await safe_async_call(config?.handleBeforePopup, get(res, 'data.data.0'))) || {}
+        form.resetFields()
         form.setFieldsValue(data)
         set_data_cache(data)
     };

@@ -15,12 +15,13 @@ declare module 'omit.js';
 
 interface Window {
   BF_Wrap2(setting: any, props?: any): {
-    config: IMchc_TableConfig | undefined;
+    config: any | undefined;
     Wrap: React.FC<{
       style?: React.CSSProperties;
-      children?: ReactNode;
+      children?: any;
     }>;
   }
+  validate_form<T = any>(form: any): Promise<T | null>
   _store?: {
     getState(): any
   }

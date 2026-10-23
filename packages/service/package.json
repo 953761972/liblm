@@ -26,7 +26,7 @@
         "@lm_fe/env": "workspace:^",
         "@lm_fe/utils": "workspace:^",
         "@noah-libjs/components": "latest",
-        "dayjs": "^1.11.21",
+        "dayjs": "^1.11.23",
         "lodash": "^4.18.1"
     },
     "devDependencies": {

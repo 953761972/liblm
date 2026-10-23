@@ -3,7 +3,7 @@ import { Button, Card, Col, Modal, Popconfirm, Row, message } from 'antd';
 import { get, isEmpty, map, cloneDeep, first } from 'lodash';
 import React, { Component, useEffect, useState } from 'react';
 import { NurseTypesMapping } from './config';
-import { fubaoRequest as request } from '@lm_fe/utils';
+import { AnyObject, fubaoRequest as request } from '@lm_fe/utils';
 import styles from '../../../common.module.less'
 import RenderContentWrap from './RenderContentWrap';
 
@@ -11,8 +11,7 @@ export default function ZKBL(props: any) {
   const { data, id, reload } = props
 
   const [activeTemplate, set_activeTemplate] = useState('')
-  const [siderPanels, set_siderPanels] = useState([])
-  const [oldsiderPanels, set_oldsiderPanels] = useState([])
+  const [siderPanels, set_siderPanels] = useState<AnyObject>([])
   const [activeItem, set_activeItem] = useState({})
   const [visible, set_visible] = useState(false)
 
@@ -76,7 +75,6 @@ export default function ZKBL(props: any) {
       newActiveItem = first(newSiderPanels);
     }
     set_siderPanels(newSiderPanels)
-    set_oldsiderPanels(newSiderPanels)
     set_activeItem(newActiveItem)
     set_activeTemplate(newActiveTemplate)
 
@@ -97,26 +95,15 @@ export default function ZKBL(props: any) {
 
   function handleChooseTemplate(nurseType: any) {
     return () => {
-      const clickTempKey = get(nurseType, 'key');
-      let hasExist = false;
-      if (!hasExist) {
-        let newSiderPanels: any = cloneDeep(oldsiderPanels);
-        let newItem = {
-          id: '',
-          checkType: get(nurseType, 'name'),
-        };
-        newSiderPanels.push(newItem);
+      let newSiderPanels: any = cloneDeep(siderPanels.filter(_ => _.id !== null));
+      let newItem = {
+        id: null,
+        checkType: get(nurseType, 'name'),
+      };
+      newSiderPanels.push(newItem);
 
-        set_siderPanels(newSiderPanels)
-        set_activeItem(newItem)
-      } else {
-        let item = oldsiderPanels.filter((data: any) => {
-          return data.code === clickTempKey;
-        })[0];
-
-        set_activeItem(item)
-
-      }
+      set_siderPanels(newSiderPanels)
+      set_activeItem(newItem)
 
       set_visible(false)
       set_activeTemplate(get(nurseType, 'key'))

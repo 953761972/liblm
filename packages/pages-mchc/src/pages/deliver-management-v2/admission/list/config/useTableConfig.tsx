@@ -4,15 +4,9 @@ import { IdNOButton, MyBaseListProps } from '@lm_fe/pages';
 import { downloadFile, request } from "@lm_fe/utils";
 import { Button, Divider, Form } from "antd";
 import React, { useEffect } from "react";
-import { queryFormDescriptions } from "./form";
-import { tableColumns } from "./table";
+// import { queryFormDescriptions } from "./form";
+// import { tableColumns } from "./table";
 
-export const baseTableConfig: MyBaseListProps = {
-    baseTitle: '孕册',
-    name: '/admissions',
-    tableColumns,
-    searchConfig: queryFormDescriptions(),
-}
 export function useTableConfig(props: any) {
     const { history } = props;
     const [form] = Form.useForm()
@@ -95,8 +89,9 @@ export function useTableConfig(props: any) {
         history.push('/deliver-management-v2/admission/add');
     };
     const config: MyBaseListProps = {
-        ...baseTableConfig,
         effect_ctx: props,
+        name: '/admissions',
+        baseTitle: '入院登记',
         searchForm: form,
         handleDoubleClickRow,
         RenderSearchBtns({ handleSearch, getSearchParams }) {

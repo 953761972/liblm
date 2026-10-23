@@ -241,7 +241,7 @@ export default class GlobalSettingModal extends React.Component<any, any> {
         onCancel={() => this.props.setGlobalSettingModal(false)}
         onOk={() => this.handleOk()}
         className={`global-setting-modal ${popconfirmVisible ? 'hidden' : 'auto'}`}
-        width={1200}
+        width={'84vw'}
         footer={[
           <Button key="cancel" onClick={() => this.props.setGlobalSettingModal(false)}>
             关闭
