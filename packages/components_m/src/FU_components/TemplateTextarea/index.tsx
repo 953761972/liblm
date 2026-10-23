@@ -1,3 +1,4 @@
+import { form_item_read } from '@lm_fe/components';
 import { ITemplateConfig, MODAL_TEMPLATE_TYPES } from '@lm_fe/env';
 import { Button, Input } from 'antd';
 import { TextAreaProps } from 'antd/lib/input';
@@ -15,8 +16,10 @@ interface ITemplateTextareaProps extends TextAreaProps {
 }
 const SPLIT_KEY = ' / '
 export function TemplateTextarea(props: ITemplateTextareaProps) {
-    const { value = '', onChange, style, type, is_read, TemplateTextarea_type, rows = 3, disabled, defaultExpandAll, canOperate, ...others } = props
-    if (is_read) return value
+    const { value = '', onChange, style, type, TemplateTextarea_type, rows = 3, disabled, defaultExpandAll, canOperate, ...others } = props
+    const [is_r, n] = form_item_read(props, value)
+    if (is_r)
+        return n
     const [_value, set_value] = useState(value)
     useEffect(() => {
         set_value(value)

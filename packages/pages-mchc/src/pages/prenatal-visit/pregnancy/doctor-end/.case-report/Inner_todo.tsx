@@ -292,10 +292,7 @@ export default function Nursing(props: any) {
                 overlay={<Menu>
                   {
                     map(NurseTypesMapping, (nurseType, key) => {
-                      const nurseHide = SLocal_SystemConfig.get('nurseHide') ?? []
-                      if (nurseHide.includes(nurseType.key) || nurseType.hide || !nurseType.type.includes(type)) {
-                        return null
-                      }
+
                       const targetItem = siderPanels.find(_ => _.code === nurseType.key)
                       return (
                         <Menu.Item
@@ -375,10 +372,7 @@ function hideNurseTypesMapping() {
   let activeTemplate = '';
   const newNurseTypesMapping = cloneDeep(NurseTypesMapping);
   map(newNurseTypesMapping, (item) => {
-    const nurseHide = SLocal_SystemConfig.get('nurseHide') ?? []
-    if (includes(nurseHide, item.key)) {
-      set(item, 'hide', true);
-    }
+
     if (!get(item, 'hide') && !activeTemplate) {
       activeTemplate = get(item, 'key');
     }

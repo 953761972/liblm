@@ -47,7 +47,6 @@ export type ISystemConfig = Partial<{
     护士端_模块隐藏: string[]
     doctorOpenWebsocket: boolean
     VTE预防用药筛查表: string
-    nurseHide: ICommonOption[]
     medicalHide: ICommonOption[]
     PDF预览组件版本?: string
     老人模式?: boolean

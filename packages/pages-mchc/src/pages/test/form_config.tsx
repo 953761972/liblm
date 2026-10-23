@@ -1347,5 +1347,106 @@ export default defineFormConfig([
       },
 
     ]
+  },
+  {
+    title: '只读模式',
+    children: [
+      {
+        inputType: 'MC',
+        name: 'zd1',
+        label: '标题1',
+        layout: '1/3',
+        processRemote(v, form, conf) {
+          return v || 1
+        },
+        checkWarn(v, form) {
+          return 'error'
+        },
+        inputProps: {
+          options: [{ value: 1, label: '默认值1' }, { value: 2, label: '默认值2' }],
+          is_read: true
+        }
+      },
+      {
+        inputType: 'MSW',
+        name: 'zd2',
+        label: '标题2',
+        layout: '1/3',
+        processRemote(v, form, conf) {
+          return v || true
+        },
+        inputProps: {
+          is_read: true
+        }
+      },
+      {
+        inputType: 'DatePicker',
+        name: 'zd3',
+        layout: '1/3',
+        label: '标题3',
+        checkWarn(v, form) {
+          return 'warning'
+
+        },
+        processRemote(v, form, conf) {
+          return v || '1999-09-01'
+        },
+        inputProps: {
+          is_read: true
+        }
+      },
+    ]
+  },
+  {
+    label: '可编辑Tabs',
+    children: [
+      {
+        inputType: 'MixPanel',
+        label: '',
+        name: 'savedTabs',
+        layout: '1',
+        inputProps: {
+          targetLabelCol: 5,
+          conf: [
+            {
+              label: '首次随访(默认)',
+              default: true,
+              key: 'followup',
+              fds: [
+                { name: 'kbj01', label: '姓名', layout: '1/3', },
+                { name: 'kbj02', label: '年龄', layout: '1/3', },
+              ]
+            },
+            {
+              label: '1个月随访(默认)',
+              default: true,
+              key: 'followup1',
+              fds: [
+                { name: 'kbj11', label: '国籍', layout: '1/3', },
+              ]
+            },
+
+            {
+              label: '3个月随访',
+              default: false,
+              key: 'followup3',
+              fds: [
+                { name: 'kbj21', label: '贯籍', layout: '1/3', },
+
+              ]
+            },
+            {
+              label: '6个月随访',
+              default: false,
+              key: 'followup6',
+              fds: [
+                { name: 'kbj31', label: '地址', layout: '1/3', },
+              ]
+            },
+
+          ]
+        }
+      },
+    ]
   }
 ])

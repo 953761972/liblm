@@ -1,5 +1,5 @@
 import { fubaoHistoryPush, OkButton } from '@lm_fe/components_m'
-import { formatRangeDate, fubaoRequest as request, safe_async_call } from '@lm_fe/utils'
+import { AnyObject, formatRangeDate, fubaoRequest as request, safe_async_call } from '@lm_fe/utils'
 import { Form, message, Space } from 'antd'
 import { get } from 'lodash'
 import React, { useState, useEffect } from 'react'
@@ -30,7 +30,6 @@ export default function PAC_tracing_management_waiting(props: any) {
         },
         {
             handleShowModal: showView,
-            handleShowModal2: showView2,
         },
     )
 
@@ -50,7 +49,7 @@ export default function PAC_tracing_management_waiting(props: any) {
         })
     }, [])
 
-    async function showView(record: any, handleSearch: () => void) {
+    async function showView(record: AnyObject, handleSearch: () => void) {
         mchcModal__.open('modal_form', {
             width: 1360,
             title: 'PAC追踪-随访',
@@ -59,12 +58,14 @@ export default function PAC_tracing_management_waiting(props: any) {
                     title: 'PAC追踪-随访',
                     tableColumns: () => import('./form_config_随访')
                 },
-                getInitialData() {
-                    return record.data
+                async getInitialData() {
+                    const res = await request.get('api/family/planning/getEarlyPregnancyCheckPacTrackingFileById', { params: { 'id.equals': record.id } })
+                    return res.data?.data
                 },
                 async onSubmit(data) {
                     let fn = data.id ? request.put : request.post
-                    await fn('opt_url', data, { successText: '操作成功', ignore_usr: true })
+                    let fuck_url = data.id ? 'updateEarlyPregnancyCheckPacTrackingFollowUpRecord' : 'addEarlyPregnancyCheckPacTrackingFollowUpRecord'
+                    await fn(`/api/family/planning/${fuck_url}`, data, { successText: '操作成功', ignore_usr: true })
 
                     safe_async_call(handleSearch)
                 },
@@ -72,24 +73,7 @@ export default function PAC_tracing_management_waiting(props: any) {
         })
     }
 
-    async function showView2(record: any, handleSearch: () => void) {
-        mchcModal__.open('test', {
-            title: 'PAC追踪-随访 TEST',
-            width: 1360,
-            modal_data: {
-                content: (
-                    <ModalForm
-                        visible={true}
-                        id={record?.id}
-                        currentRecord={record}
-                        onSearch={handleSearch}
-                    />
-                ),
 
-            },
-            onClose: () => { }, // 关闭弹窗 callback
-        })
-    }
 
     return (
         <Wrap>

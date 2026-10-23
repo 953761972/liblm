@@ -26,6 +26,7 @@ mchc 页面级模块
 | /deliver-management/hbig-record | 产科住院-乙肝免疫球蛋白接种记录 |
 | /deliver-management/hbvac-record | 产科住院-乙肝疫苗接种记录 |
 | /deliver-management/labour-record | 产科住院-新生儿分娩记录 |
+| /deliver-management-v2/admission/add | 缺省 |
 | /deliver-management-v2/admission/edit | 缺省 |
 | /deliver-management-v2/admission/list | 入院登记页 |
 | /deliver-management-v2 | 缺省 |

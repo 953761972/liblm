@@ -91,7 +91,7 @@ const MixPanel: TCommonComponent<IProps, string[]> = (props) => {
                 isEmpty(un_filtered_conf)
                     ? null
                     : <Dropdown menu={{ items: un_filtered_conf.map(_ => ({ ..._, onClick: () => add(_.key) })) }}>
-                        <Button icon={<MyIcon value='PlusOutlined' />} />
+                        <Button type='text' icon={<MyIcon value='PlusOutlined' />} />
                     </Dropdown>
             }
             activeKey={_activeKey}
@@ -99,7 +99,8 @@ const MixPanel: TCommonComponent<IProps, string[]> = (props) => {
                 mchcLogger.log('MixPanel act', k, act)
 
                 if (act === 'remove') {
-                    confirm(`确定删除${k}吗`) && remove(k as string)
+                    const x = filtered_conf.find(_ => _.key === k)
+                    confirm(`确定删除${x?.label}吗`) && remove(k as string)
                 }
             }}
             hideAdd

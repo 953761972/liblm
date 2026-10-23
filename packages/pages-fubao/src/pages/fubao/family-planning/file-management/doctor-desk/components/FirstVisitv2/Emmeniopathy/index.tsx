@@ -127,7 +127,7 @@ export default class EmmeniopathyPanel extends BaseEditPanel {
       familyPlanningId: Number(id),
     };
 
-    return console.log('---787878--onsubmit: ', params);
+    // return console.log('---787878--onsubmit: ', params);
 
     if (get(values, 'id')) {
       // 修改
