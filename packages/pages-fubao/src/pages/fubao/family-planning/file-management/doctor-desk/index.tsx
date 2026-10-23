@@ -80,8 +80,8 @@ export default function FamilyPlanning_FileManagement_DoctorDesk_FC(props: any) 
         // { key: 'wsgl', title: '文书管理', node: <InformedConsent id={id} /> },
         // { key: 'xjsf', title: '宣教随访', node: <FollowUp /> },
         { key: 'jbxx', title: '基本信息', node: <BasicInfo id={id} basicInfo={basicInfo} data={data} /> },
-        { key: 'wcbj', title: '围产保健', node: null },
-        { key: 'cqzd', title: '产前诊断', node: null },
+        // { key: 'wcbj', title: '围产保健', node: null },
+        // { key: 'cqzd', title: '产前诊断', node: null },
       ]}
     />
     <div className={styles["operation-appointment"]} onClick={() => setRenderModal(true)}>

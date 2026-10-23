@@ -19,7 +19,7 @@ import { DatePicker_L, DynamicForm, LazyAntd } from '@lm_fe/components_m';
 import { formatDate, fubaoRequest as request } from '@lm_fe/utils';
 import { FormInstance } from 'antd/lib/form/Form';
 import dayjs from 'dayjs';
-import { filter, get, isEmpty } from 'lodash';
+import { filter, get, isEmpty, map } from 'lodash';
 import { IModel_EarlyPregnancySurgicalTemplate } from 'src/pages/fubao/.stupid_model/models/EarlyPregnancySurgicalTemplate';
 import { getReservationPanelByDate } from '../../surgery-scheduling/apis/api';
 import { modalFormDescriptions as formDescriptions, modifyValueToForm, valueToApi, valueToForm } from './adapter';
@@ -89,7 +89,7 @@ export default class Index extends DynamicForm<any> {
         const valuesObj = valueToForm(get(response, 'data'));
         const { data, operationNameOptions } = valuesObj;
 
-        this.setState({ data, operationNameOptions });
+        this.setState({ data });
       }
     } else {
       message.warning(get(response, 'msg'));
@@ -122,7 +122,13 @@ export default class Index extends DynamicForm<any> {
     const response = (await request.get(`/api/family/planning/getEarlyPregnancySurgicalTemplate`, { params: params })).data;
     if (get(response, 'code') === 1) {
       const templateData = get(response, 'data');
-      this.setState({ templateData });
+      const operationNameOptions = map(templateData, (item) => {
+        return {
+          label: item.operationName,
+          value: item.operationName,
+        }
+      })
+      this.setState({ templateData, operationNameOptions });
     }
   };
 

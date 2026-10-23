@@ -26,13 +26,14 @@ export const BookingModalNew: FC<IProps> = (props) => {
 
     return () => { };
   }, [data]);
+
   return (
     <StepModal<TCommonData, any>
+      title="手术进度"
       initData={commonData}
       step={step}
       data={[
         { title: '手术预约', Component: Form0 },
-
         { title: '术前签到', Component: Form1 },
 
         // { title: '手术病历', Component: Form2 },

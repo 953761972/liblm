@@ -26,6 +26,7 @@ export const routesData = {
     "/deliver-management/hbig-record":lazy(() => import("../pages/deliver-management/hbig-record/index")),
     "/deliver-management/hbvac-record":lazy(() => import("../pages/deliver-management/hbvac-record/index")),
     "/deliver-management/labour-record":lazy(() => import("../pages/deliver-management/labour-record/index")),
+    "/deliver-management-v2/admission/add":lazy(() => import("../pages/deliver-management-v2/admission/add/index")),
     "/deliver-management-v2/admission/edit":lazy(() => import("../pages/deliver-management-v2/admission/edit/index")),
     "/deliver-management-v2/admission/list":lazy(() => import("../pages/deliver-management-v2/admission/list/index")),
     "/deliver-management-v2":lazy(() => import("../pages/deliver-management-v2/index")),
