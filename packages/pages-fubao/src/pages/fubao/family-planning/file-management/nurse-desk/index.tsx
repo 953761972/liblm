@@ -63,6 +63,12 @@ class FamilyPlanning_FileManagement_NurseDesk extends BaseEditPanel {
       fileState: 1,
     };
 
+    // openId 不是动态表单字段，toApi 不会返回它，更新时需从原始档案数据中补回。
+    const originalOpenId = get(this.state, 'data.openId');
+    if (!get(params, 'openId') && originalOpenId) {
+      params.openId = originalOpenId;
+    }
+
     if (get(values, 'id')) {
       // 修改档案
       const res = await request.put('/api/family/planning/updateFamilyPlanningFile', params);
