@@ -9,12 +9,14 @@ interface ITemplateTextareaProps extends TextAreaProps {
     style?: React.CSSProperties
     rows?: number
     canOperate?: boolean
+    is_read?: boolean
     defaultExpandAll?: boolean
     TemplateTextarea_type?: ITemplateConfig[]
 }
 const SPLIT_KEY = ' / '
 export function TemplateTextarea(props: ITemplateTextareaProps) {
-    const { value = '', onChange, style, type, TemplateTextarea_type, rows = 3, disabled, defaultExpandAll, canOperate, ...others } = props
+    const { value = '', onChange, style, type, is_read, TemplateTextarea_type, rows = 3, disabled, defaultExpandAll, canOperate, ...others } = props
+    if (is_read) return value
     const [_value, set_value] = useState(value)
     useEffect(() => {
         set_value(value)

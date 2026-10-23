@@ -416,7 +416,7 @@ export default defineFormConfig(
             .then(values => {
               values.progressStatus = 2
               values.appointmentDate = ctx.utils.formatDate(values.appointmentDate)
-              return ctx.request.post('/api/family/planning/updateAppointmentSurgery', values, { successText: '操作成功' })
+              return ctx.request.post('/api/family/planning/updateAppointmentSurgery', values, {})
                 .then(r => {
                   form.setFieldsValue(ctx.utils.get(r, 'data.data'))
                 })

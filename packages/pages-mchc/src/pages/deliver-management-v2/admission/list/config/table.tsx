@@ -1,5 +1,5 @@
 
-import { APP_CONFIG, formatTimeToDate, idNOFuzzy, MyBaseTableProps } from '@lm_fe/components_m';
+import { APP_CONFIG } from '@lm_fe/components_m';
 import { rt_ctx } from '@lm_fe/env';
 import { defineFormConfig } from '@lm_fe/service';
 const ctx = rt_ctx
@@ -42,7 +42,7 @@ export default defineFormConfig([
     align: 'center',
     width: APP_CONFIG.CELL_WIDTH_MIDDLE,
     render: (text) => {
-      return idNOFuzzy(text);
+      return ctx.utils.idNOFuzzy(text);
     },
   },
   {

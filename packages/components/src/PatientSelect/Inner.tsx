@@ -21,7 +21,7 @@ interface IProps extends Omit<AutoCompleteProps, 'onChange'> {
   width?: any
   form?: FormInstance
   onPatientSelect?(v: any, form?: FormInstance): void
-
+  is_read?: boolean
   onChange?(v: any): void
 }
 type TRawItem = { [x: string]: any, id: TIdTypeCompatible }
@@ -34,8 +34,10 @@ export default function PatientSelect(props: IProps) {
     PatientSelect_displayKey = default_keys,
     style,
     popupMatchSelectWidth,
+    is_read,
     ...inputProps
   } = props;
+  if (is_read) return value
   const url = useRef(is_err ? default_url : PatientSelect_url)
   const keys__ = useRef(is_err ? default_keys : PatientSelect_displayKey)
   const _style = getInputStyle(props)

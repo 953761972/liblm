@@ -45,21 +45,7 @@ export const transferMenus = (menus: any, parentid = 0) => {
   return temp;
 };
 
-// 手机号码。身份证号码隐藏证件几位数字
-export const phoneFuzzy = (val: string) => {
-  if (!val) {
-    return;
-  }
-  let reg = /^(\d{3})\d{4}(\d{4})$/g;
-  return val.replace(reg, '$1****$2');
-};
-export const idNOFuzzy = (val: string) => {
-  if (!val) {
-    return;
-  }
-  let reg = /(\w{4})\w*(\w{4})/g;
-  return val.replace(reg, '$1****$2');
-};
+
 
 /**返回当前日期前后的日期 num=1返回后一天 num=-1返回前一天
  * 默认不返回年份

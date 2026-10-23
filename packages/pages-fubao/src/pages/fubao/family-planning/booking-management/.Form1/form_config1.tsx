@@ -30,7 +30,7 @@ export default defineFormConfig(
           name: 'name',
 
           inputProps: {
-            disabled: true,
+            is_read: true,
             onPatientSelect(v, form) {
               if (form) {
                 v.id = undefined
@@ -48,14 +48,14 @@ export default defineFormConfig(
           inputType: 'MA',
           layout: '1/3',
           inputProps: {
-            disabled: true,
+            is_read: true,
           },
           name: 'outpatientNo'
         },
         {
           label: '证件号码',
           inputProps: {
-            disabled: true,
+            is_read: true,
           },
           layout: '1/3',
           inputType: 'MA',
@@ -64,7 +64,7 @@ export default defineFormConfig(
         {
           label: '手机号码',
           inputProps: {
-            disabled: true,
+            is_read: true,
           },
           layout: '1/3',
           inputType: 'MA',
@@ -73,7 +73,7 @@ export default defineFormConfig(
         {
           label: '家庭地址',
           inputProps: {
-            disabled: true,
+            is_read: true,
           },
           layout: '2/3',
           inputType: 'MA',
@@ -83,7 +83,7 @@ export default defineFormConfig(
         {
           label: '医嘱',
           inputProps: {
-            disabled: true,
+            is_read: true,
             rows: 2,
           },
           name: 'doctorOrder',
@@ -93,7 +93,7 @@ export default defineFormConfig(
         {
           label: '接诊医生',
           inputProps: {
-            disabled: true,
+            is_read: true,
           },
           inputType: 'MA',
           name: 'admissionDoctor',
@@ -112,7 +112,7 @@ export default defineFormConfig(
           inputType: 'MC',
           layout: '1/3',
           inputProps: {
-            disabled: true,
+            is_read: true,
             options: '正常,异常,未查',
             marshal: 0,
           }
@@ -124,7 +124,7 @@ export default defineFormConfig(
           inputType: 'MC',
           layout: '1/3',
           inputProps: {
-            disabled: true,
+            is_read: true,
             options: '正常,异常,未查',
             marshal: 0,
           }
@@ -136,7 +136,7 @@ export default defineFormConfig(
           layout: '1/3',
           inputProps: {
             options: '正常,异常,未查',
-            disabled: true,
+            is_read: true,
             marshal: 0,
           }
         },
@@ -148,7 +148,7 @@ export default defineFormConfig(
           layout: '1/3',
           inputProps: {
             options: '正常,异常,未查',
-            disabled: true,
+            is_read: true,
             marshal: 0,
           }
         },
@@ -160,7 +160,7 @@ export default defineFormConfig(
           layout: '1/3',
           inputProps: {
             options: '正常,异常,未查',
-            disabled: true,
+            is_read: true,
             marshal: 0,
           }
         },
@@ -172,7 +172,7 @@ export default defineFormConfig(
           layout: '1/3',
           inputProps: {
             options: '正常,异常,未查',
-            disabled: true,
+            is_read: true,
             marshal: 0,
           }
         },
@@ -184,7 +184,7 @@ export default defineFormConfig(
           layout: '1/3',
           inputProps: {
             options: '正常,异常,未查',
-            disabled: true,
+            is_read: true,
             marshal: 0,
           }
         },
@@ -196,7 +196,7 @@ export default defineFormConfig(
           layout: '1/3',
           inputProps: {
             options: '正常,异常,未查',
-            disabled: true,
+            is_read: true,
             marshal: 0,
           }
         },
@@ -207,7 +207,7 @@ export default defineFormConfig(
           inputType: 'MC',
           layout: '1/3',
           inputProps: {
-            disabled: true,
+            is_read: true,
             options: '正常,异常,未查',
             marshal: 0,
           }
@@ -220,7 +220,7 @@ export default defineFormConfig(
           layout: '1/3',
           unit: 'g/L',
           inputProps: {
-            disabled: true,
+            is_read: true,
 
           }
         },
@@ -232,7 +232,7 @@ export default defineFormConfig(
           layout: '1/3',
           unit: 'fL',
           inputProps: {
-            disabled: true,
+            is_read: true,
 
           }
         },
@@ -244,7 +244,7 @@ export default defineFormConfig(
           layout: '1/3',
           unit: '10^9/L',
           inputProps: {
-            disabled: true,
+            is_read: true,
 
           }
         },
@@ -257,12 +257,11 @@ export default defineFormConfig(
         {
           label: '手术名称',
           name: 'operationName',
-          inputType: 'MS',
+          inputType: 'MA',
           layout: '1/3',
           required: true,
           inputProps: {
-            disabled: true,
-            marshal: 0
+            is_read: true,
           },
 
         },
@@ -274,7 +273,7 @@ export default defineFormConfig(
           inputType: 'DatePicker',
           layout: '1/3',
           inputProps: {
-            disabled: true,
+            is_read: true,
 
           },
 
@@ -287,11 +286,10 @@ export default defineFormConfig(
           required: true,
 
           name: 'appointmentMorningOrAfternoon',
-          inputType: 'MS',
+          inputType: 'MA',
           layout: '1/3',
           inputProps: {
-            disabled: true,
-            marshal: 0,
+            is_read: true,
           }
         },
         {
@@ -302,7 +300,7 @@ export default defineFormConfig(
           layout: '1/3',
           inputProps: {
             marshal: 0,
-            disabled: true,
+            is_read: true,
             options: '未缴费,已缴费'
           }
         },
@@ -313,7 +311,7 @@ export default defineFormConfig(
           inputType: 'MA',
           layout: '1/3',
           inputProps: {
-            disabled: true,
+            is_read: true,
 
           }
         },
@@ -414,7 +412,7 @@ export default defineFormConfig(
           inputType: 'MS',
           layout: '1/3',
           inputProps: {
-            disabled: true,
+            is_read: true,
             marshal: 0,
             options: '待预约,待签到,已签到,已完成'
           }
@@ -442,7 +440,7 @@ export default defineFormConfig(
             .then(values => {
               values.progressStatus = 3
               values.appointmentDate = ctx.utils.formatDate(values.appointmentDate)
-              return ctx.request.post('/api/family/planning/updateAppointmentSurgery', values, { successText: '操作成功' })
+              return ctx.request.post('/api/family/planning/updateAppointmentSurgery', values, {})
                 .then(r => {
                   form.setFieldsValue(ctx.utils.get(r, 'data.data'))
                 })
