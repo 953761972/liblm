@@ -1,5 +1,5 @@
+import { form_item_read } from '@lm_fe/components';
 import { ITemplateConfig, MODAL_TEMPLATE_TYPES } from '@lm_fe/env';
-import { form_item_read } from '@noah-libjs/components';
 import { Button, Input } from 'antd';
 import { TextAreaProps } from 'antd/lib/input';
 import React, { useEffect, useRef, useState } from 'react';
