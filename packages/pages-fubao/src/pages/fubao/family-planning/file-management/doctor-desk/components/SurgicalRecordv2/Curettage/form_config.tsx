@@ -466,11 +466,134 @@ export default defineFormConfig(
                 },
             },
             {
-                "key": "postoperationMissionsType",
-                layout: '1/1',
-                "label": "知识库",
-                showDeps: { 'postoperationMissions': [2] },
-                "inputType": "knowledge_base",
+                inputType: 'straw',
+                title: '知识库',
+                "showDeps": {
+                    "postoperationMissions": [
+                        2
+                    ]
+                },
+                layout: '2/3',
+                children: [
+                    {
+                        "key": "postoperationMissionsType",
+                        "layout": "1/1",
+
+                        "inputType": "MS",
+                        "layout": "1/2",
+                        "isNewRow": 1,
+                        // processLocal: function (v, form) {
+                        //     var url = '/api/women/healthcare/knowledge/getWomenHealthcareKnowledgePage/page?sort=id,desc&page=0&size=999&deleteFlag.equals=0&releaseType.equals=1&type.equals=' + v
+                        //     ctx.request.get(url).then(function (res) {
+                        //         var data = ctx.utils.get(res, 'data.data.pageData')
+                        //         var options = data.map(function (item) { return { label: item.title, value: item.title } })
+
+                        //         console.log('xx options', options)
+
+                        //         ctx.mchcEvent.emit('my_form', {
+                        //             action: 'set_options',
+                        //             name: 'postoperationMissionsContent',
+                        //             data: options,
+                        //             type: 'item'
+                        //         })
+                        //     })
+                        // },
+                        "inputProps": {
+                            width: 220,
+                            popupMatchSelectWidth: 220,
+                            "marshal": 0,
+                            options: [
+                                { value: '1', label: '产检提醒' },
+                                { value: '2', label: '健康宣教' },
+                                { value: '3', label: '临时宣教' },
+                                { value: '4', label: '高危宣教' },
+                            ]
+                        }
+                    },
+
+                    {
+                        "key": "postoperationMissionsContent",
+                        "layout": "1/2",
+                        "label": "",
+                        "inputType": "MA",
+                        showDeps: {
+                            postoperationMissionsType: ['1']
+                        },
+                        inputProps: {
+                            fetch_options: {
+                                url: "/api/women/healthcare/knowledge/getWomenHealthcareKnowledgePage/page?sort=id,desc&page=0&size=999&deleteFlag.equals=0&releaseType.equals=1&type.equals=1",
+                                labelKey: "title",
+                                valueKey: "title",
+                                dataPath: 'data.pageData'
+                            },
+                            width: 220,
+                            popupMatchSelectWidth: 220,
+                            marshal: 0,
+                        }
+                    },
+
+
+                    {
+                        "key": "postoperationMissionsContent",
+                        "layout": "1/2",
+                        "label": "",
+                        "inputType": "MA",
+                        showDeps: {
+                            postoperationMissionsType: ['2']
+                        },
+                        inputProps: {
+                            fetch_options: {
+                                url: "/api/women/healthcare/knowledge/getWomenHealthcareKnowledgePage/page?sort=id,desc&page=0&size=999&deleteFlag.equals=0&releaseType.equals=1&type.equals=2",
+                                labelKey: "title",
+                                valueKey: "title",
+                                dataPath: 'data.pageData'
+                            },
+                            width: 220,
+                            popupMatchSelectWidth: 220,
+                            marshal: 0,
+                        }
+                    },
+                    {
+                        "key": "postoperationMissionsContent",
+                        "layout": "1/2",
+                        "label": "",
+                        "inputType": "MA",
+                        showDeps: {
+                            postoperationMissionsType: ['3']
+                        },
+                        inputProps: {
+                            fetch_options: {
+                                url: "/api/women/healthcare/knowledge/getWomenHealthcareKnowledgePage/page?sort=id,desc&page=0&size=999&deleteFlag.equals=0&releaseType.equals=1&type.equals=3",
+                                labelKey: "title",
+                                valueKey: "title",
+                                dataPath: 'data.pageData'
+                            },
+                            width: 220,
+                            popupMatchSelectWidth: 220,
+                            marshal: 0,
+                        }
+                    },
+                    {
+                        "key": "postoperationMissionsContent",
+                        "layout": "1/2",
+                        "label": "",
+                        "inputType": "MA",
+                        showDeps: {
+                            postoperationMissionsType: ['4']
+                        },
+                        inputProps: {
+                            fetch_options: {
+                                url: "/api/women/healthcare/knowledge/getWomenHealthcareKnowledgePage/page?sort=id,desc&page=0&size=999&deleteFlag.equals=0&releaseType.equals=1&type.equals=4",
+                                labelKey: "title",
+                                valueKey: "title",
+                                dataPath: 'data.pageData'
+                            },
+                            width: 220,
+                            popupMatchSelectWidth: 220,
+                            marshal: 0,
+                        }
+                    },
+                ]
             },
             {
                 "key": "postoperationMissionsContent",

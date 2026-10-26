@@ -64,7 +64,7 @@ export default function PAC_tracing_management_waiting(props: any) {
                 },
                 async onSubmit(data) {
                     let fn = data.id ? request.put : request.post
-                    let fuck_url = data.id ? 'updateEarlyPregnancyCheckPacTrackingFollowUpRecord' : 'addEarlyPregnancyCheckPacTrackingFollowUpRecord'
+                    let fuck_url = data.id ? 'updateEarlyPregnancyCheckPacTrackingFile' : 'addEarlyPregnancyCheckPacTrackingFile'
                     await fn(`/api/family/planning/${fuck_url}`, data, { successText: '操作成功', ignore_usr: true })
 
                     safe_async_call(handleSearch)

@@ -21,6 +21,7 @@ const MultiSelector = lazy(() => import('../../GeneralComponents/Select/MultiSel
 const SingleSelector = lazy(() => import('../../GeneralComponents/Select/SingleSelector'))
 const OptimizeEditInTable = lazy(() => import('../../MyForm/components/MyTable'))
 const Appgar = lazy(() => import('../../BusinessComponents/Appgar'))
+const AppgarFucker = lazy(() => import('../../BusinessComponents/AppgarFucker'))
 const BloodAndThalassemia = lazy(() => import('../../BusinessComponents/BloodAndThalassemia'))
 const BloodPressure = lazy(() => import('../../BusinessComponents/BloodPressure'))
 const BregmaGroup = lazy(() => import('../../BusinessComponents/BregmaGroup'))
@@ -1219,6 +1220,15 @@ function RenderFormSectionComponent(props: IProps) {
                         styles,
                     },
                 )
+            case 'appgar_fucker':
+                return renderEditItem(
+                    form_config,
+                    <AppgarFucker {...formItemOthers} {...formDescriptionSpecialConfig} {...extraData} />,
+                    {
+                        ...formItemLayout,
+                        styles,
+                    },
+                )
 
             case 'nurse_children':
                 return renderEditItem(
@@ -1394,15 +1404,7 @@ function RenderFormSectionComponent(props: IProps) {
             //             styles,
             //         }
             //     );
-            case 'knowledge_base':
-                return renderEditItem(
-                    form_config,
-                    <KnowledgeBase {...formItemOthers} {...formDescriptionSpecialConfig} />,
-                    {
-                        ...formItemLayout,
-                        styles,
-                    },
-                )
+
             case 'optimize_edit_in_table':
                 const input_props = { input_props: formDescriptionSpecialConfig }
                 return renderEditItem(form_config, <OptimizeEditInTable {...formItemOthers} {...input_props} />, {
