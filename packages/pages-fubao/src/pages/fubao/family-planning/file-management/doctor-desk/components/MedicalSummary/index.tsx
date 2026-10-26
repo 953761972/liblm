@@ -13,6 +13,7 @@ import {
 } from "@ant-design/icons";
 import "./index.less"
 import { request } from "@lm_fe/utils";
+import { use_provoke } from "@lm_fe/provoke";
 
 // ===================== Types =====================
 
@@ -118,6 +119,10 @@ const STATUS_COLOR: Record<string, string> = {
 
 // ===================== Main Component =====================
 const GynPositiveTimeline: React.FC = (props: any) => {
+  const { sys_theme } = use_provoke()
+  const colorPrimary = use_provoke(s => s.sys_theme.colorPrimary)
+  const isPurple = colorPrimary == '#6107a1'
+  console.log('sys_theme', sys_theme)
   const [selectedTypes, setSelectedTypes] = useState<Set<string>>(new Set());
   const [sort, setSort] = useState<SortType>("desc");
   const [patient, set_patient] = useState<PatientItem>(PATIENT);
@@ -212,7 +217,6 @@ const GynPositiveTimeline: React.FC = (props: any) => {
         <div className={'ptlCardBand'}>
           <span className={'bandIcon'}>✦</span>
           <span className={'bandTitle'}>智能摘要</span>
-          {/* <span className={'bandBadge'}>AI 生成</span> */}
         </div>
         <div className={'sumRow'}>
           <div className={'sumLabel'}><span className={'sumIc'}><TagOutlined /></span>专案</div>
@@ -251,7 +255,6 @@ const GynPositiveTimeline: React.FC = (props: any) => {
         <div className={'ptlCardBand'}>
           <span className={'bandIcon'}>✦</span>
           <span className={'bandTitle'}>智能分析</span>
-          {/* <span className={'bandBadge'}>{count} 条建议</span> */}
         </div>
         <div className={'anList'}>
           {missingHistory.length != 0 &&
@@ -408,7 +411,7 @@ const GynPositiveTimeline: React.FC = (props: any) => {
   };
 
   return (
-    <div className={'gynPtl'}>
+    <div className={`${'gynPtl'} ${isPurple ? 'purple' : ''}`}>
       <div className={'ptlTopGrid'}>
         {renderSummary()}
         {renderAnalysis()}
@@ -419,7 +422,7 @@ const GynPositiveTimeline: React.FC = (props: any) => {
         <div className={'diagHead'}>诊断治疗</div>
         {renderDiagHorizontal()}
       </section> */}
-      <section className={'diagSection'} style={{ background: '#F8F4F9' }}>
+      <section className={'diagSection'} style={{ background: isPurple ? '#F8F4F9' : '' }}>
         <div className={'ptlSummary'}>
           <div className={'ptlCardBand'}>
             <span className={'bandIcon'}>✦</span>
@@ -429,7 +432,7 @@ const GynPositiveTimeline: React.FC = (props: any) => {
         {renderDiagHorizontal()}
       </section>
 
-      <section style={{ background: '#F8F4F9' }}>
+      <section style={{ background: isPurple ? '#F8F4F9' : '' }}>
         {/* <div className={'courseSubhead'}>诊治经过</div> */}
         <div className={'diagSection'}>
           <div className={'ptlSummary'}>
