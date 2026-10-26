@@ -415,48 +415,67 @@ const GynPositiveTimeline: React.FC = (props: any) => {
       </div>
 
       {/* 诊断治疗 横向时间轴 */}
-      <section className={'diagSection'}>
+      {/* <section className={'diagSection'}>
         <div className={'diagHead'}>诊断治疗</div>
+        {renderDiagHorizontal()}
+      </section> */}
+      <section className={'diagSection'} style={{ background: '#F8F4F9' }}>
+        <div className={'ptlSummary'}>
+          <div className={'ptlCardBand'}>
+            <span className={'bandIcon'}>✦</span>
+            <span className={'bandTitle'}>诊断治疗</span>
+          </div>
+        </div>
         {renderDiagHorizontal()}
       </section>
 
-      <div className={'courseSubhead'}>诊治经过</div>
-
-      {/* Toolbar */}
-      <div className={'ptlToolbar'}>
-        <div className={'ptlChipsWrap'}>
-          {TYPE_FILTERS.map((f) => (
-            <Button
-              key={f.key}
-              type={selectedTypes.has(f.key) ? "primary" : "default"}
-              ghost={!selectedTypes.has(f.key)}
-              size="small"
-              onClick={() => toggleType(f.key)}
-              icon={f.icon}
-            >
-              {f.label}
-            </Button>
-          ))}
+      <section style={{ background: '#F8F4F9' }}>
+        {/* <div className={'courseSubhead'}>诊治经过</div> */}
+        <div className={'diagSection'}>
+          <div className={'ptlSummary'}>
+            <div className={'ptlCardBand'}>
+              <span className={'bandIcon'}>✦</span>
+              <span className={'bandTitle'}>诊治经过</span>
+            </div>
+          </div>
         </div>
 
-        <div className={'ptlDateRange'}>
-          <span>开始</span>
-          <DatePicker value={fromDate} onChange={(d) => setFromDate(d)} size="small" />
-          <span>至</span>
-          <DatePicker value={toDate} onChange={(d) => setToDate(d)} size="small" />
-          <Button size="small" onClick={clearDate}>清除</Button>
+        {/* Toolbar */}
+        <div className={'ptlToolbar'}>
+          <div className={'ptlChipsWrap'}>
+            {TYPE_FILTERS.map((f) => (
+              <Button
+                key={f.key}
+                type={selectedTypes.has(f.key) ? "primary" : "default"}
+                ghost={!selectedTypes.has(f.key)}
+                size="small"
+                onClick={() => toggleType(f.key)}
+                icon={f.icon}
+              >
+                {f.label}
+              </Button>
+            ))}
+          </div>
+
+          <div className={'ptlDateRange'}>
+            <span>开始</span>
+            <DatePicker value={fromDate} onChange={(d) => setFromDate(d)} size="small" />
+            <span>至</span>
+            <DatePicker value={toDate} onChange={(d) => setToDate(d)} size="small" />
+            <Button size="small" onClick={clearDate}>清除</Button>
+          </div>
+
+          <div>
+            <Button size="small" type={sort === "desc" ? "primary" : "default"} onClick={() => setSort("desc")}>最近在前</Button>
+            <Button size="small" type={sort === "asc" ? "primary" : "default"} onClick={() => setSort("asc")}>最早在前</Button>
+          </div>
         </div>
 
-        <div>
-          <Button size="small" type={sort === "desc" ? "primary" : "default"} onClick={() => setSort("desc")}>最近在前</Button>
-          <Button size="small" type={sort === "asc" ? "primary" : "default"} onClick={() => setSort("asc")}>最早在前</Button>
-        </div>
-      </div>
-
-      {/* 纵向时间轴 */}
-      <main className={'ptlTimeline'}>
-        {renderTimelineBody()}
-      </main>
+        {/* 纵向时间轴 */}
+        <main className={'ptlTimeline'}>
+          {renderTimelineBody()}
+        </main>
+      </section>
     </div>
   );
 };
