@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import BasicInfo from '../../file-management/nurse-desk';
 import FirstVisit from './components/FirstVisitv2';
+import MedicalSummary from './components/MedicalSummary';
 import SurgicalRecord from './components/SurgicalRecordv2';
 // import FollowUp from './components/FollowUp';
 // import InformedConsent from '../../../premarital-care/.public-exam/InformedConsent';
@@ -75,6 +76,7 @@ export default function FamilyPlanning_FileManagement_DoctorDesk_FC(props: any) 
         { key: 'ssbl', title: '手术病历', node: <SurgicalRecord id={id} basicInfo={basicInfo} basicData={data} surgicalRecordId={surgicalRecordId} /> },
         // { key: 'jyjc', title: '检验检查', node: <SurveyReport headerInfoOfInpatientData={data} /> },
         // { key: 'yxbg', title: '影像报告', node: <ImageReport headerInfoOfInpatientData={data} /> },
+        { key: 'blzy', title: '病历摘要', node: <MedicalSummary id={id} basicInfo={basicInfo} data={data} /> },
         { key: 'jyjc', title: '检验检查', node: <DoctorEnd_SurveyReport headerInfo={data} /> },
         { key: 'yxbg', title: '影像报告', node: <DoctorEnd_ImageReport headerInfo={data} /> },
         // { key: 'wsgl', title: '文书管理', node: <InformedConsent id={id} /> },
