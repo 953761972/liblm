@@ -46,18 +46,17 @@ function FamilyPlanning_FileManagement_NurseDesk_Inner(props: any) {
         form.setFieldsValue(data)
     }
 
-    async function handleSubmit(values: any) {
-        let submit_values = {...values}
-        //判断是否继续新建还是保存审核
-        if (!values?.id) {
-            submit_values = {
-                ...submit_values,
-                fileStatus: 1,
-            }
+    // 新建病历时自动调后端接口导入检验检查报告
+    async function handleImport(outpatientNo: string) {
+        const res = await request.get(`/api/family/planning/importCheckInspection?outpatientNO=${outpatientNo}`)
+        return res
+    }
 
-            await request.post('/api/family/planning/addFamilyPlanningFile', submit_values)
-        } else if (get(values, 'id')) {
-            // 修改档案
+    async function handleSubmit(values: any) {
+        let submit_values = { ...values }
+
+        if (values?.id) {
+            // 修改
             submit_values = {
                 ...data,
                 ...submit_values,
@@ -65,6 +64,16 @@ function FamilyPlanning_FileManagement_NurseDesk_Inner(props: any) {
             }
             await request.put('/api/family/planning/updateFamilyPlanningFile', submit_values)
         }
+        // 新建
+        const syncRes = await handleImport(values?.outpatientNo)
+        const syncData = get(syncRes, ['data', 'data']) || {}
+        submit_values = {
+            ...submit_values,
+            ...syncData,
+            fileStatus: 1,
+        }
+
+        await request.post('/api/family/planning/addFamilyPlanningFile', submit_values)
     }
 
     return (
