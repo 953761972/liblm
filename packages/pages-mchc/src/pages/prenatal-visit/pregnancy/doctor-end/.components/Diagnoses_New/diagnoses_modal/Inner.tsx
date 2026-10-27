@@ -182,6 +182,7 @@ function DiagnosesTemplateOld(props: IDiagnosesTemplate) {
               placeholder="请输入诊断信息"
               enterButton="添加诊断"
               defaultValue={''}
+              allowClear
               onChange={(e) => handleChange(e.target.value)}
               onSearch={handleSearch}
             />
