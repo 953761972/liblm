@@ -1,5 +1,5 @@
 import { mchcEvent } from "@lm_fe/env";
-import { config_table_fd, mchcModal__, MyBaseList } from '@lm_fe/pages';
+import { config_table_fd, is_dyn_page, mchcModal__, MyBaseList } from '@lm_fe/pages';
 import { Button, Space } from "antd";
 import React, { useEffect } from "react";
 import { useHistory } from 'react-router-dom';
@@ -35,6 +35,7 @@ export default (props) => {
     return <div>
 
         <MyBaseList
+            action_col_width={320}
             size="small"
             showExport
             showPrint
@@ -47,7 +48,7 @@ export default (props) => {
                 return <div>请不要再设置接口前缀!!如果打开空白，请设置对应的菜单权限</div>
             }}
             searchConfig={[
-                { inputType: 'MyInput', label: '名称', name: 'title', },
+                { inputType: 'MA', label: '名称', name: 'title', inputProps: { options: '动态表格,动态表单' } },
                 { inputType: 'MyInput', label: '接口路径', name: 'name', },
                 { inputType: 'MyInput', label: '模块', name: 'type', },
                 // { inputType: 'MyInput', label: '接口前缀', name: 'apiPrefix', },
@@ -84,10 +85,17 @@ export default (props) => {
 
             // apiPrefix="/as"
             ActionAddonBefore={({ rowData, createOrUpdate }) => {
-                const { id, ...newData } = rowData
-                return <Button size="small" onClick={() => {
-                    createOrUpdate({ ...newData, title: `${newData.title}-复制` })
-                }}>复制</Button>
+                const { id, title, ...newData } = rowData
+                const [is_dyn, dyn_title] = is_dyn_page(rowData as any)
+
+                return <Space.Compact>
+                    <Button size="small" onClick={() => {
+                        createOrUpdate({ ...newData, title: `${title}-复制` })
+                    }}>复制</Button>
+                    <Button size="small" onClick={() => {
+                        createOrUpdate({ ...newData, title: is_dyn ? `${title}-复制` : `动态表格-${title}-复制` })
+                    }}>复制为动态表格</Button>
+                </Space.Compact>
             }}
         />
         <div style={{ margin: 12 }}></div>

@@ -24,7 +24,7 @@ interface IProps {
 }
 
 export default function FurtherTable(props: IProps) {
-	const sys_theme = use_provoke(s => s.sys_theme)
+	const { sys_theme, config: sys_conf } = use_provoke('sys_theme', 'config')
 	const { setFormData, setDiagnosesList, visitsData, furtherRefresh, formData, toggle_fuck, fuck, diagnosesList } = props;
 
 	const preg_id = mchcUtils.single_id(visitsData);
@@ -181,7 +181,7 @@ export default function FurtherTable(props: IProps) {
 				// }}
 				rowHoverable={false}
 				rowKey={'id'}
-				dataSource={isAll ? filtered_rvisits : filtered_rvisits.slice(0, 5)}
+				dataSource={isAll ? filtered_rvisits : filtered_rvisits.slice(0, sys_conf.医生端_复诊产检记录展示条数 ?? 5)}
 				columns={form_config}
 			/>
 		</Wrap>

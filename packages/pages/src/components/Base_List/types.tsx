@@ -103,6 +103,7 @@ export interface MyBaseListProps<T extends { id?: any } = any> extends TableProp
   searchParams?: any
   useListSourceCount?: boolean
   requestBeforeEdit?: boolean
+  action_col_width?: number
 
   handleClickRow?(rowData: T, ctx: RenderColProps<T>, event: any): void
   handleDoubleClickRow?(rowData: T, ctx: RenderColProps<T>, event: any): void

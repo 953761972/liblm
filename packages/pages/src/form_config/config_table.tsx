@@ -1,6 +1,6 @@
 import { mchcEnv } from "@lm_fe/env"
 
-import { IMchc_FormDescriptions_Field, IMchc_FormDescriptions_Field_Nullable, SLocal_History } from "@lm_fe/service"
+import { IMchc_FormDescriptions_Field, IMchc_FormDescriptions_Field_Nullable, IMchc_TableConfig, SLocal_History } from "@lm_fe/service"
 import { copyText, genHappyPath } from "@lm_fe/utils"
 import { Space } from "antd"
 import React from "react"
@@ -11,6 +11,13 @@ const msw_options: IMchc_FormDescriptions_Field = {
         checked_value: 1,
         unchecked_value: 0,
     }
+}
+export function is_dyn_page(record: IMchc_TableConfig): [true, string] | [false, null] {
+    const KEY = '动态表格-'
+    const title: string = record?.title
+    if (!title) return [false, null]
+    const is_dyn = title?.startsWith(KEY)
+    return is_dyn ? [true, title.replace(KEY, '')] : [false, null]
 }
 export const config_table_fd = (props: any): IMchc_FormDescriptions_Field_Nullable[] => [
     {
@@ -139,7 +146,9 @@ export const config_table_fd = (props: any): IMchc_FormDescriptions_Field_Nullab
         isActive: 0,
         dataIndex: 'id',
         render(value, record, index) {
-            const p = genHappyPath('/config-table/list', [value])
+
+            const [is_dyn, dyn_title] = is_dyn_page(record)
+            const p = is_dyn ? genHappyPath('/config-table/list2', [dyn_title]) : genHappyPath('/config-table/list', [value])
             return <Space>
                 <a target="blank" onClick={() => SLocal_History.safe_history_push(p, props)}>
                     打开

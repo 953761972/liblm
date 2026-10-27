@@ -24,6 +24,7 @@ export type ISystemConfig = Partial<{
     pregnancyInitial: 'tab' | 'vertical'
     isOpenDiabetes: boolean
     医生端_首检病历垂直风格: boolean
+    医生端_复诊产检记录展示条数: number
     diagnosisStyle: 'tab'
     diagnosisFollowUpRecord: boolean
     diagnosisLaboratoryReport: boolean
