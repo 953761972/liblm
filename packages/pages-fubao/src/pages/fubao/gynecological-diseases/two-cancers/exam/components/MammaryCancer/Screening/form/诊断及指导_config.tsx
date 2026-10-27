@@ -10,6 +10,7 @@ export function 诊断及指导_config(): IMchc_FormDescriptions_Field[] {
             "flag": "妇女保健-乳腺癌筛查-诊断及建议",
             "sort": 5,
             "children": [
+                { key: 'breastCancerDiagnosisAndGuidance.id', form_hidden: true, },
                 {
                     "id": 18117,
                     "key": "breastCancerDiagnosisAndGuidance.screeningDiagnosis__",
