@@ -22,7 +22,7 @@ export default function FamilyPlanning_FileManagement_DoctorDesk_FC(props: any) 
 
   const [data, setData] = useState<any>()
   const [renderModal, setRenderModal] = useState(false)
-  const [activeKey, setActiveKey] = useState(getSearchParamsValue('activeKey') ?? 'zkbl')
+  const [activeKey, setActiveKey] = useState(getSearchParamsValue('activeKey') ?? 'FirstVisit')
   const [domain, setDomain] = useState<any>()
 
   useEffect(() => {
@@ -72,16 +72,16 @@ export default function FamilyPlanning_FileManagement_DoctorDesk_FC(props: any) 
         { title: '门诊号', value: data?.outpatientNo },
       ]}
       tabItems={[
-        { key: 'zkbl', title: '专科病历', node: <FirstVisit id={id} basicInfo={basicInfo} data={data} /> },
-        { key: 'ssbl', title: '手术病历', node: <SurgicalRecord id={id} basicInfo={basicInfo} basicData={data} surgicalRecordId={surgicalRecordId} /> },
+        { key: 'FirstVisit', title: '专科病历', node: <FirstVisit id={id} basicInfo={basicInfo} data={data} /> },
+        { key: 'SurgicalRecord', title: '手术病历', node: <SurgicalRecord id={id} basicInfo={basicInfo} basicData={data} surgicalRecordId={surgicalRecordId} /> },
         // { key: 'jyjc', title: '检验检查', node: <SurveyReport headerInfoOfInpatientData={data} /> },
         // { key: 'yxbg', title: '影像报告', node: <ImageReport headerInfoOfInpatientData={data} /> },
-        { key: 'blzy', title: '病历摘要', node: <MedicalSummary id={id} basicInfo={basicInfo} data={data} /> },
+        { key: 'MedicalSummary', title: '病历摘要', node: <MedicalSummary id={id} basicInfo={basicInfo} data={data} /> },
         { key: 'jyjc', title: '检验检查', node: <DoctorEnd_SurveyReport headerInfo={data} /> },
         { key: 'yxbg', title: '影像报告', node: <DoctorEnd_ImageReport headerInfo={data} /> },
         // { key: 'wsgl', title: '文书管理', node: <InformedConsent id={id} /> },
         // { key: 'xjsf', title: '宣教随访', node: <FollowUp /> },
-        { key: 'jbxx', title: '基本信息', node: <BasicInfo id={id} basicInfo={basicInfo} data={data} /> },
+        { key: 'BasicInfo', title: '基本信息', node: <BasicInfo id={id} basicInfo={basicInfo} data={data} /> },
         // { key: 'wcbj', title: '围产保健', node: null },
         // { key: 'cqzd', title: '产前诊断', node: null },
       ]}
