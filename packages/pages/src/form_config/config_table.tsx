@@ -144,11 +144,11 @@ export const config_table_fd = (props: any): IMchc_FormDescriptions_Field_Nullab
     {
         title: '表格地址',
         isActive: 0,
-        dataIndex: 'id',
-        render(value, record, index) {
+        dataIndex: 'title',
+        render(title, record, index) {
 
             const [is_dyn, dyn_title] = is_dyn_page(record)
-            const p = is_dyn ? genHappyPath('/config-table/list2', [dyn_title]) : genHappyPath('/config-table/list', [value])
+            const p = is_dyn ? genHappyPath('/config-table/list2', [dyn_title]) : genHappyPath('/config-table/list2', [title])
             return <Space>
                 <a target="blank" onClick={() => SLocal_History.safe_history_push(p, props)}>
                     打开

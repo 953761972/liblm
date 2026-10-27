@@ -85,15 +85,16 @@ export default (props) => {
 
             // apiPrefix="/as"
             ActionAddonBefore={({ rowData, createOrUpdate }) => {
-                const { id, title, ...newData } = rowData
+                const { id, ...newData } = rowData
+                const title: string = rowData.title
                 const [is_dyn, dyn_title] = is_dyn_page(rowData as any)
 
                 return <Space.Compact>
                     <Button size="small" onClick={() => {
-                        createOrUpdate({ ...newData, title: `${title}-复制` })
+                        createOrUpdate({ ...newData, title: `${title}_复制` })
                     }}>复制</Button>
                     <Button size="small" onClick={() => {
-                        createOrUpdate({ ...newData, title: is_dyn ? `${title}-复制` : `动态表格-${title}-复制` })
+                        createOrUpdate({ ...newData, title: is_dyn ? `${title}_复制` : `动态表格-${title.replace(/-/g, '_')}_复制` })
                     }}>复制为动态表格</Button>
                 </Space.Compact>
             }}

@@ -13,7 +13,7 @@ mchc 页面级模块
 | /fubao/family-planning/file-management/doctor-desk2 | 缺省 |
 | /fubao/family-planning/file-management | 缺省 |
 | /fubao/family-planning/file-management/list | 缺省 |
-| /fubao/family-planning/file-management/nurse-desk | 妇保护士端 |
+| /fubao/family-planning/file-management/nurse-desk | 妇科专病-基本信息 |
 | /fubao/family-planning/surgery-management | 缺省 |
 | /fubao/family-planning/surgery-scheduling | 缺省 |
 | /fubao/family-planning/tracing-management | 缺省 |
