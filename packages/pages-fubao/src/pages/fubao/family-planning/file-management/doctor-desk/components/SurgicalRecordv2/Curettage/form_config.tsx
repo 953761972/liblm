@@ -512,10 +512,10 @@ export default defineFormConfig(
                     },
 
                     {
-                        "key": "postoperationMissionsContent",
+                        "key": "preoperativeMissionsKnowledgeId",
                         "layout": "1/2",
                         "label": "",
-                        "inputType": "MA",
+                        "inputType": "MS",
                         showDeps: {
                             postoperationMissionsType: ['1']
                         },
@@ -523,7 +523,7 @@ export default defineFormConfig(
                             fetch_options: {
                                 url: "/api/women/healthcare/knowledge/getWomenHealthcareKnowledgePage/page?sort=id,desc&page=0&size=999&deleteFlag.equals=0&releaseType.equals=1&type.equals=1",
                                 labelKey: "title",
-                                valueKey: "title",
+                                valueKey: "id",
                                 dataPath: 'data.pageData'
                             },
                             width: 220,
@@ -534,10 +534,10 @@ export default defineFormConfig(
 
 
                     {
-                        "key": "postoperationMissionsContent",
+                        "key": "preoperativeMissionsKnowledgeId",
                         "layout": "1/2",
                         "label": "",
-                        "inputType": "MA",
+                        "inputType": "MS",
                         showDeps: {
                             postoperationMissionsType: ['2']
                         },
@@ -545,7 +545,7 @@ export default defineFormConfig(
                             fetch_options: {
                                 url: "/api/women/healthcare/knowledge/getWomenHealthcareKnowledgePage/page?sort=id,desc&page=0&size=999&deleteFlag.equals=0&releaseType.equals=1&type.equals=2",
                                 labelKey: "title",
-                                valueKey: "title",
+                                valueKey: "id",
                                 dataPath: 'data.pageData'
                             },
                             width: 220,
@@ -554,10 +554,10 @@ export default defineFormConfig(
                         }
                     },
                     {
-                        "key": "postoperationMissionsContent",
+                        "key": "preoperativeMissionsKnowledgeId",
                         "layout": "1/2",
                         "label": "",
-                        "inputType": "MA",
+                        "inputType": "MS",
                         showDeps: {
                             postoperationMissionsType: ['3']
                         },
@@ -565,7 +565,7 @@ export default defineFormConfig(
                             fetch_options: {
                                 url: "/api/women/healthcare/knowledge/getWomenHealthcareKnowledgePage/page?sort=id,desc&page=0&size=999&deleteFlag.equals=0&releaseType.equals=1&type.equals=3",
                                 labelKey: "title",
-                                valueKey: "title",
+                                valueKey: "id",
                                 dataPath: 'data.pageData'
                             },
                             width: 220,
@@ -574,10 +574,10 @@ export default defineFormConfig(
                         }
                     },
                     {
-                        "key": "postoperationMissionsContent",
+                        "key": "preoperativeMissionsKnowledgeId",
                         "layout": "1/2",
                         "label": "",
-                        "inputType": "MA",
+                        "inputType": "MS",
                         showDeps: {
                             postoperationMissionsType: ['4']
                         },
@@ -585,7 +585,7 @@ export default defineFormConfig(
                             fetch_options: {
                                 url: "/api/women/healthcare/knowledge/getWomenHealthcareKnowledgePage/page?sort=id,desc&page=0&size=999&deleteFlag.equals=0&releaseType.equals=1&type.equals=4",
                                 labelKey: "title",
-                                valueKey: "title",
+                                valueKey: "id",
                                 dataPath: 'data.pageData'
                             },
                             width: 220,
