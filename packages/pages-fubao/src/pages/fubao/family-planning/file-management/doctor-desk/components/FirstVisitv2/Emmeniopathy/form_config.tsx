@@ -632,19 +632,23 @@ export default defineFormConfig([
                 inputProps: {
                     options: [
                         {
+                            "key": "earlyPregnancyCheckMedicalHistory.gravidity",
                             inputType: 'MA',
                             prefix: 'G',
                         },
                         {
+                            "key": "earlyPregnancyCheckMedicalHistory.parity",
                             inputType: 'MA',
                             prefix: 'P',
                         },
                         {
+                            "key": "earlyPregnancyCheckMedicalHistory.zrfm",
                             inputType: 'MA',
                             prefix: '其中，自然分娩',
                             suffix: '次',
                         },
                         {
+                            "key": "earlyPregnancyCheckMedicalHistory.pgc",
                             inputType: 'MA',
                             prefix: '剖宫产',
                             suffix: '次',
@@ -1398,7 +1402,7 @@ export default defineFormConfig([
                 formItemLayout: { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
             },
             {
-                key: 'TSH',
+                key: 'tsh',
                 label: 'TSH',
                 inputType: 'input_number',
                 required: false,

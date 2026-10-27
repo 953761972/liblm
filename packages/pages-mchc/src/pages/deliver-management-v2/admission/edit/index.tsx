@@ -29,7 +29,7 @@ function DeliverEdit(props: AnyObject) {
 
   useEffect(() => {
     handleInit();
-  }, [])
+  }, [id])
 
   async function handleInit() {
     try {

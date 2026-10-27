@@ -60,11 +60,11 @@ export default function Inner(props: IProps) {
 
     const curentPath = reportFilePathArr.find((_, idx) => idx === current - 1)
     return (
-        <div className="survey-right" style={{ background: '#fff', margin: '0 6px 0 6px' }}>
+        <div className="survey-right" style={{ background: '#fff' }}>
             <div className="right-top">
-                <p className="right-title">
-                    <span className="right-words">{get(detailData, 'reportName') || ''} 检验报告单..</span>
-                </p>
+                <div className="right-title">
+                    <span className="right-words">{get(detailData, 'reportName') || ''} 检验报告单</span>
+                </div>
                 <div className="right-doctor">首阅医生：{get(detailData, 'firstReadDoctor') || ''}</div>
             </div>
             <ul className="right-msg">
