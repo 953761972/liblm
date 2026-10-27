@@ -1,12 +1,13 @@
 import { IMchc_FormDescriptions_Field } from "@lm_fe/service";
 
 export function 乳房触检_config() {
- 
+
     const cache: IMchc_FormDescriptions_Field[] = [
         {
             "id": 784,
             "name": "乳房触检",
             "children": [
+                { key: 'breastCancerBreastPalpation.id', form_hidden: true },
                 {
                     "id": 18104,
                     "key": "breastCancerBreastPalpation.leftBreastSignsNote",

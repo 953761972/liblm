@@ -265,6 +265,7 @@ export function 两癌月经史form_config(append = false): IMchc_FormDescriptio
             "flag": "妇女保健-两癌筛查添加-月经史",
             "sort": 0,
             "fields": [
+                { key: 'womenHealthcareMenstrualHistory.id', form_hidden: true },
                 {
                     "key": "womenHealthcareMenstrualHistory.menarche",
                     "label": "初潮(岁)",
