@@ -11,9 +11,10 @@ const RenderContentWrap = lazy(() => import('./RenderContentWrap'))
 
 interface IProps {
   id: any
+  outpatientNo: any
   surgicalRecordId: any
 }
-export default function FuckingNursing({ id, surgicalRecordId }: IProps) {
+export default function FuckingNursing({ id, surgicalRecordId, outpatientNo }: IProps) {
   const [siderPanels, set_siderPanels] = useState<any[]>([])
 
   const [surgeryTemplates, set_surgeryTemplates] = useState<IModel_EarlyPregnancySurgicalTemplate[]>([])
@@ -187,6 +188,7 @@ export default function FuckingNursing({ id, surgicalRecordId }: IProps) {
       return <Empty />
     }
     return <RenderContentWrap
+      outpatientNo={outpatientNo}
       familyPlanningId={id}
       tableColumns={conf_刮宫术}
       activeItem={activeItem}

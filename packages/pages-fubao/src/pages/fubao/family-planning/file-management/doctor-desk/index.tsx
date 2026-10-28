@@ -72,8 +72,8 @@ export default function FamilyPlanning_FileManagement_DoctorDesk_FC(props: any) 
       ]}
       tabItems={[
         { key: 'MedicalSummary', title: '病历摘要', node: <MedicalSummary id={id} basicInfo={basicInfo} data={data} /> },
-        { key: 'FirstVisit', title: '专科病历', node: <FirstVisit id={id} basicInfo={basicInfo} data={data} /> },
-        { key: 'SurgicalRecord', title: '手术病历', node: <SurgicalRecord id={id} basicInfo={basicInfo} basicData={data} surgicalRecordId={surgicalRecordId} /> },
+        { key: 'FirstVisit', title: '专科病历', node: <FirstVisit outpatientNo={data?.outpatientNo} id={id} basicInfo={basicInfo} data={data} /> },
+        { key: 'SurgicalRecord', title: '手术病历', node: <SurgicalRecord outpatientNo={data?.outpatientNo} id={id} basicInfo={basicInfo} basicData={data} surgicalRecordId={surgicalRecordId} /> },
         // { key: 'jyjc', title: '检验检查', node: <SurveyReport headerInfoOfInpatientData={data} /> },
         // { key: 'yxbg', title: '影像报告', node: <ImageReport headerInfoOfInpatientData={data} /> },
 
