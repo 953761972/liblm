@@ -1,12 +1,12 @@
 import { mchcLogger } from "@lm_fe/env";
 import { IMchc_Doctor_OutpatientHeaderInfo, IMchc_Pregnancy } from "@lm_fe/service";
-import { filter_obj_to_url_search, getSearchParamsValue, request } from "@lm_fe/utils";
+import { AnyObject, filter_obj_to_url_search, getSearchParamsValue, request } from "@lm_fe/utils";
 import { filter, get, map, orderBy } from "lodash";
 export default {
 
-  getReportList: (preg: Partial<IMchc_Doctor_OutpatientHeaderInfo>, type: number = 1, iu = false) => {
-    const id = preg?.id ?? getSearchParamsValue('id');
-    const filter_obj = filter_obj_to_url_search(preg)
+  getReportList: (params: AnyObject, type: number = 1, iu = false) => {
+    const id = params?.id ?? getSearchParamsValue('id');
+    const filter_obj = filter_obj_to_url_search(params)
     if (type === 1) {
       return request.get(`/api/getImageExam`, {
         params: {

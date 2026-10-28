@@ -19,20 +19,18 @@ export function DoctorEnd_SurveyReport(props: IProps) {
 
 
 
-  const { headerInfoOfInpatientData = {}, headerInfo = {} } = props;
-  const combinded = assign({}, headerInfoOfInpatientData, headerInfo)
+  const { headerInfoOfInpatientData = {}, headerInfo = {}, fubao } = props;
+  const combinded = assign({ fubao }, headerInfoOfInpatientData, headerInfo)
   const [reportList, set_reportList] = useState<IMchc_listPatientLabExamReport_Item[]>([])
   const [detailData, set_detailData] = useState<IMchc_LabExamReport_Detail>()
 
-  const [isShowCurve, set_isShowCurve] = useState(false)
-  const [itemName, set_itemName] = useState('')
   const [loading, setLoading] = useState(false)
 
   const inited = useRef(false)
 
   useEffect(() => {
 
-    getLabExamGroup();
+    init();
     return () => {
 
     }
@@ -40,7 +38,7 @@ export function DoctorEnd_SurveyReport(props: IProps) {
 
 
 
-  async function getLabExamGroup() {
+  async function init() {
 
 
 
@@ -64,14 +62,11 @@ export function DoctorEnd_SurveyReport(props: IProps) {
 
     set_detailData(detailData)
 
-    getLabExamGroup();
+    init();
   };
 
 
-  function closeModal() {
 
-    set_isShowCurve(false)
-  };
 
   function renderLeft() {
 
@@ -80,8 +75,8 @@ export function DoctorEnd_SurveyReport(props: IProps) {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 4, }}>
           <span>报告列表</span>
           <Button.Group>
-            <Button size='small' onClick={() => request.post('/api/syncReport', combinded, { successText: '成功' }).then(getLabExamGroup)}>同步</Button>
-            <Button size='small' onClick={() => request.post('/api/examineReport', combinded, { successText: '成功' }).then(getLabExamGroup)}>审核</Button>
+            <Button size='small' onClick={() => request.post('/api/syncReport', combinded, { successText: '成功' }).then(init)}>同步</Button>
+            <Button size='small' onClick={() => request.post('/api/examineReport', combinded, { successText: '成功' }).then(init)}>审核</Button>
             <Button size='small' onClick={() => { mchcModal__.open('print_modal', { modal_data: { requestData: { url: '/api/printReport', ...combinded } } }) }}>打印</Button>
           </Button.Group>
         </div>
@@ -156,13 +151,7 @@ export function DoctorEnd_SurveyReport(props: IProps) {
           loading ? <LoadingPlaceholder /> : <DoctorEnd_SurveyReport_Report detailData={detailData} />
         }
       </div>
-      {isShowCurve && (
-        <ExaminationItemCurve
-          itemName={itemName}
-          onClose={closeModal}
-          id={combinded?.id ?? 0}
-        />
-      )}
+
     </div>
   );
 

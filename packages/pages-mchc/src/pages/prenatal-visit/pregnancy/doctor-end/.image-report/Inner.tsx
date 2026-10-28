@@ -16,7 +16,7 @@ export default function Inner(props: IDoctorEnd_ImageReport_Props) {
   mchcLogger.log('DoctorEnd_ImageReport', props)
   const [tableData, set_tableData] = useState([])
 
-  const { headerInfo = {}, type = 1, needOutReport } = props;
+  const { headerInfo = {}, type = 1, needOutReport, fubao } = props;
 
   let outpatientNO = get(headerInfo, 'outpatientNO') || get(headerInfo, 'outpatientNo');
   const filter_obj = filter_obj_to_url_search(headerInfo)
@@ -25,8 +25,8 @@ export default function Inner(props: IDoctorEnd_ImageReport_Props) {
 
     (async () => {
       const list = await (needOutReport
-        ? api.image.getOuterReports({ ...filter_obj, 'type.equals': 2, 'patientNo.equals': outpatientNO }, ignore_usr)
-        : api.image.getReportList(headerInfo, type, ignore_usr)
+        ? api.image.getOuterReports({ ...filter_obj, fubao, 'type.equals': 2, 'patientNo.equals': outpatientNO }, ignore_usr)
+        : api.image.getReportList({ ...headerInfo, fubao }, type, ignore_usr)
       )
       set_tableData(list)
 
