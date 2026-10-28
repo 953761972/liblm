@@ -10,6 +10,7 @@ import './index.less';
 interface IProps {
   headerInfo?: Partial<IMchc_Doctor_OutpatientHeaderInfo>
   headerInfoOfInpatientData?: Partial<IMchc_Admission_HeaderInfoOfInpatientEmr>
+  fubao?: boolean
 }
 
 

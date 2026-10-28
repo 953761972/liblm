@@ -85,8 +85,8 @@ export default function TowCancerExam(props: any) {
             key: 'MammaryCancer', title: '乳腺癌', node: <MammaryCancer id={data.id} basicData={data} breastCancerScreeningId={breastCancerScreeningId} breastCancerXRayId={breastCancerXRayId}
             />
           },
-          { key: 'SurveyReport', title: '检验检查', node: <DoctorEnd_SurveyReport headerInfo={data as any} /> },
-          { key: 'ImageReport', title: '影像报告', node: <DoctorEnd_ImageReport headerInfo={data as any} /> },
+          { key: 'SurveyReport', title: '检验检查', node: <DoctorEnd_SurveyReport fubao headerInfo={data as any} /> },
+          { key: 'ImageReport', title: '影像报告', node: <DoctorEnd_ImageReport fubao headerInfo={data as any} /> },
           // { key: 'InformedConsent', title: '', node: <InformedConsent /> },
           { key: 'BasicInfo', title: '基本信息', node: <BasicInfo id={data.id} basicData={data} /> },
         ]}
