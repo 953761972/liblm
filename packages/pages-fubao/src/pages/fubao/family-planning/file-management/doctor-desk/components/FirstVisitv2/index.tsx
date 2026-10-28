@@ -8,7 +8,7 @@ import styles from '../../../common.module.less'
 import RenderContentWrap from './RenderContentWrap';
 
 export default function ZKBL(props: any) {
-  const { data, id, reload } = props
+  const { data, id, outpatientNo } = props
 
   const [activeTemplate, set_activeTemplate] = useState('')
   const [siderPanels, set_siderPanels] = useState<AnyObject>([])
@@ -122,37 +122,38 @@ export default function ZKBL(props: any) {
       >
         {!isEmpty(siderPanels) && (
           <div className={styles['family-planning-list-container']}>
-            {map(siderPanels, (data, index) => {
+            {map(siderPanels, (item, index) => {
+              const item_id = get(item, 'id')
               return (
-                <div key={data.id} className={styles['family-planning-list']}>
+                <div key={item.id} className={styles['family-planning-list']}>
                   {
                     <>
                       <div
-                        className={`${styles['doctor-desk-first-visit-sider-list__item']} ${get(activeItem, 'id') === get(data, 'id') ? styles['active'] : ''
+                        className={`${styles['doctor-desk-first-visit-sider-list__item']} ${get(activeItem, 'id') === get(item, 'id') ? styles['active'] : ''
                           }`}
                         style={
-                          get(activeItem, 'id') === get(data, 'id') ? { background: '#D6E6FF' } : { background: 'none' }
+                          get(activeItem, 'id') === item_id ? { background: '#D6E6FF' } : { background: 'none' }
                         }
-                        onClick={handleClickListItem(data)}
+                        onClick={handleClickListItem(item)}
                       >
                         <span className={styles['doctor-desk-first-visit-sider-list__item-title']}>
-                          {get(data, 'checkType')}{' '}
+                          {get(item, 'checkType')}{' '}
                         </span>
-                        {get(data, 'id') && get(data, 'id') != -1 ? (
+                        {item_id ? (
                           <Popconfirm
                             title="确定要删除这个病历吗?"
-                            onConfirm={handleDelete(data)}
+                            onConfirm={handleDelete(item)}
                             okText="确定"
                             cancelText="取消"
                           >
-                            {get(activeItem, 'id') === get(data, 'id') && (
+                            {get(activeItem, 'id') === item_id && (
                               <DeleteOutlined
                                 style={{ color: '#007aff', float: 'right', marginTop: 2, marginLeft: 8 }}
                               />
                             )}
-                            {get(data, 'registrationDate') && (
+                            {get(item, 'registrationDate') && (
                               <span className="date" style={{ float: 'right' }}>
-                                {get(data, 'registrationDate')}
+                                {get(item, 'registrationDate')}
                               </span>
                             )}
                           </Popconfirm>
@@ -161,9 +162,9 @@ export default function ZKBL(props: any) {
                             <EditOutlined
                               style={{ color: 'rgb(24, 144, 255)', float: 'right', marginTop: 2, marginLeft: 8 }}
                             />
-                            {get(data, 'registrationDate') && (
+                            {get(item, 'registrationDate') && (
                               <span className="date" style={{ float: 'right' }}>
-                                {get(data, 'registrationDate')}
+                                {get(item, 'registrationDate')}
                               </span>
                             )}
                           </>
@@ -187,6 +188,7 @@ export default function ZKBL(props: any) {
 
       if (mod.conf)
         return <RenderContentWrap
+          outpatientNo={outpatientNo}
           familyPlanningId={id}
           tableColumns={mod.conf}
           activeItem={activeItem}

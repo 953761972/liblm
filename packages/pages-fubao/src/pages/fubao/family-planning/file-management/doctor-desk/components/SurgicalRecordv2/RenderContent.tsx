@@ -10,10 +10,11 @@ export interface IRenderContentProps {
     config?: IMchc_TableConfig
     activeItem?: AnyObject
     active_key: string
+    outpatientNo: string
     onRefresh: (id: any) => void
 }
 export function RenderContent(props: IRenderContentProps) {
-    const { config, activeItem, active_key, onRefresh } = props
+    const { config, activeItem, active_key, onRefresh, outpatientNo } = props
     const [data_cache, set_data_cache] = useState<AnyObject>()
 
 
@@ -29,16 +30,18 @@ export function RenderContent(props: IRenderContentProps) {
 
 
     async function handleInit() {
-        let res: AnyObject = {};
+        let res: AnyObject = { outpatientNo };
         if (get(activeItem, 'id')) {
-            res = await request.get(
-                `/api/family/planning/getEarlyPregnancyCheckSurgicalType?id.equals=${get(
-                    activeItem,
-                    'id',
-                )}&operationName.equals=${get(activeItem, 'operationName')}&deleteFlag.equals=0`,
-            )
+            res = (
+                await request.get<{ data: AnyObject[] }>(
+                    `/api/family/planning/getEarlyPregnancyCheckSurgicalType?id.equals=${get(
+                        activeItem,
+                        'id',
+                    )}&operationName.equals=${get(activeItem, 'operationName')}&deleteFlag.equals=0`,
+                )
+            ).data.data[0]
         }
-        let data = (await safe_async_call(config?.handleBeforePopup, get(res, 'data.data.0'))) || {}
+        let data = (await safe_async_call(config?.handleBeforePopup, res)) || res
         form.resetFields()
         form.setFieldsValue(data)
         set_data_cache(data)

@@ -70,6 +70,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
         RenderAction,
         renderBtns,
         RenderSearchBtns,
+        action_col_width,
         searchConfig = [],
         searchParams = {},
         initialSearchValue = {},
@@ -344,7 +345,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
         align: 'center',
         isActive: 0,
 
-        width: actCellWidth,
+        width: action_col_width ?? actCellWidth,
         render: (value: any, rowData: T, index: number) => {
             const editable = isEditing(rowData);
 

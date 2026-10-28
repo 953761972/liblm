@@ -6,13 +6,14 @@ import { Form } from 'antd'
 import { get } from 'lodash'
 import React, { useEffect, useState } from 'react'
 export interface IRenderContentProps {
+    outpatientNo: string
     config?: IMchc_TableConfig
     activeItem?: AnyObject
     active_key: string
     onRefresh: () => void
 }
 export function RenderContent(props: IRenderContentProps) {
-    const { config, activeItem, active_key, onRefresh } = props
+    const { config, activeItem, active_key, onRefresh, outpatientNo } = props
     const [data_cache, set_data_cache] = useState<AnyObject>()
 
     const [form] = Form.useForm()
@@ -23,16 +24,16 @@ export function RenderContent(props: IRenderContentProps) {
     }, [activeItem])
 
     async function handleInit() {
-        let res: AnyObject = {}
+        let res: AnyObject = { outpatientNo };
         if (get(activeItem, 'id')) {
-            res = await request.get(
+            res = (await request.get<{ data: AnyObject[] }>(
                 `/api/family/planning/getFamilyPlanningEarlyPregnancyCheck?id.equals=${get(
                     activeItem,
                     'id',
                 )}&checkType.equals=${get(activeItem, 'checkType')}&deleteFlag.equals=0`,
-            )
+            )).data.data[0]
         }
-        let data = (await safe_async_call(config?.handleBeforePopup, get(res, 'data.data.0'))) || {}
+        let data = (await safe_async_call(config?.handleBeforePopup, res)) || res
         form.resetFields()
 
         form.setFieldsValue(data)

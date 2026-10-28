@@ -366,6 +366,12 @@ export default defineFormConfig(
                             inputType: 'MSW',
                             layout: '1/3',
                         },
+                        {
+                            label: '复诊产检记录展示条数',
+                            name: '医生端_复诊产检记录展示条数',
+                            inputType: 'input_number',
+                            layout: '1/3',
+                        },
 
                         {
                             label: '漏诊和高危因素标识提醒',

@@ -291,8 +291,8 @@ export default class panel extends PanelWithChild {
           )}
           {/* {activeKey === 'InformedConsent' && <InformedConsent />}
           {activeKey === 'CaseReport' && <CaseReport />} */}
-          {activeKey === 'SurveyReport' && <DoctorEnd_SurveyReport headerInfo={data as any} />}
-          {activeKey === 'ImageReport' && <DoctorEnd_ImageReport headerInfo={data as any} />}
+          {activeKey === 'SurveyReport' && <DoctorEnd_SurveyReport fubao headerInfo={data as any} />}
+          {activeKey === 'ImageReport' && <DoctorEnd_ImageReport fubao headerInfo={data as any} />}
           {activeKey === 'ReportEntry' && <ReportEntryInner injected idNO={sex_data?.progestationCheckArchivesBasicInformation?.idNO} />}
 
         </div>
