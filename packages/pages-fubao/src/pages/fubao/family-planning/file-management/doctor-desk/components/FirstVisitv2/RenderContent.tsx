@@ -1,10 +1,10 @@
-import { BaseEditPanelFormFC } from '@lm_fe/components_m';
-import { mchcModal__ } from '@lm_fe/pages';
-import { IMchc_TableConfig } from '@lm_fe/service';
-import { AnyObject, request, safe_async_call } from '@lm_fe/utils';
-import { Form } from 'antd';
-import { get } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import { BaseEditPanelFormFC } from '@lm_fe/components_m'
+import { mchcModal__ } from '@lm_fe/pages'
+import { IMchc_TableConfig } from '@lm_fe/service'
+import { AnyObject, request, safe_async_call } from '@lm_fe/utils'
+import { Form } from 'antd'
+import { get } from 'lodash'
+import React, { useEffect, useState } from 'react'
 export interface IRenderContentProps {
     config?: IMchc_TableConfig
     activeItem?: AnyObject
@@ -15,20 +15,15 @@ export function RenderContent(props: IRenderContentProps) {
     const { config, activeItem, active_key, onRefresh } = props
     const [data_cache, set_data_cache] = useState<AnyObject>()
 
-
     const [form] = Form.useForm()
 
-
-
-
     useEffect(() => {
-        handleInit();
-        return () => { }
+        handleInit()
+        return () => {}
     }, [activeItem])
 
-
     async function handleInit() {
-        let res: AnyObject = {};
+        let res: AnyObject = {}
         if (get(activeItem, 'id')) {
             res = await request.get(
                 `/api/family/planning/getFamilyPlanningEarlyPregnancyCheck?id.equals=${get(
@@ -42,7 +37,12 @@ export function RenderContent(props: IRenderContentProps) {
 
         form.setFieldsValue(data)
         set_data_cache(data)
-    };
+    }
+
+    async function handleImport(outpatientNo: string) {
+        const res = await request.get(`/api/family/planning/importCheckInspection?outpatientNO=${outpatientNo}`)
+        return res
+    }
 
     async function handleSubmit(values: any) {
         let params = await safe_async_call(config?.beforeSubmit, values)
@@ -50,23 +50,26 @@ export function RenderContent(props: IRenderContentProps) {
         params = {
             ...data_cache,
             ...params,
-        };
-
+        }
 
         let res: AnyObject
         if (get(values, 'id')) {
             // 修改
             res = await request.put('/api/family/planning/updateFamilyPlanningEarlyPregnancyCheck', params)
         } else {
-            res = await request.post('/api/family/planning/addFamilyPlanningEarlyPregnancyCheck', params)
-
+            // 新建
+            const syncRes = await handleImport(values?.outpatientNo)
+            const syncData = get(syncRes, ['data', 'data']) || {}
+            res = await request.post('/api/family/planning/addFamilyPlanningEarlyPregnancyCheck', {
+                ...params,
+                earlyPregnancyCheckInspection: syncData
+            })
         }
         set_data_cache(get(res.data, 'data'))
-        onRefresh && onRefresh();
-    };
+        onRefresh && onRefresh()
+    }
     //打印
     function handlePrint() {
-
         mchcModal__.open('print_modal', {
             modal_data: {
                 request,
@@ -77,17 +80,19 @@ export function RenderContent(props: IRenderContentProps) {
                     version: '',
                     note: '',
                     id: data_cache?.id,
-                }
-            }
+                },
+            },
         })
     }
-    return <BaseEditPanelFormFC
-        // renderBtns={config?.}
-        targetLabelCol={5}
-        print_btn_props={{ disabled: !data_cache?.id }}
-        onPrint={handlePrint}
-        form={form}
-        formDescriptions={config?.tableColumns}
-        onFinish={handleSubmit}
-    />
+    return (
+        <BaseEditPanelFormFC
+            // renderBtns={config?.}
+            targetLabelCol={5}
+            print_btn_props={{ disabled: !data_cache?.id }}
+            onPrint={handlePrint}
+            form={form}
+            formDescriptions={config?.tableColumns}
+            onFinish={handleSubmit}
+        />
+    )
 }
