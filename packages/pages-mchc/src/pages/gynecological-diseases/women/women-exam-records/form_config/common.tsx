@@ -25,7 +25,7 @@ export const 知情同意书_tab = defineFormConfig([
                 name: 'gynecologicalPatient',
                 inputProps: {
                     component: ({ value }) =>
-                        <DoctorEnd_ImageReport headerInfo={value as any} />
+                        <DoctorEnd_ImageReport fubao headerInfo={value as any} />
                 }
             }
 
@@ -39,7 +39,7 @@ export const 知情同意书_tab = defineFormConfig([
                 inputType: 'component',
                 name: 'gynecologicalPatient',
                 inputProps: {
-                    component: ({ value }) => <DoctorEnd_SurveyReport headerInfo={value as any} />
+                    component: ({ value }) => <DoctorEnd_SurveyReport fubao headerInfo={value as any} />
                 }
             }
         ]
