@@ -9,6 +9,7 @@ mchc 页面级模块
 | /fubao/data-report/cervical-cancer | 宫颈癌上报 |
 | /fubao/family-planning/booking-management | 缺省 |
 | /fubao/family-planning/curettage-statistics | 缺省 |
+| /fubao/family-planning/file-management/audit | 缺省 |
 | /fubao/family-planning/file-management/doctor-desk | 妇保医生端 |
 | /fubao/family-planning/file-management/doctor-desk2 | 缺省 |
 | /fubao/family-planning/file-management | 缺省 |

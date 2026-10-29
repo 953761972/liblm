@@ -9,6 +9,7 @@ export const routesData = {
     "/fubao/data-report/cervical-cancer":lazy(() => import("../pages/fubao/data-report/cervical-cancer/index")),
     "/fubao/family-planning/booking-management":lazy(() => import("../pages/fubao/family-planning/booking-management/index")),
     "/fubao/family-planning/curettage-statistics":lazy(() => import("../pages/fubao/family-planning/curettage-statistics/index")),
+    "/fubao/family-planning/file-management/audit":lazy(() => import("../pages/fubao/family-planning/file-management/audit/index")),
     "/fubao/family-planning/file-management/doctor-desk":lazy(() => import("../pages/fubao/family-planning/file-management/doctor-desk/index")),
     "/fubao/family-planning/file-management/doctor-desk2":lazy(() => import("../pages/fubao/family-planning/file-management/doctor-desk2/index")),
     "/fubao/family-planning/file-management":lazy(() => import("../pages/fubao/family-planning/file-management/index")),
