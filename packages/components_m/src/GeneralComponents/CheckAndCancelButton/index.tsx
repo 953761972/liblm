@@ -12,7 +12,7 @@ const CheckAndCancelButton: FC<any> = function CheckAndCancelButton(props: { [x:
     check_invert_values,
     form,
     size = 'middle',
-    value = true,
+    value = false,
     onChange,
     onClick,
     config,
@@ -21,16 +21,16 @@ const CheckAndCancelButton: FC<any> = function CheckAndCancelButton(props: { [x:
   const [isCheck, setIsCheck] = useState(value);
 
   const handleClick = () => {
-    setIsCheck(!isCheck);
+    const inverted_value = !isCheck
+    setIsCheck(inverted_value);
     const k = SMchc_FormDescriptions.format_itemName_str(config!)
     if (k) {
-      onChange?.(isCheck)
+      onChange?.(inverted_value)
     }
 
 
-    onClick?.(name, isCheck);
-    event.emit(CheckAndCancelButton.displayName!, `${name}`, isCheck)
-    // mchcLogger.log('CheckAndCancelButton 111', { check_invert_values, form, isCheck })
+    onClick?.(name, inverted_value);
+    event.emit(CheckAndCancelButton.displayName!, `${name}`, inverted_value)
     if (!form) {
       message.warning('请设置 form !')
       return
@@ -46,7 +46,7 @@ const CheckAndCancelButton: FC<any> = function CheckAndCancelButton(props: { [x:
 
       keys.forEach((k, idx) => {
         const v = checkValues[k]
-        const checkValue = isCheck ? v?.[0] : v?.[1]
+        const checkValue = inverted_value ? v?.[0] : v?.[1]
         set(old, k, checkValue)
       })
       // mchcLogger.log('CheckAndCancelButton 222', { check_invert_values, old })
@@ -57,7 +57,7 @@ const CheckAndCancelButton: FC<any> = function CheckAndCancelButton(props: { [x:
 
   return (
     <Button type={isCheck ? 'primary' : undefined} size={size} onClick={handleClick} {...input_props} >
-      {isCheck ? '一键勾选' : '一键取消'}
+      {isCheck ? '一键取消' : '一键勾选'}
     </Button>
   );
 }

@@ -16,7 +16,7 @@ export function InterceptComponent(props: { [x: string]: any, config: IMchc_Form
 
     const _onChange = (...arg: any[]) => {
         if (isFunction(processLocal)) {
-            arg[0] = processLocal(arg[0], form, config) ?? arg[0]
+            arg[0] = processLocal(arg[0], form, config, onChange) ?? arg[0]
         }
         onChange?.(...arg) ?? _inputProps.onChange?.(...arg)
     }

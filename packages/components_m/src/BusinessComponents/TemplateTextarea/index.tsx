@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import styles from './index.module.less';
 import TemplateModal from './TemplateModal';
 import { get, isEqual } from 'lodash';
+import { getSearchParamsValue } from '@lm_fe/utils';
 interface IProps {
   onChange: Function;
   value: any;
@@ -92,8 +93,8 @@ export default class TextareaWithTemplate extends Component<IProps, IState> {
             onCancel={this.closeModal}
             onOk={this.handleOk}
             patientId={patientId}
-            admissionId={admissionId}
-            pregnancyId={pregnancyId}
+            admissionId={admissionId ?? getSearchParamsValue('id')}
+            pregnancyId={pregnancyId ?? getSearchParamsValue('id')}
           />
         )}
       </div>

@@ -96,7 +96,6 @@ const MyComponent = {
   // 'hemogram-exam': HemogramExam,
   'native-place': NativePlace,
   blank: () => <div style={{ height: 32 }}></div>,
-  check_invert_button: CheckAndCancelButton,
   'checkbox_with_input': CheckboxWithInput_lm,
   hbvdna_input: HbvdnaInput,
   DateTimeInput,

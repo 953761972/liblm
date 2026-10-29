@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { MODAL_NAVS } from './common';
 import TemplateSelect from './components/TemplateSelect';
 import { get, map } from 'lodash';
-
+import React from 'react';
 import { LazyAntd } from '@lm_fe/components';
 const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 export default function EditModal(props: any) {
