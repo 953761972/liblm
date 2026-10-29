@@ -244,7 +244,6 @@ export const FormSectionComponent = {
     MySearchSelect,
     AsyncAutoComplete,
     CheckAndCancelButton,
-    check_invert_button: CheckAndCancelButton,
     CheckboxGroupObject,
     checkbox_group_object: CheckboxGroupObject,
     CustomTreeSelect,
