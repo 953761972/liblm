@@ -1,13 +1,12 @@
 import { get, set } from 'lodash'
-import { BaseEditPanelFormFC } from '@lm_fe/components_m'
+import { BaseEditPanelFormFC, OkButton } from '@lm_fe/components_m'
 import { mchcDriver, mchcUtils } from '@lm_fe/env'
 import { use_provoke } from '@lm_fe/provoke'
 import { AnyObject, request } from '@lm_fe/utils'
-import { Form } from 'antd'
+import { Form, Space } from 'antd'
+import { RedoOutlined, SaveOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react'
 import { BF_Wrap2 } from '@lm_fe/pages'
-
-const baseUrl = '/api/family/planning/updateFamilyPlanningFile'
 
 const form_fn = () => import('./form_config')
 
@@ -21,9 +20,7 @@ function FamilyPlanning_FileManagement_NurseDesk_Inner(props: any) {
     })
 
     const user = use_provoke((s) => s.user_info)
-
     const [form] = Form.useForm()
-
     const [data, set_data] = useState<AnyObject>({})
 
     useEffect(() => {
@@ -46,31 +43,25 @@ function FamilyPlanning_FileManagement_NurseDesk_Inner(props: any) {
         form.setFieldsValue(data)
     }
 
-    // 新建病历时自动调后端接口导入检验检查报告
-    async function handleImport(outpatientNo: string) {
-        const res = await request.get(`/api/family/planning/importCheckInspection?outpatientNO=${outpatientNo}`)
-        return res
-    }
-
-    async function handleSubmit(values: any) {
+    async function handleSubmit() {
+        const values = form.validateFields()
+        // const values = form.getFieldsValue()
         let submit_values = { ...values }
 
         if (values?.id) {
-            // 修改
+            // 修改、审核
             submit_values = {
                 ...data,
                 ...submit_values,
-                fileStatus: 1,
+                fileState: 1,
             }
             await request.put('/api/family/planning/updateFamilyPlanningFile', submit_values)
         }
         // 新建
-        const syncRes = await handleImport(values?.outpatientNo)
-        const syncData = get(syncRes, ['data', 'data']) || {}
         submit_values = {
             ...submit_values,
-            ...syncData,
-            fileStatus: 1,
+            // ...syncData,
+            fileState: 1,
         }
 
         await request.post('/api/family/planning/addFamilyPlanningFile', submit_values)
@@ -81,9 +72,21 @@ function FamilyPlanning_FileManagement_NurseDesk_Inner(props: any) {
             <BaseEditPanelFormFC
                 form={form}
                 formDescriptions={__DEV__ ? form_fn : config?.tableColumns}
-                onFinish={async (values) => {
-                    return handleSubmit(values)
+                renderBtns={() => {
+                    return (
+                        <Space>
+                            <OkButton size="large" type="primary" icon={<RedoOutlined />} onClick={() => form.resetFields()}>
+                                重置
+                            </OkButton>
+                            <OkButton type="primary" size="large" icon={<SaveOutlined />} onClick={handleSubmit}>
+                                {`${get(data, ['fileState']) == 1 ? '保存' : '保存并审核'}`}
+                            </OkButton>
+                        </Space>
+                    )
                 }}
+                // onFinish={async (values) => {
+                //     return handleSubmit(values)
+                // }}
             />
         </Wrap>
     )

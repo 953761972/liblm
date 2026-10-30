@@ -61,7 +61,7 @@ class List extends BaseList {
       showSorter: false,
       showFilter: false,
       fixed: 'right',
-      width: 200,
+      width: 156,
       align: 'center',
       render: (value: any, rowData: any, index: number) => {
         return (
@@ -69,7 +69,7 @@ class List extends BaseList {
             <Button
               type="link"
               size="small"
-              icon={<EditOutlined className="global-table-action-icon global-table-action-view" />}
+              // icon={<EditOutlined className="global-table-action-icon global-table-action-view" />}
               onClick={this.handleEdit(rowData)}
             >
               编辑
@@ -78,7 +78,7 @@ class List extends BaseList {
             <Button
               type="link"
               size="small"
-              icon={<EyeOutlined className="global-table-action-icon global-table-action-edit" />}
+              // icon={<EyeOutlined className="global-table-action-icon global-table-action-edit" />}
               onClick={this.handleView(rowData)}
             >
               查看
@@ -93,7 +93,7 @@ class List extends BaseList {
               <Button
                 type="link"
                 size="small"
-                icon={<DeleteOutlined className="global-table-action-icon global-table-action-delete" />}
+                // icon={<DeleteOutlined className="global-table-action-icon global-table-action-delete" />}
               >
                 删除
               </Button>

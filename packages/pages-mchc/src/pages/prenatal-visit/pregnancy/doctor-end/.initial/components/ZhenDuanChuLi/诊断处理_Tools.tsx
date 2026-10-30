@@ -13,7 +13,7 @@ interface IProps {
   headerInfo: IMchc_Doctor_OutpatientHeaderInfo,
   onRefresh(): Promise<any>
   visitData?: IMchc_Doctor_FirstVisitDiagnosisOutpatient<"mchc">
-
+  id?: string
   diagnosesList: IMchc_Doctor_Diagnoses[]
   setDiagnosesList(l: IMchc_Doctor_Diagnoses[]): void
 }
@@ -114,7 +114,7 @@ export function 诊断处理_Tools(props: IProps) {
 
 
   return (
-    <>
+    <div id={props?.id}>
       <Diagnoses
         headerInfo={headerInfo}
         setDiagnosesList={setDiagnosesList}
@@ -152,7 +152,7 @@ export function 诊断处理_Tools(props: IProps) {
         <ManagementPlan isShowManageModal={isShowManageModal} closeModal={closeModal} headerInfo={headerInfo} />
       )}
       {renderModifyRecord()}
-    </>
+    </div>
   );
 }
 
