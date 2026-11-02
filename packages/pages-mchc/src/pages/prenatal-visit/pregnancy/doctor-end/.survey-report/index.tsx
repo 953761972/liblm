@@ -97,7 +97,7 @@ export function DoctorEnd_SurveyReport(props: IProps) {
                     </>
                   ) : (
                     <>
-                      `${formatTimeToDate(item.date)} (孕周：${item.gesWeek})`
+                      {`${formatTimeToDate(item.date)} (${item.gesWeek}周)`}
                       <div style={{ position: 'absolute', right: 6, top: 6 }}>
                         <Badge
                           count={item.unread ? item.unread : item.total}

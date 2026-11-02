@@ -21,15 +21,34 @@ export function is_dyn_page(record: IMchc_TableConfig): [true, string] | [false,
 }
 export const config_table_fd = (props: any): IMchc_FormDescriptions_Field_Nullable[] => [
     {
-        title: '字段设置',
+        title: '字段',
         containerType: 'tabs',
         hidden: true,
         children: [
             {
-                inputType: 'MyMonaco',
-                inputProps: { language: 'javascript', height: '74vh' },
-                dataIndex: 'tableColumns',
-            }
+                title: '字段设置',
+                containerType: 'segs',
+                children: [
+                    {
+                        inputType: 'MyMonaco',
+                        inputProps: { language: 'javascript', height: '70vh' },
+                        dataIndex: 'tableColumns',
+                    }
+                ]
+            },
+            {
+                title: '锚点设置',
+                containerType: 'segs',
+                children: [
+                    {
+                        inputType: 'MyMonaco',
+                        inputProps: { language: 'javascript', height: '70vh' },
+                        dataIndex: 'anchor',
+                    }
+
+                ]
+            },
+
         ]
     },
     {

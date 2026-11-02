@@ -1,6 +1,6 @@
-import { mchcEvent } from '@lm_fe/env';
+import { mchcEvent, mchcLogger } from '@lm_fe/env';
 import { IMchc_FormDescriptions_Field_Nullable, SMchc_FormDescriptions } from '@lm_fe/service';
-import { AnyObject, expect_array } from '@lm_fe/utils';
+import { AnyObject, expect_array, isObject, safeGetFromFuncOrData } from '@lm_fe/utils';
 import { FormInstance, Segmented, Tabs } from 'antd';
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
@@ -175,11 +175,12 @@ export function RenderSection(props: { fd: IMchc_FormDescriptions_Field_Nullable
 
 
 
-
+interface IMyAnchorConf { data: { id: string, title: string }[], props?: AnyObject }
 export function use_form_config(props: IFormSectionProps) {
     const { formDescriptions, bf_config, initialValues } = props
     const form = props.form as FormInstance & { setFieldsValue_old: FormInstance['setFieldsValue'] }
     const value_cache = useRef<AnyObject>()
+    const [form_anchor, set_form_anchor] = useState<IMyAnchorConf>()
 
     function assign_cache(value: any) {
         if (!value) return
@@ -223,6 +224,11 @@ export function use_form_config(props: IFormSectionProps) {
 
     useEffect(() => {
         const fd_config = formDescriptions ?? bf_config?.tableColumns
+        const anchor = safeGetFromFuncOrData(bf_config?.anchor)
+
+        if (isObject(anchor)) {
+            set_form_anchor(anchor as any)
+        }
         fd_config && SMchc_FormDescriptions.filter_form_config(fd_config)
             .then(f => {
                 setForm_config(f)
@@ -251,6 +257,6 @@ export function use_form_config(props: IFormSectionProps) {
         }
     }, [id_NO_msg])
 
-    return [form_config]
+    return [form_config, form_anchor] as const
 }
 

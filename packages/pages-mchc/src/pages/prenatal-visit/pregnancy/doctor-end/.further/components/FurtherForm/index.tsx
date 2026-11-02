@@ -309,7 +309,9 @@ function FurtherForm(props: IProps) {
                 const advice = expect_array(res.data) as string[]
                 if (advice.length > 0) {
                     const routineExam = form.getFieldValue('routineExam') ?? {}
-                    form.setFieldsValue({ routineExam: { ...routineExam, prescription: advice.join(',') } })
+                    // 医嘱列表按 `1、xxx 2、xxx` 的格式拼接
+                    const prescription = advice.map((item, index) => `${index + 1}、${item}`).join(' ')
+                    form.setFieldsValue({ routineExam: { ...routineExam, prescription } })
                     formChange(true)
                     mchcEnv.success('同步医嘱成功')
                 } else {

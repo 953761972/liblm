@@ -7,6 +7,7 @@ export { IMchc_FormDescriptions_Field_Nullable_Arr, tc_stringify_obj as stringif
 export interface IMchc_TableConfig {
     "id": any,
     "initialSearchValue": any,
+    "anchor": any,
     "renderBtns": any,
     "needChecked": any,
     "initialValues": any,
@@ -62,6 +63,7 @@ class Mchc_TableConfig_Service extends ModelService<IMchc_TableConfig> {
 
 
         _con.initialSearchValue = safe_get_object_symbol(config.initialSearchValue, props, {})
+        _con.anchor = safe_get_object_symbol(config.anchor, props, {})
 
 
         _con.searchParams = safe_get_object_symbol(config.searchParams, props, {})
@@ -95,6 +97,7 @@ class Mchc_TableConfig_Service extends ModelService<IMchc_TableConfig> {
 
         _con.genColumns = tc_top_stringify_fn(config.genColumns,)
         _con.initialSearchValue = tc_stringify_fn_or_obj(config.initialSearchValue,)
+        _con.anchor = tc_stringify_fn_or_obj(config.anchor,)
         _con.searchParams = tc_stringify_fn_or_obj(config.searchParams,)
         _con.initialValues = tc_stringify_obj(config.initialValues,)
 
