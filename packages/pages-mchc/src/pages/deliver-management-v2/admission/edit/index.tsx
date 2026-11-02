@@ -115,7 +115,7 @@ function DeliverEdit(props: AnyObject) {
 
       if (!id) {
         const res: any = await request.post("/api/newInpatientEmr", submit_values);
-        set_admissionId(res?.data.id))
+        set_admissionId(res?.data.id)
         set_addModalVisible(true)
         // message.success('新建成功');
       } else {

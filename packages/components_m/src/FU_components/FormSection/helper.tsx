@@ -166,7 +166,7 @@ export function RenderSection(props: { fd: IMchc_FormDescriptions_Field_Nullable
         ? <div className={classnames(styles['base-edit-panel-form_section'], { [styles['border']]: true })} style={{ border: `1px solid ${bg}`, borderRadius: 4 }} >
             <span className={styles["base-edit-panel-form_section_title"]} style={{ cursor: 'pointer', color: sys_theme.colorPrimary, background: sys_theme.bg_color }} onClick={() => setHidden(!hidden)}>
                 {<MyIcon value={hidden ? 'RightOutlined' : 'DownOutlined'} style={{ fontSize: 14, marginRight: 6 }} />}
-                <span style={{ userSelect: 'none', }}>{title}</span>
+                <span id={title} style={{ userSelect: 'none', }}>{title}</span>
             </span>
             {node}
         </div>

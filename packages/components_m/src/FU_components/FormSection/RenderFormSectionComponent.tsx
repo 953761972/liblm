@@ -262,7 +262,7 @@ function RenderFormSectionComponent(props: IProps) {
                 return (
                     <div
                         style={{
-                            padding: '4px 0',
+                            padding: '4px',
                             display: 'flex',
                             justifyContent: 'space-between',
                             alignItems: 'center',
@@ -271,7 +271,7 @@ function RenderFormSectionComponent(props: IProps) {
                         <span
                             style={{
                                 color: '#666',
-                                fontSize: inputProps.bold ?? true ? 18 : 14,
+                                fontSize: inputProps.bold ?? true ? 16 : 14,
                                 fontWeight: inputProps?.bold ?? true ? 'bold' : '',
                                 ...styles,
                             }}
