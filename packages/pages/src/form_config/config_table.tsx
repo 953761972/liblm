@@ -31,7 +31,7 @@ export const config_table_fd = (props: any): IMchc_FormDescriptions_Field_Nullab
                 children: [
                     {
                         inputType: 'MyMonaco',
-                        inputProps: { language: 'javascript', height: '72vh' },
+                        inputProps: { language: 'javascript', height: '70vh' },
                         dataIndex: 'tableColumns',
                     }
                 ]
@@ -42,7 +42,7 @@ export const config_table_fd = (props: any): IMchc_FormDescriptions_Field_Nullab
                 children: [
                     {
                         inputType: 'MyMonaco',
-                        inputProps: { language: 'javascript', height: '72vh' },
+                        inputProps: { language: 'javascript', height: '70vh' },
                         dataIndex: 'anchor',
                     }
 

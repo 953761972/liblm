@@ -26,7 +26,7 @@ function MyFormSection(props: IFormSectionProps) {
 
   const { needControl, bf_config } = props
 
-  const [f_config] = use_form_config(props)
+  const [f_config, form_anchor] = use_form_config(props)
 
   const [dispalyType, setDispalyType] = useState<c>()
 
@@ -292,7 +292,12 @@ function MyFormSection(props: IFormSectionProps) {
       props.sectionName
         ? renderSection({ title: props.sectionName, children: fds })
         : renderContent(fds)
-    if (!needControl) return node
+    if (!needControl) return <div style={{ display: 'inline-block' }}>
+      {
+        form_anchor ? JSON.stringify(form_anchor) : null
+      }
+      {node}
+    </div>
     return <div style={{ position: 'relative' }}>
       <div style={{ float: 'right', padding: 6, zIndex: 999, position: 'relative' }}>
         <Popover placement='leftBottom' content={<MyCheckbox marshal={0} value={dispalyType} onChange={v => setDispalyType(v)} options={typeOption} />} title="显示模式">
