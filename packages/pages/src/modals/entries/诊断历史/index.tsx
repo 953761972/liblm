@@ -45,20 +45,17 @@ export default function Test({ modal_data, visible, onCancel, ...others }: IGlob
 
     return (
         <Modal
+            centered
             {...others}
-
             open={visible}
             width={'80%'}
             footer={buttons}
             onCancel={onCancel}
             style={{ top: '20px' }}
-            bodyStyle={{ height: '80vh', overflowY: 'auto' }}
+            bodyStyle={{ height: '76vh', overflowY: 'auto' }}
             destroyOnClose
             className="diag-record-modal"
-
             title="诊断历史"
-
-
         >
             {renderTable()}
         </Modal>
@@ -101,7 +98,7 @@ const RenderTable = forwardRef<HTMLDivElement, { dataSource: any[], headerInfo: 
     // {id: 4876, createDate: '2022-02-24', doctor: 'kevin', diagnosis: '涉及骨折板和其他内固定装置的随诊医疗'}
     return <Wrap>
         <div ref={ref}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', fontWeight: 700, fontSize: '18px', marginTop: '15px', marginLeft: '15px', marginBottom: '15px' }}>
+            <div style={{ fontWeight: 600, fontSize: '16px', padding: '6px 0' }}>
                 <span>姓名：{get(headerInfo, 'name')}</span>
                 <span>就诊卡号：{get(headerInfo, 'outpatientNO')}</span>
                 <span>年龄：{get(headerInfo, 'age')}</span>
