@@ -1,9 +1,9 @@
 import { MyCheckbox, MyIcon } from '@lm_fe/components';
 import { IMchc_FormDescriptions_Field, IMchc_FormDescriptions_Field_Nullable, IMchc_FormDescriptions_InputProps } from '@lm_fe/service';
 import { safe_json_parse } from '@lm_fe/utils';
-import { Button, Col, ConfigProvider, Empty, FormItemProps, Popover, Row } from 'antd';
+import { Anchor, Button, Col, ConfigProvider, Empty, FormItemProps, Popover, Row } from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
-import { forEach, get, isEmpty, isNil, join, map, omit } from 'lodash';
+import { filter, forEach, get, isEmpty, isNil, join, map, omit } from 'lodash';
 import React, { lazy, useState } from 'react';
 import { MyLazyComponent } from '../../MyLazyComponent';
 import { RenderSection, RenderSegs, RenderTab, use_form_config } from './helper';
@@ -89,7 +89,7 @@ function MyFormSection(props: IFormSectionProps) {
       form,
       formName,
       disableAll = false,
-      // defaultOptions 
+      // defaultOptions
       defaultOptions = {
         labelCol: {
           span: 4,
@@ -280,6 +280,8 @@ function MyFormSection(props: IFormSectionProps) {
     return c
   }
 
+
+
   function render() {
     if (!f_config || isEmpty(f_config)) return <Empty description='配置不存在' />
     const filterArr: any[] = (f_config ?? []).filter(_ => _)
@@ -292,12 +294,8 @@ function MyFormSection(props: IFormSectionProps) {
       props.sectionName
         ? renderSection({ title: props.sectionName, children: fds })
         : renderContent(fds)
-    if (!needControl) return <div style={{ display: 'inline-block' }}>
-      {
-        form_anchor ? JSON.stringify(form_anchor) : null
-      }
-      {node}
-    </div>
+    if (!needControl) return node
+
     return <div style={{ position: 'relative' }}>
       <div style={{ float: 'right', padding: 6, zIndex: 999, position: 'relative' }}>
         <Popover placement='leftBottom' content={<MyCheckbox marshal={0} value={dispalyType} onChange={v => setDispalyType(v)} options={typeOption} />} title="显示模式">

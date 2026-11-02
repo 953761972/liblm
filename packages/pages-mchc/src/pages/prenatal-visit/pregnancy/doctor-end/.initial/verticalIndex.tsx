@@ -27,7 +27,13 @@ function DoctorEnd_Initial_Vertical(props: IDoctorEnd_InitialProps) {
     )
 
     const { Wrap, config } = BF_Wrap2(
-        { default_conf: { title: '门诊-垂直首诊', anchor: { data: [{ id: 'aa', title: 'bb' }], props: {} }, tableColumns: () => import('./verticalIndex_config'), } },
+        {
+            default_conf: {
+                title: '门诊-垂直首诊',
+                anchor: { data: [{ id: 'aa', title: 'bb' }], props: {} },
+                tableColumns: () => import('./verticalIndex_config'),
+            },
+        },
         { ...props, less: false, fuck_conceive, fuck_sureEdd },
     )
 
@@ -38,7 +44,7 @@ function DoctorEnd_Initial_Vertical(props: IDoctorEnd_InitialProps) {
     useEffect(() => {
         init()
 
-        return () => { }
+        return () => {}
     }, [])
 
     /**纵向一览风格初始数据 */
@@ -109,7 +115,7 @@ function DoctorEnd_Initial_Vertical(props: IDoctorEnd_InitialProps) {
                     onValuesChange={(changedValues) => {
                         set_dont_fuck_nt(false)
                     }}
-                    onFinish={(v) => { }}
+                    onFinish={(v) => {}}
                     bf_config={config}
                     form={form}
                 />
@@ -118,30 +124,18 @@ function DoctorEnd_Initial_Vertical(props: IDoctorEnd_InitialProps) {
     }
 
     return (
-        <div style={{ background: '#fff', paddingBottom: 48, height: '100%', display: 'flex', flexDirection: 'row' }}>
-            <div style={{ minWidth: 86, paddingTop: 12, paddingRight: 12 }}>
-                <Anchor bounds={-50} getContainer={() => document.getElementById('Anchor-Container')}>
-                    {map(
-                        filter(config?.tableColumns, (item) => !!item.label),
-                        (item) => {
-                            return <Anchor.Link key={item.label} href={`#${item.label}`} title={item.label} />
-                        },
-                    )}
-                </Anchor>
-            </div>
-            <div style={{ flex: 1, height: '100%', overflow: 'auto' }} id="Anchor-Container">
-                {verticalRender()}
+        <div style={{ background: '#fff', paddingBottom: 48 }}>
+            {verticalRender()}
 
-                <div style={{ padding: '12px', margin: '-12px 12px 0 12px', border: '1px solid #e8e8e8', borderRadius: 4 }}>
-                    <诊断处理_Tools
-                        id="诊断处理"
-                        diagnosesList={diagnosesList}
-                        setDiagnosesList={setDiagnosesList}
-                        headerInfo={headerInfo}
-                        onRefresh={init}
-                        visitData={visitData}
-                    />
-                </div>
+            <div style={{ padding: '12px', margin: '-12px 12px 0 12px', border: '1px solid #e8e8e8', borderRadius: 4 }}>
+                <诊断处理_Tools
+                    id="诊断处理"
+                    diagnosesList={diagnosesList}
+                    setDiagnosesList={setDiagnosesList}
+                    headerInfo={headerInfo}
+                    onRefresh={init}
+                    visitData={visitData}
+                />
             </div>
 
             <Space style={{ position: 'fixed', right: 30, bottom: 24, zIndex: 999 }}>
