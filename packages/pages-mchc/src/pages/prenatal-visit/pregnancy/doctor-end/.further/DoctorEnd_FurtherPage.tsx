@@ -36,7 +36,7 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
   } = props;
   const [diagnosesList, setDiagnosesList] = useState<IMchc_Doctor_Diagnoses[]>([])
 
-  const serialNo_q = getSearchParamsValue('serialNo')|| getSearchParamsValue('serialNO')
+  const serialNo_q = getSearchParamsValue('serialNo') || getSearchParamsValue('serialNO')
 
   const [visitsData, _setVisitsData] = useState<IMchc_Doctor_RvisitInfoOfOutpatient>()
 
@@ -130,7 +130,6 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
   function init_formData_and_diagnoses(vv?: IMchc_Doctor_RvisitInfoOfOutpatient) {
 
     if (!vv) {
-      set_formdata_and_diagnoses(get_default_value())
       return
     }
     const rvisits = vv.rvisits;
@@ -156,9 +155,9 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
 
     if (mchcEnv.is('越秀妇幼')) {
       const xxxa = diagnosesList.map((_) => ({
-          ..._,
-          serialNo,
-          outEmrId,
+        ..._,
+        serialNo,
+        outEmrId,
       }))
 
       SMchc_Doctor.new_diagnosis_list(xxxa).then(set_diagnosesList)

@@ -3,7 +3,7 @@ import { SelectTip } from '@lm_fe/pages';
 import { EventEmitter_Old, getSearchParamsValue, request, text_ellipsis } from '@lm_fe/utils';
 import { Card, Col, Menu, message, Popconfirm, Row } from 'antd';
 import { cloneDeep, find, findIndex, get, includes, isEmpty, map, set, } from 'lodash';
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { ComponentPanl } from './ComponentPanl';
 import { IIC, ITpl, ReporCardList, ReportCardEnum } from './constant_new';
 import './index.less';
@@ -202,5 +202,12 @@ class CaseReport extends Component<ICaseReport, any> {
 // const Comp = connect(({ dictionaries, tabs }) => ({ dictionaries, tabs }))(CaseReport as any);
 
 export default function CaseReport_Inner(props: any) {
+  useEffect(() => {
+    request.get('/api/caseRegister/getCaseRegisterType?id=1')
+
+    return () => {
+
+    }
+  }, [])
   return <CaseReport {...props} />
 }

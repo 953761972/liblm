@@ -184,10 +184,10 @@ function DeliverEdit(props: AnyObject) {
     )
   }]
 
-  return <Wrap style={{}}>
+  return <Wrap style={{height:'100%'}}>
     <BaseEditPanelFormFC
       form={form}
-      formDescriptions={__DEV__ ? form_fn : config?.tableColumns}
+      bf_config={config}
       renderBtns={() => {
         return <>
           <Popconfirm
