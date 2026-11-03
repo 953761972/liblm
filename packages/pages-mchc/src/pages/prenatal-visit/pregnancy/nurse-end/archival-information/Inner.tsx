@@ -149,7 +149,6 @@ function Pregnancies(props: { id?: TIdTypeCompatible; toAdd?: boolean; toCheck?:
                     initialValues={config?.initialValues}
                     requiredKeys={requiredKeys}
                     form={form}
-                    formDescriptions={config?.tableColumns}
                     onValuesChange={onValuesChange}
                     bf_config={config}
                     renderBtns={() => {

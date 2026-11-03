@@ -184,7 +184,7 @@ function DeliverEdit(props: AnyObject) {
     )
   }]
 
-  return <Wrap style={{height:'100%'}}>
+  return <Wrap style={{ height: '100%', overflow: 'auto' }}>
     <BaseEditPanelFormFC
       form={form}
       bf_config={config}

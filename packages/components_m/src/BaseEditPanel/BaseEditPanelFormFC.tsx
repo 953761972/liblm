@@ -82,12 +82,11 @@ export default function BaseEditPanelFormFC<T = any>(props: IProps) {
             try {
                 await onFinish?.(values)
                 message.success('操作成功！')
-            } catch (error) {}
+            } catch (error) { }
         }
         setLoading(false)
     }
 
-    const getRegistrationEvents = () => ({})
 
     const handleFieldsChange = (changedFields: any, allFields: any) => ({})
 
@@ -110,7 +109,6 @@ export default function BaseEditPanelFormFC<T = any>(props: IProps) {
                         formDescriptions={get(section, 'fields')!}
                         form={form}
                         events={isFunction(getEvents) && getEvents()}
-                        registrationEvents={isFunction(getRegistrationEvents) && getRegistrationEvents()}
                     />
                 }
             </>
@@ -120,28 +118,29 @@ export default function BaseEditPanelFormFC<T = any>(props: IProps) {
     const renderEditContent = () => {
         const oldNode = formDescriptions_old
             ? map(formDescriptions_old, (section, index) => {
-                  return (
-                      <div
-                          className={classnames(styles['base-edit-panel-form_section'], {
-                              [styles['border']]: !!section.name,
-                          })}
-                          key={index}
-                      >
-                          {renderSection(section)}
-                      </div>
-                  )
-              })
+                return (
+                    <div
+                        className={classnames(styles['base-edit-panel-form_section'], {
+                            [styles['border']]: !!section.name,
+                        })}
+                        key={index}
+                    >
+                        {renderSection(section)}
+                    </div>
+                )
+            })
             : null
-        const node = formDescriptions ? (
+        const node = (
             <FormSection
                 targetLabelCol={targetLabelCol}
                 initialValues={props.initialValues}
                 requiredKeys={props.requiredKeys}
                 formDescriptions={formDescriptions}
+                bf_config={bf_config}
                 data={data}
                 form={form}
             />
-        ) : null
+        )
         return oldNode ?? node
     }
 
