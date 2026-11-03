@@ -39,10 +39,17 @@ function Pregnancies(props: { id?: TIdTypeCompatible; toAdd?: boolean; toCheck?:
     })
 
     useEffect(() => {
+        let cancelled = false
+        let timer: ReturnType<typeof setTimeout> | undefined
+
+        form.resetFields()
+        setRequiredKeys({})
+        setFormData({ pregnancyInfo: { validateDate: formatDate()! } })
+
         if (_id) {
-            setTimeout(() => {
+            timer = setTimeout(() => {
                 SMchc_Nurse.getOutpatientDocument(_id).then((remoteData) => {
-                    if (!remoteData) return
+                    if (cancelled || !remoteData) return
                     mchcLogger.log('Pregnancies remote', remoteData)
                     const validateDate = remoteData?.pregnancyInfo?.validateDate
                     set(remoteData, 'pregnancyInfo.validateDate', validateDate ?? formatDate())
@@ -66,6 +73,11 @@ function Pregnancies(props: { id?: TIdTypeCompatible; toAdd?: boolean; toCheck?:
                     setFormData(remoteData)
                 })
             }, 1000)
+        }
+
+        return () => {
+            cancelled = true
+            if (timer) clearTimeout(timer)
         }
     }, [_id])
     const preset = preset_config()
