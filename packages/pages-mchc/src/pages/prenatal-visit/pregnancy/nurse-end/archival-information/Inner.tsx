@@ -141,16 +141,17 @@ function Pregnancies(props: { id?: TIdTypeCompatible; toAdd?: boolean; toCheck?:
                 setLoading(false)
             })
     }
-    console.log('initialValues', { config })
+
     return (
         <>
-            <Wrap style={{ overflow: 'auto', height: '100%' }}>
+            <Wrap style={{ height: '100%' }}>
                 <BaseEditPanelFormFC
                     initialValues={config?.initialValues}
                     requiredKeys={requiredKeys}
                     form={form}
                     formDescriptions={config?.tableColumns}
                     onValuesChange={onValuesChange}
+                    bf_config={config}
                     renderBtns={() => {
                         return (
                             <>

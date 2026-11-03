@@ -1,11 +1,10 @@
 import { mchcEvent } from '@lm_fe/env'
-import { Anchor, Form, FormInstance, FormProps, message } from 'antd'
-import React, { useEffect, useState } from 'react'
+import { Form, FormInstance, FormProps, message } from 'antd'
+import React, { useEffect } from 'react'
 import { MyFormSection } from './FormSection'
+import { FormAnchorWrap } from './FormAnchorWrap'
 import { IFormSectionProps } from './types'
 import { IMchc_TableConfig } from '@lm_fe/service'
-import { use_form_config } from './helper'
-import { isEmpty, map, filter } from 'lodash'
 
 type IBase<T = any> = Omit<FormProps<T>, 'labelCol' | 'onFieldsChange' | 'onValuesChange' | 'wrapperCol'> &
     IFormSectionProps
@@ -16,14 +15,13 @@ export interface IFormSectionFormProps<T = any> extends IBase {
     data?: T
     disableAll?: boolean
     fsync?: boolean
+    footer?: React.ReactNode
 }
 
 export function MyFormSectionForm<T extends Object>(props: IFormSectionFormProps<T>) {
-    const { onFieldsChange, onValuesChange, data, style = {}, bf_config, fsync, ...others } = props
+    const { onFieldsChange, onValuesChange, data, style = {}, bf_config, fsync, footer, ...others } = props
     const [_form] = Form.useForm<any>()
     const form = props.form ?? _form
-
-    const [f_config, form_anchor] = use_form_config(props)
 
     const onChange = onValuesChange ?? bf_config?.watchScript
 
@@ -44,26 +42,8 @@ export function MyFormSectionForm<T extends Object>(props: IFormSectionFormProps
         )
     }
 
-    function CMyLazyComponent({ children }: { children: React.ReactNode }) {
-        if (!form_anchor || isEmpty(form_anchor)) return <>{children}</>
-        return (
-            <div style={{ display: 'flex', flexDirection: 'row', height: '100%' }}>
-                <div style={{ minWidth: 86, paddingTop: 12, paddingRight: 12, height: '100%' }}>
-                    <Anchor bounds={-50} getContainer={() => document.getElementById('Form-Anchor-Container')}>
-                        {map(form_anchor.data, (item) => {
-                            return <Anchor.Link key={item.id} href={`#${item.id}`} title={item.title} />
-                        })}
-                    </Anchor>
-                </div>
-                <div id="Form-Anchor-Container" style={{ flex: 1, height: '100%', overflowY: 'auto' }}>
-                    {children}
-                </div>
-            </div>
-        )
-    }
-
     return (
-        <CMyLazyComponent>
+        <FormAnchorWrap bf_config={bf_config}>
             <Form
                 {...others}
                 onFieldsChange={(a, b) => {
@@ -91,7 +71,8 @@ export function MyFormSectionForm<T extends Object>(props: IFormSectionFormProps
                 form={form}
             >
                 {renderEditContent()}
+                {footer ?? null}
             </Form>
-        </CMyLazyComponent>
+        </FormAnchorWrap>
     )
 }

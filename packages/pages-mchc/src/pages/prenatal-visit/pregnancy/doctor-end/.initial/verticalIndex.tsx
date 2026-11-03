@@ -50,7 +50,7 @@ function DoctorEnd_Initial_Vertical(props: IDoctorEnd_InitialProps) {
     /**纵向一览风格初始数据 */
     async function init() {
         let res = await SMchc_Doctor.getFirstVisitInfoOfOutpatient(pregnancyId)
-        mchcLogger.log('vertical init', res)
+        // mchcLogger.log('vertical init', res)
         const diagnosisAndAdvice = get(res, 'diagnosisAndAdvice')
         const d = get(diagnosisAndAdvice, 'diagnoses')
 
@@ -80,7 +80,6 @@ function DoctorEnd_Initial_Vertical(props: IDoctorEnd_InitialProps) {
     }
 
     function handlePrint(resource: 'prenatalVisit' | 'prenatalVisit1') {
-        return mchcLogger.log('78787878--vertical init', config.tableColumns)
         const allFormData = form.getFieldsValue()
         let id = ''
         if (resource == 'prenatalVisit') {
@@ -109,7 +108,7 @@ function DoctorEnd_Initial_Vertical(props: IDoctorEnd_InitialProps) {
 
     function verticalRender() {
         return (
-            <Wrap>
+            <Wrap style={{ height: '100%' }}>
                 <FormSectionForm
                     disableAll={disabled_save}
                     onValuesChange={(changedValues) => {
@@ -118,25 +117,32 @@ function DoctorEnd_Initial_Vertical(props: IDoctorEnd_InitialProps) {
                     onFinish={(v) => {}}
                     bf_config={config}
                     form={form}
+                    footer={
+                        <div
+                            style={{
+                                padding: '12px',
+                                border: '1px solid #e8e8e8',
+                                borderRadius: 4,
+                            }}
+                        >
+                            <诊断处理_Tools
+                                id="诊断处理"
+                                diagnosesList={diagnosesList}
+                                setDiagnosesList={setDiagnosesList}
+                                headerInfo={headerInfo}
+                                onRefresh={init}
+                                visitData={visitData}
+                            />
+                        </div>
+                    }
                 />
             </Wrap>
         )
     }
 
     return (
-        <div style={{ background: '#fff', paddingBottom: 48 }}>
+        <div style={{ height: '100%', background: '#fff', paddingBottom: 48 }}>
             {verticalRender()}
-
-            <div style={{ padding: '12px', margin: '-12px 12px 0 12px', border: '1px solid #e8e8e8', borderRadius: 4 }}>
-                <诊断处理_Tools
-                    id="诊断处理"
-                    diagnosesList={diagnosesList}
-                    setDiagnosesList={setDiagnosesList}
-                    headerInfo={headerInfo}
-                    onRefresh={init}
-                    visitData={visitData}
-                />
-            </div>
 
             <Space style={{ position: 'fixed', right: 30, bottom: 24, zIndex: 999 }}>
                 <Button
