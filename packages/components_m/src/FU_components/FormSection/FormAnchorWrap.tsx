@@ -46,7 +46,7 @@ function FormAnchorWrap({ bf_config, children }: { bf_config: any; children: Rea
                     })}
                 </Anchor>
             </div>
-            <div style={{ display: 'inline-block', height: '100%', paddingLeft: 98 }}>{children}</div>
+            <div style={{ height: '100%', paddingLeft: 98 }}>{children}</div>
         </div>
     )
 }
