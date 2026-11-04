@@ -28,6 +28,7 @@ export default function JWS(props: IInitial_Tab_props) {
   return <Wrap>
     <FormSectionForm
       disableAll={disabled_save}
+      bf_config={config}
 
       onValuesChange={(changedValues) => {
 
@@ -37,7 +38,7 @@ export default function JWS(props: IInitial_Tab_props) {
           .then(() => mchcEvent.emit('outpatient', { type: '刷新头部' }))
 
       }}
-      formDescriptions={config?.tableColumns} form={form} />
+      form={form} />
   </Wrap>
 }
 Object.assign(JWS, {

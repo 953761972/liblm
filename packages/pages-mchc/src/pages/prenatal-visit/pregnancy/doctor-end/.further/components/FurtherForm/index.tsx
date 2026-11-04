@@ -339,8 +339,8 @@ function FurtherForm(props: IProps) {
         <Card
             title={form_id ? '编辑产检记录' : '本次产检信息'}
             size="small"
-            styles={{ body: { padding: 0, height: 'calc(100% - 37px)', overflowY: 'auto' } }}
-            style={{ overflowY: 'auto' }}
+            styles={{ body: { padding: 0, height: 'calc(100% - 32px)', overflowY: 'auto' } }}
+            style={{ flex: 1, overflow: 'hidden' }}
             extra={
                 <span id="extra" style={{ display: 'inline-block', minWidth: 75, height: 24, marginLeft: 98 }}>
                     {form_id ? (

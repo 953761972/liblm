@@ -26,28 +26,11 @@ export const config_table_fd = (props: any): IMchc_FormDescriptions_Field_Nullab
         hidden: true,
         children: [
             {
-                title: '字段设置',
-                containerType: 'segs',
-                children: [
-                    {
-                        inputType: 'MyMonaco',
-                        inputProps: { language: 'javascript', height: '70vh' },
-                        dataIndex: 'tableColumns',
-                    }
-                ]
-            },
-            {
-                title: '锚点设置',
-                containerType: 'segs',
-                children: [
-                    {
-                        inputType: 'MyMonaco',
-                        inputProps: { language: 'javascript', height: '70vh' },
-                        dataIndex: 'anchor',
-                    }
+                inputType: 'MyMonaco',
+                inputProps: { language: 'javascript', height: '70vh' },
+                dataIndex: 'tableColumns',
+            }
 
-                ]
-            },
 
         ]
     },
@@ -390,47 +373,72 @@ export const config_table_fd = (props: any): IMchc_FormDescriptions_Field_Nullab
         hidden: true,
 
         children: [
+            {
+                title: '行为',
+                containerType: 'segs',
+                children: [
+                    {
+                        title: '打印',
+                        inputType: 'MyCheckbox',
+                        inputProps: {
+                            uniqueKey: '否是',
+                            marshal: 0,
+                        },
+                        dataIndex: 'needPrint',
+                        hidden: true,
+                        layout: '1/3',
+                    },
+                    {
+                        title: '同步',
+                        inputType: 'MyCheckbox',
+                        inputProps: {
+                            uniqueKey: '否是',
+                            marshal: 0,
+                        },
+                        dataIndex: 'needSync',
+                        hidden: true,
+                        layout: '1/3',
+                    },
+                    {
+                        title: '导入',
+                        inputType: 'MyCheckbox',
+                        inputProps: {
+                            uniqueKey: '否是',
+                            marshal: 0,
+                        },
+                        dataIndex: 'needImport',
+                        hidden: true,
+                        layout: '1/3',
+                    },
 
-            {
-                title: '打印',
-                inputType: 'MyCheckbox',
-                inputProps: {
-                    uniqueKey: '否是',
-                    marshal: 0,
-                },
-                dataIndex: 'needPrint',
-                hidden: true,
-                layout: '1/3',
-            },
-            {
-                title: '同步',
-                inputType: 'MyCheckbox',
-                inputProps: {
-                    uniqueKey: '否是',
-                    marshal: 0,
-                },
-                dataIndex: 'needSync',
-                hidden: true,
-                layout: '1/3',
-            },
-            {
-                title: '导入',
-                inputType: 'MyCheckbox',
-                inputProps: {
-                    uniqueKey: '否是',
-                    marshal: 0,
-                },
-                dataIndex: 'needImport',
-                hidden: true,
-                layout: '1/3',
+                ]
             },
             {
                 title: '初始值',
-                inputType: 'MyMonaco',
-                inputProps: { language: 'javascript', height: '70vh' },
-                dataIndex: 'initialValues',
-                layout: '1/3',
+                containerType: 'segs',
+                children: [
+
+                    {
+                        inputType: 'MyMonaco',
+                        inputProps: { language: 'javascript', height: '70vh' },
+                        dataIndex: 'initialValues',
+                    },
+
+                ]
             },
+            {
+                title: '锚点设置',
+                containerType: 'segs',
+                children: [
+                    {
+                        inputType: 'MyMonaco',
+                        inputProps: { language: 'javascript', height: '70vh' },
+                        dataIndex: 'anchor',
+                    }
+
+                ]
+            },
+
         ]
     },
 

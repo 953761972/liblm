@@ -36,7 +36,7 @@ export default function JWS(props: IInitial_Tab_props) {
           .then(() => mchcEvent.emit('outpatient', { type: '刷新头部' }))
 
       }}
-      formDescriptions={config?.tableColumns} form={form} />
+      bf_config={config} form={form} />
   </Wrap>
 }
 Object.assign(JWS, {

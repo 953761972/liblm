@@ -35,7 +35,7 @@ export default function ZhuanKeJianCha(props: IInitial_Tab_props) {
 
 
       }}
-      formDescriptions={config?.tableColumns} form={form} />
+      bf_config={config} form={form} />
   </Wrap>
 }
 Object.assign(ZhuanKeJianCha, {
