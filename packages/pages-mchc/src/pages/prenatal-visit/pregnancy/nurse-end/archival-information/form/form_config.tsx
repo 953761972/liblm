@@ -7,6 +7,7 @@ import { 本次孕产信息_config } from "./本次孕产信息";
 import { 转入登记_config } from "./转入登记";
 import { 高危管理_config } from "./高危管理";
 import { 其他_config } from "./其他";
+import { 其他补充信息_config } from "./其他补充信息";
 
 
 
@@ -19,6 +20,7 @@ export default defineFormConfig(
         高危管理_config(),
         体征检查_config(),
         转入登记_config(),
+        其他补充信息_config(),
         其他_config(),
     ]
 )

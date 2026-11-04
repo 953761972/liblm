@@ -92,7 +92,17 @@ interface IMchc_Nurse_OutpatientDocument_pregnancyInfo {
     "checkHospital": null,
     "hivResult": null,
     "syphilisResult": null,
-    "hbvResult": null
+    "hbvResult": null,
+    "birthCertificate": string | null,
+    "hasPerinatalLicense": string | null,
+    "perinatalLicenseNumber": string | null,
+    "pregnancyCourseAttendance": string | null,
+    "followUpSurvey": string | null,
+    "followUpSurveyScore": string | null,
+    "appointmentConductorSituation": string | null,
+    "outpatientResultScan": string | null,
+    "inpatientRegistrationDate": string | null,
+    "designatedDeliveryHospital": string | null
 }
 
 interface IMchc_Nurse_OutpatientDocument_highRiskInfo {
