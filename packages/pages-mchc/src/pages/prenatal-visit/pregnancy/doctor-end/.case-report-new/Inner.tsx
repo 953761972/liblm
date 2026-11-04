@@ -1,69 +1,85 @@
-import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { mchcLogger } from '@lm_fe/env';
-import { AnyObject, expect_array, fubaoRequest as request, text_ellipsis } from '@lm_fe/utils';
-import { Button, Card, Col, Empty, List, Modal, Popconfirm, Row } from 'antd';
+import { PlusCircleOutlined } from '@ant-design/icons';
+import { MyButton, MyIcon, OkButton } from '@lm_fe/components_m';
+import { mchcEvent } from '@lm_fe/env';
+import { use_provoke } from '@lm_fe/provoke';
+import { AnyObject, expect_array, isArray, fubaoRequest as request, text_ellipsis } from '@lm_fe/utils';
+import { Button, Card, Col, Empty, List, Modal, Row } from 'antd';
 import { cloneDeep, first, get, isEmpty, map } from 'lodash';
-import { lazy, useEffect, useState } from 'react';
-import { ICaseReport, ICaseTpl, IDataItem } from './types';
+import React, { lazy, useEffect, useRef, useState } from 'react';
+import { ICaseReport, ICaseTpl, IDataItem, IDetailItem } from './types';
 const RenderContentWrap = lazy(() => import('./RenderContentWrap'))
 
 
-
-export default function FuckingNursing({ id, outpatientNo }: ICaseReport) {
+export default function CaseNew(props: ICaseReport) {
+  const { modType, id } = props
+  const { config } = use_provoke('config')
   const [siderPanels, set_siderPanels] = useState<IDataItem[]>([])
 
   const [surgeryTemplates, set_surgeryTemplates] = useState<ICaseTpl[]>([])
   const [visible, set_visible] = useState<boolean>(false)
   const [activeItem, set_activeItem] = useState<IDataItem | undefined>()
+  const activeItemCache = useRef(activeItem)
+  function safe_set_item(item?: IDataItem) {
+    activeItemCache.current = item
+    set_activeItem(item)
+  }
 
-
+  const params = { pregnancyId: id, modType }
   useEffect(() => {
 
     init();
+    return mchcEvent.on_rm('custom_msg', e => {
+      if (e.type === 'case-report-save') {
+        const data: IDetailItem = e.data || {}
+        if (data.id) {
+          fetch_data(data.id)
+        }
+      }
+    })
 
-    return () => {
-
-    }
   }, [])
 
 
-  function handleAdd() {
+  function open_modal() {
     set_visible(true)
   };
 
   function handleClickListItem(item: IDataItem) {
-    set_activeItem(item)
+    safe_set_item(item)
 
   };
 
-  async function fetch_data() {
+  async function fetch_data(item_id?: number) {
 
 
 
-    let data = (await request.get<IDataItem[]>('/api/ic/findPersonalPage', { params: { pregnancyId: id } })).data;
+    let data = (await request.get<IDataItem[]>('/api/ic/findPersonalPage', { params })).data;
 
 
     let newSiderPanels = expect_array(data);
 
     set_siderPanels(newSiderPanels)
 
+    const target = newSiderPanels.find(_ => _.id === item_id) || first(newSiderPanels)
+    safe_set_item(target)
 
-    set_activeItem(first(newSiderPanels))
 
   };
   async function init() {
 
-    const ttt = await request.get<AnyObject>('/api/caseRegister/getCaseRegisterType?id=1')
-
-    set_surgeryTemplates(Object.entries(ttt.data).map(arr => ({ code: arr[0], title: arr[1] })))
+    const ttt = await request.get<AnyObject>('/api/caseRegister/getCaseRegisterType', { params })
+    const options = isArray(ttt.data) ? ttt.data : Object.entries(ttt.data).map(arr => ({ code: arr[0], name: arr[1] }))
+    set_surgeryTemplates(options)
     fetch_data()
   };
 
-  async function handleDelete(item: any) {
+  async function handleDelete(item: IDataItem) {
     const id = get(item, 'id');
-    const res = (await request.delete(`/api/ic/delete/${id}`)).data;
+    if (id && confirm('确定山上吗？')) {
+      await request.delete(`/api/ic/delete/${id}`);
+    }
 
-    set_activeItem(undefined)
+    safe_set_item(undefined)
 
     await fetch_data();
   };
@@ -73,12 +89,14 @@ export default function FuckingNursing({ id, outpatientNo }: ICaseReport) {
     let newItem = {
       id: null,
       code: fuck_type.code,
-      name: fuck_type.title
+      name: fuck_type.name,
+      modType,
+      pregnancyId: id
     };
     newSiderPanels.push(newItem);
     set_visible(false)
     set_siderPanels(newSiderPanels)
-    set_activeItem(newItem)
+    safe_set_item(newItem)
 
   };
 
@@ -88,52 +106,40 @@ export default function FuckingNursing({ id, outpatientNo }: ICaseReport) {
         size="small"
         bordered={false}
         style={{ height: '100%' }}
-        title={<span style={{ color: '#150f55', fontWeight: 600 }}>就诊记录</span>}
-        extra={<PlusCircleOutlined onClick={handleAdd} />}
+        styles={{ body: { padding: 0 } }}
+        title={<span style={{ color: '#150f55', fontWeight: 600 }}>记录</span>}
+        extra={<PlusCircleOutlined onClick={open_modal} />}
       >
 
         <List
+          size='small'
           itemLayout="horizontal"
           dataSource={siderPanels}
           renderItem={(data, index) => {
-            const op_name = data.name!
-
+            const item_name = data.name!
+            const item_id = data.id!
+            const is_active = get(activeItem, 'id') === item_id
             return (
-              <List.Item onClick={e => handleClickListItem(data)}>
+              <List.Item >
                 <List.Item.Meta
-                  title={text_ellipsis(op_name, 10)}
+                  title={<a style={{ color: is_active ? config.styles?.colorPrimary : '' }} onClick={e => handleClickListItem(data)}>{text_ellipsis(item_name, 14)}</a>}
                   description={
                     <>
-                      {get(data, 'id') && get(data, 'id') != -1 ? (
-                        <Popconfirm
-                          title="确定要删除吗?"
-                          onConfirm={() => handleDelete(data)}
-                          okText="确定"
-                          cancelText="取消"
-                        >
-                          {get(activeItem, 'id') === get(data, 'id') && (
-                            <DeleteOutlined
-                              style={{ color: '#007aff', float: 'right', marginTop: 2, marginLeft: 8 }}
-                            />
-                          )}
-                          {get(data, 'surgicalDate') && (
-                            <span className="date" style={{ float: 'right' }}>
-                              {get(data, 'surgicalDate')}
-                            </span>
-                          )}
-                        </Popconfirm>
-                      ) : (
-                        <>
-                          <EditOutlined
-                            style={{ color: 'rgb(24, 144, 255)', float: 'right', marginTop: 2, marginLeft: 8 }}
+                      <div style={{ display: 'flex', alignContent: 'center', justifyContent: 'space-between' }}>
+
+                        <span>
+                          {get(data, 'filledDate', '--')}
+                        </span>
+                        {
+                          <OkButton
+                            type='text'
+                            size='small'
+                            icon={is_active ? <MyIcon value='DeleteOutlined' /> : null}
+                            onClick={() => handleDelete(data)}
                           />
-                          {get(data, 'surgicalDate') && (
-                            <span className="date" style={{ float: 'right' }}>
-                              {get(data, 'surgicalDate')}
-                            </span>
-                          )}
-                        </>
-                      )}
+
+                        }
+                      </div>
                     </>
                   }
                 />
@@ -147,51 +153,28 @@ export default function FuckingNursing({ id, outpatientNo }: ICaseReport) {
   };
 
   function renderContent() {
-    const target_tpl = surgeryTemplates.find(_ => _.code === activeItem?.code)
-    mchcLogger.log('renderContent xxgg', surgeryTemplates, activeItem, target_tpl)
-    if (isEmpty(siderPanels)) {
-      return (
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100%',
-          background: '#fff',
-        }}>
-          <div>暂无数据，请选择模板内容</div>
-          <div>
-            {map(surgeryTemplates, (nurseType, key) => {
-              return (
-                <Button style={{ margin: 8 }} key={key} onClick={() => handleChooseTemplate(nurseType)}>
-                  {nurseType.title}
-                </Button>
-              );
-            })}
-          </div>
-        </div>
-      )
-    }
-    if (!target_tpl || !activeItem) {
-      return <Empty />
+
+
+    if (isEmpty(siderPanels) || !activeItem) {
+      return <Empty style={{ padding: 128 }} description={<MyButton primary btn_text='暂无数据，请选择模板内容' onClick={open_modal} />} />
     }
     return <RenderContentWrap
-      outpatientNo={outpatientNo}
-      familyPlanningId={id}
-      tableColumns={[]}
+      activeItemCache={activeItemCache}
       activeItem={activeItem}
-      active_key={target_tpl.code}
-      active_title={target_tpl.title}
-      onRefresh={fetch_data}
     />
   };
 
   return (
-    <Row style={{ height: '100%' }}>
-      <Col style={{ height: '100%', width: 290, overflow: 'auto', backgroundColor: '#fff' }}>
+
+    <Row style={{ height: '100%' }} gutter={6}>
+      <Col span={4} style={{ height: '100%', overflow: 'auto', }}>
         {renderSider()}
       </Col>
-      <Col style={{ height: '100%', width: 'calc(100% - 290px)', overflow: 'auto' }}>{renderContent()}</Col>
+      <Col span={20} style={{ height: '100%', overflow: 'auto' }}>
+        <Card size='small' styles={{ body: { padding: 0 } }}>
+          {renderContent()}
+        </Card>
+      </Col>
       <Modal
         open={visible}
         onCancel={() => {
@@ -201,11 +184,12 @@ export default function FuckingNursing({ id, outpatientNo }: ICaseReport) {
         {map(surgeryTemplates, (nurseType, key) => {
           return (
             <Button style={{ margin: 8 }} key={key} onClick={() => handleChooseTemplate(nurseType)}>
-              {nurseType.title}
+              {nurseType.name}
             </Button>
           );
         })}
       </Modal>
     </Row>
+
   );
 }

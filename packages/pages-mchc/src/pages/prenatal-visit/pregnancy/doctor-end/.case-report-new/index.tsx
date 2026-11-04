@@ -2,6 +2,6 @@ import React, { lazy } from "react";
 import { ICaseReport } from "./types";
 
 const Inner = lazy(() => import('./Inner'))
-export function DoctorEnd_CaseReport_New(props: ICaseReport) {
+export function DoctorEnd_CaseReport_New_New(props: ICaseReport) {
   return <Inner {...props} />
 }
