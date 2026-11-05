@@ -29,11 +29,9 @@ export default function CaseNew(props: ICaseReport) {
 
     init();
     return mchcEvent.on_rm('custom_msg', e => {
-      if (e.type === 'case-report-save') {
-        const data: IDetailItem = e.data || {}
-        if (data.id) {
-          fetch_data(data.id)
-        }
+      if (e.type === 'case-report-refresh') {
+        const data: IDetailItem = e.data
+        fetch_data(data?.id)
       }
     })
 
@@ -73,16 +71,7 @@ export default function CaseNew(props: ICaseReport) {
     fetch_data()
   };
 
-  async function handleDelete(item: IDataItem) {
-    const id = get(item, 'id');
-    if (id && confirm('确定山上吗？')) {
-      await request.delete(`/api/ic/delete/${id}`);
-    }
 
-    safe_set_item(undefined)
-
-    await fetch_data();
-  };
 
   function handleChooseTemplate(fuck_type: ICaseTpl) {
     let newSiderPanels = cloneDeep(siderPanels.filter(_ => _.id !== null));
@@ -122,7 +111,7 @@ export default function CaseNew(props: ICaseReport) {
             return (
               <List.Item >
                 <List.Item.Meta
-                  title={<a style={{ color: is_active ? config.styles?.colorPrimary : '' }} onClick={e => handleClickListItem(data)}>{text_ellipsis(item_name, 14)}</a>}
+                  title={<a style={{ color: is_active ? config.styles?.colorPrimary : '' }} onClick={e => handleClickListItem(data)}>{text_ellipsis(item_name, 16)}</a>}
                   description={
                     <>
                       <div style={{ display: 'flex', alignContent: 'center', justifyContent: 'space-between' }}>
@@ -130,15 +119,7 @@ export default function CaseNew(props: ICaseReport) {
                         <span>
                           {get(data, 'filledDate', '--')}
                         </span>
-                        {
-                          <OkButton
-                            type='text'
-                            size='small'
-                            icon={is_active ? <MyIcon value='DeleteOutlined' /> : null}
-                            onClick={() => handleDelete(data)}
-                          />
 
-                        }
                       </div>
                     </>
                   }

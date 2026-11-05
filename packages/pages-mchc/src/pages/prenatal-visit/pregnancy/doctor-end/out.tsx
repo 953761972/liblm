@@ -1,7 +1,7 @@
 
 export * from './.initial'
 export * from './.further'
-export * from './.case-report'
+// export * from './.case-report'
 export * from './.case-report-new'
 export * from './.postpartum'
 export * from './.home-care'

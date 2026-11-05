@@ -18,8 +18,7 @@ export default function RenderContentWrap(props: IProps) {
                 return values
             },
             handleBeforePopup(_: IDataItem) {
-                const props = ctx.utils.safeGetFromFuncOrData(ctx.props, {})
-                const activeItem = ctx.utils.get<IDataItem>(props, 'activeItem', {})!
+                const activeItem = ctx.utils.get<IDataItem>(ctx.props, 'activeItem.current', {})!
                 const id = ctx.utils.get(activeItem, 'id')
 
                 if (id) {
@@ -37,10 +36,7 @@ export default function RenderContentWrap(props: IProps) {
         }
     },
 
-        () => {
-
-            return ({ activeItem: activeItemCache.current })
-        })
+        { activeItem: activeItemCache })
 
 
 

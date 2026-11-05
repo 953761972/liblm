@@ -69,6 +69,27 @@ export default defineFormConfig([
         },
         children: [
             {
+                "inputType": "MyButton",
+                "inputProps": {
+                    "btn_text": "删除",
+                    danger: true,
+                    "on_btn_click": function (e, form) {
+                        if (form) {
+                            var values = form.getFieldsValue();
+                            if (!values.id)
+                                return ctx.mchcEvent.emit('custom_msg', { type: 'case-report-refresh', data: null })
+
+                            if (confirm('确定删除吗？')) {
+                                ctx.request.delete(`/api/ic/delete/${values.id}`)
+                                    .then(() => {
+                                        ctx.mchcEvent.emit('custom_msg', { type: 'case-report-refresh', data: null })
+                                    })
+                            }
+                        }
+                    }
+                },
+            },
+            {
                 "title": "",
                 "inputType": "MyButton",
                 "inputProps": {
@@ -121,7 +142,7 @@ export default defineFormConfig([
                         if (form) {
                             var values = form.getFieldsValue();
                             ctx.request.post('/api/ic/saveForm', values).then(res => {
-                                ctx.mchcEvent.emit('custom_msg', { type: 'case-report-save', data: res.data })
+                                ctx.mchcEvent.emit('custom_msg', { type: 'case-report-refresh', data: res.data })
                             })
 
                         }
@@ -140,13 +161,14 @@ export default defineFormConfig([
                             var values = form.getFieldsValue();
                             ctx.utils.set_dirty(values, 'state', 2)
                             ctx.request.post('/api/ic/submitForm', values).then(res => {
-                                ctx.mchcEvent.emit('custom_msg', { type: 'case-report-save', data: res.data })
+                                ctx.mchcEvent.emit('custom_msg', { type: 'case-report-refresh', data: res.data })
                             })
 
                         }
                     }
                 },
             },
+
         ]
     },
     {
