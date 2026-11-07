@@ -73,6 +73,15 @@ export class GlobalModal<T extends { [x: string]: (...args: any) => any, }> {
 
         this.setStack([...this.stack])
     }
+    closeOne(id: number, status?: boolean, e?: React.MouseEvent<HTMLElement>) {
+        const index = this.stack.findIndex(_ => _.id === id)
+        if (index === -1) {
+            return
+        }
+        const [item] = this.stack.splice(index, 1)
+        this.clear_one(item, status, e)
+        this.setStack([...this.stack])
+    }
     private clear_one(item?: StackItem, status?: boolean, e?: React.MouseEvent<HTMLElement>) {
         const config = item?.data
 
