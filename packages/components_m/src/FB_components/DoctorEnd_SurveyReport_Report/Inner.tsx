@@ -119,7 +119,6 @@ export default function Inner(props: IProps) {
                                         //     }
                                         // }}
                                         bordered
-                                        scroll={{ y: 400 }}
                                         // className="prenatal-visit-main-table right-table"
                                         columns={[
                                             { title: '检验项目', dataIndex: 'itemName', key: 'itemName' },
@@ -128,10 +127,10 @@ export default function Inner(props: IProps) {
                                                     const normal_state = check_normal(record)
                                                     const is_异常 = normal_state === '异常'
                                                     let text = value
-                                                    if (record.stateStr === '偏高') text = value + '↑'
-                                                    if (record.stateStr === '偏低') text = value + '↓'
+                                                    if (record.stateStr === '偏高') text = value + ' ↑'
+                                                    if (record.stateStr === '偏低') text = value + ' ↓'
 
-                                                    return <span style={{ color: is_异常 ? 'red' : 'unset', fontSize: is_异常 ? 18 : 14, fontWeight: is_异常 ? 'bold' : 'unset' }}>{text}</span>
+                                                    return <span style={{ color: is_异常 ? 'red' : 'unset', fontWeight: is_异常 ? 'bold' : 'unset' }}>{text}</span>
                                                 },
                                             },
                                             {
