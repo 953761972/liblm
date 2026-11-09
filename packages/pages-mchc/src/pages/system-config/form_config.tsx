@@ -61,8 +61,7 @@ export default defineFormConfig(
                     label: '加密登录',
                     name: '加密登录',
                     inputType: 'MSW',
-                    inputProps: {
-                    },
+                    inputProps: {},
                     layout: '1/3',
                 },
                 {
@@ -155,7 +154,6 @@ export default defineFormConfig(
                     title: '其他',
                     containerType: 'segs',
                     children: [
-
                         {
                             label: '头部信息拓展',
                             name: '头部信息拓展',
@@ -182,7 +180,6 @@ export default defineFormConfig(
                             },
                             layout: '1/2',
                         },
-
 
                         {
                             label: '专案拓展',
@@ -230,9 +227,7 @@ export default defineFormConfig(
                             },
                             layout: '1/3',
                         },
-
-
-                    ]
+                    ],
                 },
                 {
                     label: '医生端',
@@ -290,7 +285,6 @@ export default defineFormConfig(
                             inputProps: { options: switchOptions, marshal: 0 },
                             layout: '1/3',
                         },
-
 
                         {
                             label: '看诊审核限制',
@@ -359,7 +353,6 @@ export default defineFormConfig(
                             layout: '1/3',
                         },
 
-
                         {
                             label: '首检病历垂直风格',
                             name: '医生端_首检病历垂直风格',
@@ -414,9 +407,21 @@ export default defineFormConfig(
                             layout: '1/3',
                         },
                         {
+                            label: '检验报告_界面',
+                            name: '检验报告_界面',
+                            inputType: 'MS',
+                            inputProps: {
+                                marshal: 0,
+                                options: [
+                                    { value: '左列表_右详情', label: '左列表_右详情' },
+                                    { value: '上查询_下列表', label: '上查询_下列表' },
+                                ],
+                            },
+                            layout: '1/3',
+                        },
+                        {
                             label: '签名',
                             children: [
-
                                 {
                                     label: '签名形式',
                                     name: '签名形式',
@@ -425,7 +430,7 @@ export default defineFormConfig(
                                         marshal: 0,
                                         options: getSameOptions('CA签名并保存,CA签名'),
                                         popupMatchSelectWidth: 300,
-                                        allowClear: true
+                                        allowClear: true,
                                     },
                                     layout: '1/3',
                                 },
@@ -437,7 +442,7 @@ export default defineFormConfig(
                                         marshal: 0,
                                         options: getSameOptions('扫码(默认),本地http签名'),
                                         popupMatchSelectWidth: 300,
-                                        allowClear: true
+                                        allowClear: true,
                                     },
                                     layout: '1/3',
                                 },
@@ -447,7 +452,6 @@ export default defineFormConfig(
                                     inputType: 'Input',
                                     inputProps: {},
                                     layout: '1/3',
-
                                 },
                                 {
                                     label: '本地http签名格式',
@@ -457,21 +461,19 @@ export default defineFormConfig(
                                         options: getSameOptions('json(默认),formdata,json_formdata,searchparams'),
                                         marshal: 0,
                                         popupMatchSelectWidth: 300,
-                                        allowClear: true
+                                        allowClear: true,
                                     },
 
                                     layout: '1/3',
-
                                 },
                                 {
                                     label: '本地http签名净化',
                                     name: '本地http签名净化',
                                     inputType: 'MSW',
                                     layout: '1/3',
-
-                                }
+                                },
                             ],
-                        }
+                        },
                     ],
                 },
 
@@ -513,7 +515,6 @@ export default defineFormConfig(
                         },
                     ],
                 },
-
             ],
         },
         {

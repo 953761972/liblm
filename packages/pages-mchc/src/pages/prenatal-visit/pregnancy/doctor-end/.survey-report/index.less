@@ -1,92 +1,134 @@
 .prenatal-visit-main_survey {
-  height: 100%;
-
-  .survey-left-wrapper {
-    width: 256px;
     height: 100%;
-    float: left;
-  }
 
-  .survey-right-wrapper {
-    margin-left: 256px;
-    height: 100%;
-    overflow: auto;
-  }
-
-  .survey-left {
-    padding: 0 8px;
-    height: 100%;
-    background-color: #fff;
-    margin-right: 12px;
-
-    .left-title {
-      height: 48px;
-      line-height: 48px;
-      border-bottom: 1px solid #d7dce7;
-      margin-bottom: 12px;
+    .survey-left-wrapper {
+        width: 256px;
+        height: 100%;
+        float: left;
     }
 
-    .ant-collapse {
-      max-height: 600px;
-      overflow-y: auto;
-      border-top: 1px solid #c9cfda;
-      .ant-collapse-item > .ant-collapse-header {
-        padding-left: 36px;
-        background-color: #f5f6fa;
-        font-weight: 500;
-        .anticon-calendar {
-          margin-right: 6px;
+    .survey-right-wrapper {
+        margin-left: 256px;
+        height: 100%;
+    }
+
+    .survey-left {
+        padding: 0 8px;
+        height: 100%;
+        background-color: #fff;
+        margin-right: 12px;
+
+        .left-title {
+            height: 48px;
+            line-height: 48px;
+            border-bottom: 1px solid #d7dce7;
+            margin-bottom: 12px;
         }
-      }
-      .ant-collapse-content {
-        padding: 0;
-        border-top: none;
-      }
-      .ant-collapse-content-box {
-        padding: 0;
-      }
 
-      .left-item {
-        color: #25265e;
-        border-top: 1px solid #c9cfda;
-        padding: 10px 0;
-        position: relative;
-      }
-      .left-item-title {
-        width: 208px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        margin-left: 18px;
-        margin-bottom: 0;
-        cursor: pointer;
-      }
-      .left-item-state {
-        position: absolute;
-        left: 3px;
-        top: 3px;
-        font-size: 12px;
-        color: #7569ff;
-      }
-      .left-item-lable {
-        position: absolute;
-        right: 5px;
-        top: 11px;
-        font-size: 14px;
-        color: #68cda0;
-      }
+        .ant-collapse {
+            max-height: 600px;
+            overflow-y: auto;
+            border-top: 1px solid #c9cfda;
+            .ant-collapse-item > .ant-collapse-header {
+                // padding-left: 36px;
+                background-color: #f5f6fa;
+                font-weight: 500;
+
+                .ant-collapse-expand-icon {
+                    padding-right: 0;
+                }
+                .anticon-calendar {
+                    margin-right: 6px;
+                }
+            }
+            .ant-collapse-content {
+                padding: 0;
+                border-top: none;
+            }
+            .ant-collapse-content-box {
+                padding: 0;
+            }
+
+            .left-item {
+                color: #25265e;
+                border-top: 1px solid #c9cfda;
+                padding: 10px 0;
+                position: relative;
+            }
+            .left-item-title {
+                // width: 208px;
+                // white-space: nowrap;
+                // overflow: hidden;
+                // text-overflow: ellipsis;
+                margin-left: 18px;
+                margin-bottom: 0;
+                cursor: pointer;
+                position: relative;
+            }
+            .left-item-icon {
+                position: absolute;
+                left: -18px;
+                top: 0;
+                // width: 16px;
+                // height: 16px;
+                // border-radius: 50%;
+                // background-color: #f5f6fa;
+                // text-align: center;
+                // line-height: 16px;
+                // font-size: 12px;
+                // color: #c9cfda;
+            }
+            .left-item-state {
+                position: absolute;
+                left: 3px;
+                top: 3px;
+                font-size: 12px;
+                color: #7569ff;
+            }
+            .left-item-lable {
+                position: absolute;
+                right: 5px;
+                top: 11px;
+                font-size: 14px;
+                color: #68cda0;
+            }
+        }
+        .no-data {
+            height: 370px;
+            border: 1px solid #c9cfda;
+            .no-data-title {
+                height: 36px;
+                line-height: 36px;
+                text-align: center;
+                background-color: #fafafa;
+            }
+        }
     }
-    .no-data {
-      height: 370px;
-      border: 1px solid #c9cfda;
-      .no-data-title {
-        height: 36px;
-        line-height: 36px;
-        text-align: center;
-        background-color: #fafafa;
-      }
+
+    .report-detail {
+        .top {
+            .top-ul {
+                margin-bottom: 0;
+                padding: 0 24px;
+
+                li {
+                    display: inline-block;
+                    margin-right: 24px;
+
+                    .top-li-title {
+                        color: #25265e;
+                        font-size: 14px;
+                        margin-bottom: 0;
+                    }
+
+                    .top-li-content {
+                        color: #6f7583;
+                    }
+                }
+            }
+        }
+
+        .content {
+        }
     }
-  }
-
-
 }
