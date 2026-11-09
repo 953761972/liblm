@@ -12,6 +12,7 @@ interface IProps {
     isShowManageModal: boolean
     closeModal(v: 'isShowListModal' | 'isShowHisModal' | 'isShowManageModal'): void
     headerInfo: IMchc_Doctor_OutpatientHeaderInfo
+    onPlanSaved?(visitPlans: any[]): void
 }
 export default class Index extends Component<IProps, any> {
     state = {
@@ -66,14 +67,14 @@ export default class Index extends Component<IProps, any> {
     }
 
     handleSavePlan = async () => {
-        const { headerInfo } = this.props
+        const { headerInfo, onPlanSaved } = this.props
         const { formHandler } = this.state
         const planData = formHandler.plan.actions.getValue().value
         const data = { id: get(headerInfo, 'id'), visitPlans: planData }
-        // await api.updatePregnancy(data);
-        // updatePlanData && updatePlanData();
-        await requestMethods.updateOutpatient(data)
+        const res = await requestMethods.updateOutpatient(data)
         this.getPlanData()
+        onPlanSaved && onPlanSaved(get(res, 'visitPlans', []))
+        mchcEnv.success('保存成功')
     }
 
     handleImport = () => {
@@ -123,6 +124,7 @@ export default class Index extends Component<IProps, any> {
         const data = { id: activeKey, name: currentTemplateName, prenatalVisitPlanTemplates: templateData }
         await api.further.updatePrenatalVisitPlanTypes(data)
         this.getPlanTypeData('update')
+        mchcEnv.success('保存成功')
     }
 
     handleTabsChange = (key: string | number) => {
