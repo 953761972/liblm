@@ -70,13 +70,30 @@ export default function FurtherSidebar(props: IProps) {
 
     const planData = get(visitsData, `visitPlans`, []);
 
-    // set_recentPlanData(slice(planData, 0, 2))
-    set_recentPlanData(planData)
+    set_recentPlanData(get_recent_plans(planData, headerInfo?.curgesweek))
 
-    return () => {
+  }, [visitsData, headerInfo?.curgesweek])
 
+  function get_recent_plans(planList: any[], curgesweek: any) {
+    const plans = [...(planList || [])]
+      .filter((item) => item.gestationalWeek != null)
+      .sort((a, b) => a.gestationalWeek - b.gestationalWeek);
+    const currentWeek = parseInt(curgesweek, 10);
+    if (isNaN(currentWeek)) {
+      return slice(plans, 0, 2);
     }
-  }, [visitsData])
+    // 上一次：当前孕周及之前最近的一条；下一次：当前孕周之后最近的一条
+    const previous = [...plans].reverse().find((item) => item.gestationalWeek <= currentWeek);
+    const next = plans.find((item) => item.gestationalWeek > currentWeek);
+    return [previous, next].filter((item) => item != null) as {
+      gestationalWeek: any
+      remind: any
+    }[];
+  }
+
+  function handlePlanSaved(visitPlans: any[]) {
+    set_recentPlanData(get_recent_plans(visitPlans, headerInfo?.curgesweek))
+  }
 
 
 
@@ -254,6 +271,7 @@ export default function FurtherSidebar(props: IProps) {
             isShowManageModal={isShowManageModal}
             headerInfo={headerInfo}
             closeModal={closeModal}
+            onPlanSaved={handlePlanSaved}
           />
         )}
 
