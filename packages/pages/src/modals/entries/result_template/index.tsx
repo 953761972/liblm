@@ -1,7 +1,7 @@
 import { ArrayInput, IGlobalModalProps, Tree_L } from '@lm_fe/components';
 import { mchcEnv, mchcLogger } from '@lm_fe/env';
 import { AnyObject, get, isArray, isObject, request } from '@lm_fe/utils';
-import { Button, message, Modal, Space, Tabs } from 'antd';
+import { Button, message, Modal, Space, Tabs, Tree } from 'antd';
 
 import { forEach, isEmpty, isString } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
@@ -152,7 +152,7 @@ export default function ResultImport(props: IGlobalModalProps<IProps>) {
     return (
         <Modal
             {...others}
-            centered={false}
+            centered
             title="结果导入"
             width={1100}
             onOk={handleOk}
@@ -175,13 +175,14 @@ export default function ResultImport(props: IGlobalModalProps<IProps>) {
                                         </Space.Compact>
                                     </div>
 
-                                    <Tree_L
+                                    <Tree.DirectoryTree
                                         ref={el}
                                         checkable
                                         defaultExpandedKeys={[defaultExpandedKey]}
                                         onCheck={handleCheck}
                                         treeData={arr}
                                         checkedKeys={check_keys}
+                                        style={{ height: 'calc(100vh - 300px)', overflowY: 'auto' }}
                                     />
                                 </>
                                 : '暂无结果~'

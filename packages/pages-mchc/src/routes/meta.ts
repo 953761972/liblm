@@ -30,6 +30,7 @@ export const routesData = {
     "/deliver-management-v2/admission/edit":lazy(() => import("../pages/deliver-management-v2/admission/edit/index")),
     "/deliver-management-v2/admission/list":lazy(() => import("../pages/deliver-management-v2/admission/list/index")),
     "/deliver-management-v2":lazy(() => import("../pages/deliver-management-v2/index")),
+    "/dyn-page":lazy(() => import("../pages/dyn-page/index")),
     "/fetal-custom-analyse":lazy(() => import("../pages/fetal-custom-analyse/index")),
     "/fetal-custom-analyse-entry":lazy(() => import("../pages/fetal-custom-analyse-entry/index")),
     "/fetal-custom-analyse-list":lazy(() => import("../pages/fetal-custom-analyse-list/index")),

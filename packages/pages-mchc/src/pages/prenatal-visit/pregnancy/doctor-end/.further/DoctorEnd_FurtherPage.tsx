@@ -136,7 +136,8 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
     const idNullRvisit = get_id_null_data(vv)
     const first = idNullRvisit ?? rvisits[0] ?? get_default_value()
 
-    const _formdata_q = mchcEnv.is('广三') ? rvisits.find(_ => _.today) : null
+    // const _formdata_q = mchcEnv.is('广三') ? rvisits.find(_ => _.today) : null
+    const _formdata_q = rvisits.find(_ => _.today)
 
     const _formdata = _formdata_q ?? first
     set_formdata_and_diagnoses(_formdata)

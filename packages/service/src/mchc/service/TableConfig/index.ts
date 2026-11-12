@@ -21,6 +21,7 @@ export interface IMchc_TableConfig {
     "title": any,
     "rowKey": any,
     handleBeforePopup: any
+    others: any
     genColumns: any
     beforeSubmit: any
     targetLabelCol?: number,

@@ -606,7 +606,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
         if (mchcEnv.isSp) return headerInfo?.outpatientNO
         return (
             <PatientSelect
-                // size="small"
+                size="small"
                 // PatientSelect_url='/api/getPregnancies'
                 style={{ width: 120, }}
                 // className={styles['outpatientNO']}
