@@ -39,7 +39,7 @@ export function FurtherHistory(props: IProps) {
     const tableContentColumns = expect_array<IMchc_FormDescriptions_Field>(tableConfig?.tableColumns)
     const fds = expect_array(tableConfig?.tableColumns[0].fds)
 
-    const reverseRvisit = cloneDeep(filtered_rvisits)?.reverse() || []
+    const reverseRvisit = cloneDeep(filtered_rvisits) || []
     const renderContent = (rowData: IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit) => {
         const configformArrayList: any[] = []
         let Columnsarr = []
@@ -63,7 +63,6 @@ export function FurtherHistory(props: IProps) {
                         const title = get(config, 'title')
                         const dataIndex = get(config, 'dataIndex')
                         let text = config.render ? config.render(value, rowData) : value
-												console.log('-------7878 123: ', {rowData, config, ArrayList});
                         if (!text) {
                             return <></>
                         }
@@ -124,7 +123,6 @@ export function FurtherHistory(props: IProps) {
     }
 
     function run_one(action: '覆' | '插', data: AnyObject, ks?: string[]) {
-        console.log('-----7878787 123: ', { action, data, ks })
         const isOk = action === '插' || confirm('确定覆？')
         if (!isOk) return
         mchcEvent.emit('outpatient', {
