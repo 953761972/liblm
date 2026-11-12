@@ -30,6 +30,7 @@ mchc 页面级模块
 | /deliver-management-v2/admission/edit | 缺省 |
 | /deliver-management-v2/admission/list | 入院登记页 |
 | /deliver-management-v2 | 缺省 |
+| /dyn-page | 缺省 |
 | /fetal-custom-analyse | 中山一胎监判图 |
 | /fetal-custom-analyse-entry | 中山一胎监判图入口 |
 | /fetal-custom-analyse-list | 中山一胎监判图历史 |

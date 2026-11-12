@@ -1,12 +1,12 @@
 import { MyIcon, OkButton } from "@lm_fe/components_m";
 import { mchcConfig, mchcEnv } from "@lm_fe/env";
-import { mchcModal__, safe_navigate } from "@lm_fe/pages";
+import { mchcModal__ } from "@lm_fe/pages";
 import { use_provoke } from "@lm_fe/provoke";
+import { request } from "@lm_fe/utils";
 import { Space } from "antd";
 import React, { FC, useEffect, useState } from "react";
 import styles from './ReloadButton.module.less';
-import { request } from "@lm_fe/utils";
-import { NewListPage } from "./NewListPage";
+import { create_menu } from "./utils";
 export const ReloadButton: FC = (props) => {
 
     const sys_theme = use_provoke(s => s.sys_theme)
@@ -51,7 +51,28 @@ export const ReloadButton: FC = (props) => {
                 }
                 {
                     (mchcEnv.isAdmin)
-                        ? <NewListPage />
+                        ? <OkButton
+                            btn_text="新增动态页"
+                            size='small'
+                            type='primary'
+                            onClick={() => {
+                                create_menu(n => `/happy/dyn-page/${n}`)
+                            }}
+
+                            icon={<MyIcon value='SettingOutlined' />} />
+                        : null
+                }
+                {
+                    (mchcEnv.isAdmin)
+                        ? <OkButton
+                            btn_text="新增列表页"
+                            size='small'
+                            type='primary'
+                            onClick={() => {
+                                create_menu(n => `/happy/config-table/list2/${n}`)
+                            }}
+
+                            icon={<MyIcon value='SettingOutlined' />} />
                         : null
                 }
                 {
