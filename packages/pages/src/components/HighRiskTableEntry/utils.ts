@@ -8,6 +8,7 @@ export interface IHighRiskTableEntryProps {
   headerInfo?: IMchc_Doctor_OutpatientHeaderInfo
   data?: IData
   style?: CSSProperties
+  type: 0 | 1 | 2
 }
 export type IData = {
   isOpenVTETable: number;

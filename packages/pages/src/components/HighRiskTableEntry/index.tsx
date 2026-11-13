@@ -2,20 +2,33 @@ import { MyIcon } from '@lm_fe/components';
 import { mchcEnv, mchcEvent } from '@lm_fe/env';
 import { Button, Divider, Space } from 'antd';
 import classnames from 'classnames';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './index.module.less';
 import { highRiskTablePopup, IHighRiskTableEntryProps, isShowPopupRemind, TPopupRemindkey } from './utils';
 import { use_provoke } from '@lm_fe/provoke';
 import { mchcModal__ } from 'src/modals';
 import { OkButton } from '@lm_fe/components_m';
+import { AnyObject, get, request } from '@lm_fe/utils';
 const wraning_color = 'rgb(255, 146, 0)'
+interface IRemoteItem {
+    "entityObjectCode": string
+    "entityObjectName": string
+    "sum": number
+    "highRiskLevel": string
+    "highRiskColor": string
+    "isFilled": boolean
+}
 function _HighRiskTableEntry(props: IHighRiskTableEntryProps) {
-    const { headerInfo, data } = props
+    const { headerInfo, data, type } = props
     const { config } = use_provoke('config')
     const ext_arr = config.量表拓展 ?? []
     const hiden_old_arr = config.旧版量表隐藏 ?? []
+    const id = get(headerInfo, 'id')
+    const [list, set_list] = useState<IRemoteItem[]>()
     useEffect(() => {
-
+        request
+            .get('/api/assessments/getAllAssessmentResults', { params: { pregnancyId: id, type } })
+            .then(res => set_list(res.data))
 
         return () => {
 
@@ -24,6 +37,29 @@ function _HighRiskTableEntry(props: IHighRiskTableEntryProps) {
     const show_瘢痕子宫 = isShowPopupRemind('瘢痕子宫', headerInfo, data)
     const show_子痫 = isShowPopupRemind('子痫', headerInfo, data)
     const show_VTE = isShowPopupRemind('VTE', headerInfo, data)
+    if (list) {
+        return <Space>
+            {
+                list.map(ext => {
+                    return <OkButton
+                        style={{ borderColor: ext.highRiskColor }}
+
+                        type="dashed"
+                        icon={<MyIcon value='ExceptionOutlined' />}
+                        onClick={() => {
+                            mchcModal__.open('拓展量表', {
+                                modal_data: { headerInfo, ext: { value: ext.entityObjectCode, label: ext.entityObjectName } }
+                            })
+                        }}
+                    >
+                        {ext.entityObjectName}
+
+                    </OkButton>
+                })
+            }
+        </Space>
+
+    }
     return <Space style={{ flexWrap: 'wrap', marginRight: 8 }}>
         {
             <OkButton
