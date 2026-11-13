@@ -45,14 +45,14 @@ function _HighRiskTableEntry(props: IHighRiskTableEntryProps) {
                         style={{ borderColor: ext.highRiskColor }}
 
                         type="dashed"
-                        icon={<MyIcon value='ExceptionOutlined' />}
+                        icon={ext.isFilled ? <MyIcon value='CheckOutlined' /> : null}
                         onClick={() => {
                             mchcModal__.open('拓展量表', {
                                 modal_data: { headerInfo, ext: { value: ext.entityObjectCode, label: ext.entityObjectName } }
                             })
                         }}
                     >
-                        {ext.entityObjectName}
+                        {ext.entityObjectName}{ext.sum ? `(${ext.sum})` : ''}
 
                     </OkButton>
                 })
