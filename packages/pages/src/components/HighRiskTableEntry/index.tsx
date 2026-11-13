@@ -26,14 +26,17 @@ function _HighRiskTableEntry(props: IHighRiskTableEntryProps) {
     const id = get(headerInfo, 'id')
     const [list, set_list] = useState<IRemoteItem[]>()
     useEffect(() => {
-        request
-            .get('/api/assessments/getAllAssessmentResults', { params: { pregnancyId: id, type } })
-            .then(res => set_list(res.data))
 
+        fetch_data()
         return () => {
 
         }
     }, [])
+    function fetch_data() {
+        request
+            .get('/api/assessments/getAllAssessmentResults', { params: { pregnancyId: id, type } })
+            .then(res => set_list(res.data))
+    }
     const show_瘢痕子宫 = isShowPopupRemind('瘢痕子宫', headerInfo, data)
     const show_子痫 = isShowPopupRemind('子痫', headerInfo, data)
     const show_VTE = isShowPopupRemind('VTE', headerInfo, data)
@@ -48,7 +51,14 @@ function _HighRiskTableEntry(props: IHighRiskTableEntryProps) {
                         icon={ext.isFilled ? <MyIcon value='CheckOutlined' /> : null}
                         onClick={() => {
                             mchcModal__.open('拓展量表', {
-                                modal_data: { headerInfo, ext: { value: ext.entityObjectCode, label: ext.entityObjectName } }
+                                onClose(status) {
+                                    fetch_data()
+                                    mchcEvent.emit('outpatient', { type: '刷新头部' })
+                                },
+                                modal_data: {
+                                    headerInfo,
+                                    ext: { value: ext.entityObjectCode, label: ext.entityObjectName },
+                                }
                             })
                         }}
                     >
