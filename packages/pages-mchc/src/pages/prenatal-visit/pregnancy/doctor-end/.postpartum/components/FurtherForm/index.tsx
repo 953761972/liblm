@@ -172,7 +172,7 @@ function FurtherForm(props: IProps) {
       title={form_id ? "编辑记录" : "本次记录"}
       size="small"
       styles={{ body: { padding: 0 } }}
-      style={{ flex: 1 }}
+      style={{ flex: 1, overflow: 'auto'}}
       extra={
         <span id="extra" style={{ display: 'inline-block', minWidth: 75, height: 24, marginLeft: 98 }}>
           {form_id

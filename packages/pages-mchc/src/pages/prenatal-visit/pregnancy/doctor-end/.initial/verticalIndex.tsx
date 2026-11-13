@@ -6,7 +6,7 @@ import { mchcEnv, mchcEvent, mchcLogger, mchcUtils } from '@lm_fe/env'
 import { BF_Wrap2, mchcModal__ } from '@lm_fe/pages'
 import { IMchc_Doctor_Diagnoses, IMchc_Doctor_FirstVisitDiagnosisOutpatient, SMchc_Doctor } from '@lm_fe/service'
 import React from 'react'
-import { get, filter, map } from 'lodash'
+import { get, set, filter, map } from 'lodash'
 import { filter_diagnoses } from '../.utils'
 import { IDoctorEnd_InitialProps } from './DoctorEnd_Initial'
 import { 诊断处理_Tools } from './components/ZhenDuanChuLi/诊断处理_Tools'
@@ -38,7 +38,7 @@ function DoctorEnd_Initial_Vertical(props: IDoctorEnd_InitialProps) {
     )
 
     const [disabled_save, set_disabled_save] = useState<boolean>()
-
+    const [allData, setAllData] = useState<any>({})
     const [visitData, setVisitData] = useState<IMchc_Doctor_FirstVisitDiagnosisOutpatient>()
 
     useEffect(() => {
@@ -50,14 +50,13 @@ function DoctorEnd_Initial_Vertical(props: IDoctorEnd_InitialProps) {
     /**纵向一览风格初始数据 */
     async function init() {
         let res = await SMchc_Doctor.getFirstVisitInfoOfOutpatient(pregnancyId)
-        // mchcLogger.log('vertical init', res)
         const diagnosisAndAdvice = get(res, 'diagnosisAndAdvice')
         const d = get(diagnosisAndAdvice, 'diagnoses')
 
         const _diagnoses = filter_diagnoses(d)
 
         check_edd_by_nt(res)
-
+        setAllData(res)
         setVisitData(diagnosisAndAdvice)
         set_disabled_save(res.isBanned)
         setDiagnosesList(_diagnoses)
@@ -66,11 +65,12 @@ function DoctorEnd_Initial_Vertical(props: IDoctorEnd_InitialProps) {
 
     function verticlaHandleSubmit() {
         const values = form.getFieldsValue()
+        const prenatalExam_first = get(allData, ['prenatalExam', 'first'])
+        set(values, ['prenatalExam', 'first'], prenatalExam_first)
         handleSave(values)
     }
 
     async function handleSave(resData: any) {
-        // console.log(resData);
         SMchc_Doctor.updateFirstVisitInfoOfOutpatient(resData).then((res) => {
             mchcEnv.success('信息保存成功')
             mchcEvent.emit('outpatient', { type: '刷新头部' })
