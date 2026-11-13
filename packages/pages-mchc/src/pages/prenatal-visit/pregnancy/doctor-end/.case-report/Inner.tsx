@@ -37,6 +37,7 @@ class CaseReport extends Component<ICaseReport, any> {
     });
     this.setState({ siderPanels: res.data });
   }
+
   newInitData = async () => {
     const { id, caseType } = this.props;
     const pregnancyId = id || getSearchParamsValue('id');

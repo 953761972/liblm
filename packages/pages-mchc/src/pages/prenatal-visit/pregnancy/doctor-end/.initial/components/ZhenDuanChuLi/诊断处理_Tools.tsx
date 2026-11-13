@@ -128,7 +128,7 @@ export function 诊断处理_Tools(props: IProps) {
       />
       <Divider size='small' />
       <Space>
-        <HighRiskTableEntry headerInfo={headerInfo} data={visitData} />
+        <HighRiskTableEntry type={0} headerInfo={headerInfo} data={visitData} />
         <OkButton hidden className="his-btn" type="dashed" icon={<MyIcon value='TableOutlined' />} onClick={handleRecordBtn}>
           首检信息历史修改记录
         </OkButton>

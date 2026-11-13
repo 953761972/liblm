@@ -25,6 +25,7 @@ export default function CaseNew(props: ICaseReport) {
   }
 
   const params = { pregnancyId: id, modType }
+
   useEffect(() => {
 
     init();

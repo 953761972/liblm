@@ -31,6 +31,7 @@ function Vertical(props: VerticalProps) {
     const { headerInfoOfInpatientData = {}, headerInfo = {}, fubao } = props
     const combinded = assign({ fubao }, headerInfoOfInpatientData, headerInfo)
     const [reportList, setReportList] = useState([])
+    const [defaultActiveKey, setDefaultActiveKey] = useState([])
 
     useEffect(() => {
         getLabExamReportList()
@@ -53,7 +54,9 @@ function Vertical(props: VerticalProps) {
                 styles: { body: { padding: '6px 12px' } },
             }
         })
+        // console.log('-----7878787   888', _newList, _newList[0, 'key'], get(_newList, [0, "key"]));
         setReportList(_newList)
+        setDefaultActiveKey([get(_newList, [0, "key"])])
     }
 
     const handleSearch = async () => {
@@ -74,6 +77,10 @@ function Vertical(props: VerticalProps) {
             .catch((err) => {
                 console.log(err)
             })
+    }
+
+    const handleCollapseChange = (keys: string | string[]) => {
+        setDefaultActiveKey(keys)
     }
 
     return (
@@ -98,7 +105,7 @@ function Vertical(props: VerticalProps) {
                     </Button.Group>
                 </Form.Item>
             </Form>
-            <Collapse bordered size="small" items={reportList}></Collapse>
+            <Collapse bordered size="small" activeKey={defaultActiveKey} onChange={handleCollapseChange}  items={reportList}></Collapse>
         </div>
     )
 }

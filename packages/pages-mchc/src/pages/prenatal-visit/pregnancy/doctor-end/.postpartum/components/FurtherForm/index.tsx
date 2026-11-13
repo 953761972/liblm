@@ -5,7 +5,7 @@ import { Button, Card, Form, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
 
 import { mchcEnv, mchcEvent, mchcUtils } from '@lm_fe/env';
-import { mchcModal__ } from '@lm_fe/pages';
+import { HighRiskTableEntry, mchcModal__ } from '@lm_fe/pages';
 import FormBlock from './form_config/Form';
 import { use_doctor_sign } from '../../../.utils/use_doctor_sign';
 import { use_provoke } from '@lm_fe/provoke';
@@ -61,12 +61,7 @@ function FurtherForm(props: IProps) {
       form.setFieldsValue(formData)
       set_disabled_save(formData.isBanned!)
 
-      // if (mchcConfig.get('医生端_复诊编辑控制')) {
 
-      //   SMchc_Doctor.getVisitEmrEditable(formData.id!)
-      //     .then(set_disabled_save)
-      //     .catch(() => set_disabled_save(true))
-      // }
     }
   }, [formData])
 
@@ -172,7 +167,7 @@ function FurtherForm(props: IProps) {
       title={form_id ? "编辑记录" : "本次记录"}
       size="small"
       styles={{ body: { padding: 0 } }}
-      style={{ flex: 1 }}
+      style={{ flex: 1, overflow: 'auto' }}
       extra={
         <span id="extra" style={{ display: 'inline-block', minWidth: 75, height: 24, marginLeft: 98 }}>
           {form_id
@@ -195,7 +190,9 @@ function FurtherForm(props: IProps) {
     >
       <MyLazyComponent size='middle'>
         <FormBlock disableAll={disabled_save} form={form} diagnosesList={diagnosesList ?? []} />
-
+        <div style={{ margin: '0 128px 64px 0' }}>
+          <HighRiskTableEntry type={2} headerInfo={headerInfo} data={null} />
+        </div>
 
         {(
 
