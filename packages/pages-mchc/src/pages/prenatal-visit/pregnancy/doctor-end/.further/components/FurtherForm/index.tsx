@@ -95,12 +95,7 @@ function FurtherForm(props: IProps) {
             form.setFieldsValue(formData)
             set_save_disabled(formData.isBanned!)
 
-            // if (mchcConfig.get('医生端_复诊编辑控制')) {
 
-            //   SMchc_Doctor.getVisitEmrEditable(formData.id!)
-            //     .then(set_disabled_save)
-            //     .catch(() => set_disabled_save(true))
-            // }
         }
     }, [formData])
 

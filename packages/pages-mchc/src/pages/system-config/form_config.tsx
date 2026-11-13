@@ -278,13 +278,7 @@ export default defineFormConfig(
                             inputProps: {},
                             layout: '1/3',
                         },
-                        {
-                            label: '复诊编辑控制',
-                            name: '医生端_复诊编辑控制',
-                            inputType: 'MS',
-                            inputProps: { options: switchOptions, marshal: 0 },
-                            layout: '1/3',
-                        },
+   
 
                         {
                             label: '看诊审核限制',
